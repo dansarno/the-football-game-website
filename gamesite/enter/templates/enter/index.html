@@ -1,12 +1,16 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Enter</title>
-    <link href="{% static 'enter/styles.css' %}" rel="stylesheet">
-</head>
-<body>
-    <h1>Hello!</h1>
-</body>
-</html>
+{% extends "enter/layout.html" %}
+
+{% block body %}
+    <h1>Submission Form</h1>
+    <form>
+        {% for game in games %}
+        <div>
+            <text> {{ game }} </text>
+            <input type="radio" name="choice" value="win">
+            <input type="radio" name="choice" value="draw">
+            <input type="radio" name="choice" value="lose">
+        </div>
+        {% endfor %}
+        <input type="submit">
+    </form>
+{% endblock %}
