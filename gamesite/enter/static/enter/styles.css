@@ -1,5 +1,29 @@
-h1 {
+* {
     font-family: sans-serif;
+}
+h1 {
     font-size: 30px;
     text-align: center;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    text-align: center;
+}
+
+.game_label {
+    text-align: left;
+}
+
+.form_section {
+    border: 2px solid black;
+    width: 33%;
+    float:left;
+}
+
+.form_section h3 {
+    color: red;
 }

@@ -1,16 +1,32 @@
 {% extends "enter/layout.html" %}
 
+ {% block title %} Enter {% endblock %}
+
 {% block body %}
     <h1>Submission Form</h1>
-    <form>
-        {% for game in games %}
-        <div>
-            <text> {{ game }} </text>
-            <input type="radio" name="choice" value="win">
-            <input type="radio" name="choice" value="draw">
-            <input type="radio" name="choice" value="lose">
+    <form action="{% url 'enter:confirm' %}" method="post">
+        {% csrf_token %}
+        <div class="form_section" id="group_games">
+            <h3>Group Matches</h3>
+            <p>Select either home, draw or away wins for every game below</p>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>Home</th>
+                    <th>Draw</th>
+                    <th>Away</th>
+                </tr>
+            {% for field in form %}
+                <tr>
+                    <td  class="game_label">{{ field.label }}</td>
+                        {% for radio in field %}
+                    <td>{{ radio.tag }}</td>
+                        {% endfor %}
+                </tr>
+            {% endfor %}
+            </table>
         </div>
-        {% endfor %}
         <input type="submit">
     </form>
+    <a href="{% url 'enter:confirm' %}">Review and Confirmation</a>
 {% endblock %}
