@@ -9,26 +9,26 @@ submissions = []
 
 
 class GroupGamesForm(forms.Form):
-    game1 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Italy vs England")
-    game2 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="France vs Germany")
-    game3 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Sweden vs Iceland")
+    game1 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Turkey vs Italy")
+    game2 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Wales vs Switzerland")
+    game3 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="England vs Crotia")
 
 
-def index(request):
+def index(request, form_class=GroupGamesForm, template_name="enter/index.html", success_url="enter:confirm"):
     if request.method == "POST":
-        form = GroupGamesForm(request.POST)
+        form = form_class(request.POST)
         if form.is_valid():
             for data in form.cleaned_data:
                 submissions.append(data)
-            return HttpResponseRedirect(reverse("enter:confirm"))
+            return HttpResponseRedirect(reverse(success_url))
         else:
-            return render(request, "enter/index.html", {
+            return render(request, template_name, {
                 "form": form
             })
 
-    return render(request, "enter/index.html", {
+    return render(request, template_name, {
         "games": games,
-        "form": GroupGamesForm()
+        "form": form_class()
     })
 
 
