@@ -1,8 +1,8 @@
 {% extends "enter/layout.html" %}
 
- {% block title %} Confirm {% endblock %}
+ {% block title %} Euro 2020 Game - Confirm {% endblock title %}
 
-{% block body %}
+{% block content %}
     <h1>Review and Confirm Submission</h1>
     <text>Summary of choices</text>
     <form>
@@ -12,4 +12,4 @@
         <input type="submit">
     </form>
     <a href="{% url 'enter:index' %}">Back to submission</a>
-{% endblock %}
+{% endblock content %}
