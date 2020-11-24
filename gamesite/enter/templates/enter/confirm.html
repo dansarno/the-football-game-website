@@ -9,7 +9,7 @@
         {% for submission in submission %}
             {{ submission }}
         {% endfor %}
-        <input type="submit">
+        <input type="submit" class="btn btn-primary btn-lg">
     </form>
     <a href="{% url 'enter:index' %}">Back to submission</a>
 {% endblock content %}

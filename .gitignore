@@ -1,6 +1,13 @@
+# Django
+*.log
+*.pot
+db.sqlite3
+media
+
 # Python files
 *.pyc
 *.pckl
+__pycache__
 
 # Folders
 scratch/*

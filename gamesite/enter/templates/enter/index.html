@@ -6,7 +6,7 @@
     <h1>Submission Form</h1>
     <form action="{% url 'enter:confirm' %}" method="post">
         {% csrf_token %}
-        <div class="form_section" id="group_games">
+        <div class="form_section rounded-lg" id="group_games">
             <h3>Group Matches</h3>
             <p class="help_text">Select either home, draw or away wins for every game below.</p>
             <table>
@@ -20,13 +20,12 @@
                 <tr>
                     <td  class="game_label">{{ field.label }}</td>
                         {% for radio in field %}
-                    <td>{{ radio.tag }}</td>
+                            <td>{{ radio.tag }}</td>
                         {% endfor %}
                 </tr>
             {% endfor %}
             </table>
         </div>
-        <input type="submit">
+        <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">
     </form>
-    <a href="{% url 'enter:confirm' %}">Review and Confirmation</a>
 {% endblock content %}
