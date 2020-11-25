@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'enter',
+    'feed',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',
