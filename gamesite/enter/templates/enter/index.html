@@ -1,9 +1,7 @@
 {% extends "enter/layout.html" %}
 
- {% block title %} Euro 2020 Game - Enter {% endblock title %}
-
 {% block content %}
-    <h1>Submission Form</h1>
+    <h1 class="text-center">Submission Form</h1>
     <form action="{% url 'enter:confirm' %}" method="post">
         {% csrf_token %}
         <div class="form_section rounded-lg" id="group_games">

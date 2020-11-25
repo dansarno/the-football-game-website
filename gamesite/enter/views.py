@@ -23,10 +23,12 @@ def index(request, form_class=GroupGamesForm, template_name="enter/index.html", 
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {
+                "title": "Enter",
                 "form": form
             })
 
     return render(request, template_name, {
+        "title": "Enter",
         "games": games,
         "form": form_class()
     })
@@ -34,6 +36,7 @@ def index(request, form_class=GroupGamesForm, template_name="enter/index.html", 
 
 def confirm(request):
     return render(request, "enter/confirm.html", {
+        "title": "Review and Confirm",
         "submissions": submissions
     })
 

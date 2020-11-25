@@ -24,5 +24,6 @@ posts = [
 
 def home(request, template_name="feed/home.html"):
     return render(request, template_name, {
+        'title': "Home",
         'posts': posts
     })
