@@ -18,6 +18,42 @@ posts = [
         'title': 'Status Update 3',
         'content': 'How about that result, fun game  huh?!',
         'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
+    },
+    {
+        'author': 'Rosario Sarno',
+        'title': 'Status Update 3',
+        'content': 'How about that result, fun game  huh?!',
+        'date_posted': 'November 27, 2020'
     }
 ]
 
