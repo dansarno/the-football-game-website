@@ -1,31 +1,31 @@
 {% extends "enter/layout.html" %}
 
 {% block content %}
-    <h1 class="text-center">Submission Form</h1>
-    <form action="{% url 'enter:confirm' %}" method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="form_section col-md-6 col-lg-4 rounded-lg" id="group_games">
-                <h3>Group Matches</h3>
-                <p class="help_text">Select either home, draw or away wins for every game below.</p>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th>Home</th>
-                        <th>Draw</th>
-                        <th>Away</th>
-                    </tr>
-                {% for field in form %}
-                    <tr>
-                        <td  class="game_label">{{ field.label }}</td>
-                            {% for radio in field %}
-                                <td>{{ radio.tag }}</td>
-                            {% endfor %}
-                    </tr>
-                {% endfor %}
-                </table>
-            </div>
-        </div>
-        <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">
-    </form>
+<h1 class="text-center">Submission Form</h1>
+<form action="{% url 'enter:confirm' %}" method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="form_section col-md-6 col-lg-4 rounded-lg" id="group_games">
+      <h3>Group Matches</h3>
+      <p class="help_text">Select either home, draw or away wins for every game below.</p>
+      <table>
+        <tr>
+          <th></th>
+          <th>Home</th>
+          <th>Draw</th>
+          <th>Away</th>
+        </tr>
+        {% for field in form %}
+        <tr>
+          <td class="game_label">{{ field.label }}</td>
+          {% for radio in field %}
+          <td>{{ radio.tag }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+  <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">
+</form>
 {% endblock content %}

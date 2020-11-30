@@ -1,13 +1,13 @@
 {% extends "feed/layout.html" %}
 
 {% block content %}
-    <h1>Review and Confirm Submission</h1>
-    <text>Summary of choices</text>
-    <form>
-        {% for submission in submission %}
-            {{ submission }}
-        {% endfor %}
-        <input type="submit" class="btn btn-primary btn-lg">
-    </form>
-    <a href="{% url 'enter:index' %}">Back to submission</a>
+<h1>Review and Confirm Submission</h1>
+<text>Summary of choices</text>
+<form>
+  {% for submission in submission %}
+  {{ submission }}
+  {% endfor %}
+  <input type="submit" class="btn btn-primary btn-lg">
+</form>
+<a href="{% url 'enter:index' %}">Back to submission</a>
 {% endblock content %}
