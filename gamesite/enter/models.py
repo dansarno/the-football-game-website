@@ -1,19 +1,22 @@
 from django.db import models
 
 
-class Team(models.Model):
+class Tournament(models.Model):
+    name = models.CharField(max_length=20)
+    goals_scored = models.IntegerField(default=0)
+    red_cards = models.IntegerField(default=0)
+    own_goals = models.IntegerField(default=0)
+    hatricks = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
+
+
+class Country(models.Model):
     name = models.CharField(max_length=20)
     country_code = models.CharField(max_length=3, default="")
+    flag = models.ImageField()
 
-    def __str__(self):
-        return self.name
-
-
-class Venue(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
 
 class Group(models.Model):
     GROUP_A = "A"
@@ -31,43 +34,62 @@ class Group(models.Model):
         (GROUP_F, "Group F")
     ]
 
+    # Fields
     name = models.CharField(
         max_length=1,
         choices=GROUP_CHOICES
         )
-    team_1 = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        related_name="group_team_1"
-        )
-    team_2 = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        related_name="group_team_2"
-        )
-    team_3 = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        related_name="group_team_3"
-        )
-    team_4 = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        related_name="group_team_4"
-        )
-    winner = models.ForeignKey(
-        Team,
-        on_delete=models.CASCADE,
-        related_name="group_winner",
-        blank=True,
-        null=True
-        )
+    goals_scored = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
 
 
-class GroupMatch(models.Model):
+class Team(models.Model):
+    country = models.ForeignKey(
+            Country,
+            on_delete=models.CASCADE
+            )
+    group = models.ForeignKey(
+            Group,
+            on_delete=models.CASCADE
+            )
+    goals_scored = models.IntegerField(default=0)
+    yellow_cards = models.IntegerField(default=0)
+    seconds_to_first_yellow = models.IntegerField()
+    seconds_to_first_goal = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class Player(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    goals_scored = models.IntegerField(default=0)
+    team = models.ForeignKey(
+            Team,
+            on_delete=models.CASCADE
+            )
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Venue(models.Model):
+    name = models.CharField(max_length=20)
+    country = models.ForeignKey(
+            Country,
+            on_delete=models.CASCADE
+            )
+    city = models.CharField(max_length=20)
+    capacity = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class Match(models.Model):
     HOME = "H"
     AWAY = "A"
     DRAW = "D"
@@ -77,6 +99,8 @@ class GroupMatch(models.Model):
         (DRAW, "Draw")
     ]
 
+    # Fields
+    match_number = models.IntegerField()
     home_team = models.ForeignKey(
         Team,
         on_delete=models.CASCADE,
@@ -87,16 +111,25 @@ class GroupMatch(models.Model):
         on_delete=models.CASCADE,
         related_name="match_away_team"
         )
-    game_number = models.IntegerField()
     ko_time = models.DateTimeField()
-    location = models.ForeignKey(Venue, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     result = models.CharField(
         max_length=1,
         choices=MATCH_RESULT_CHOICES
         )
 
     def __str__(self):
-        return f"Game {self.game_number}: {self.home_team.country_code} v {self.away_team.country_code}"
+        return f"Match {self.game_number}: {self.home_team.country_code} v {self.away_team.country_code}"
+
+
+class GroupMatch(Match):
+    group = models.ForeignKey(
+            Group,
+            on_delete=models.CASCADE
+            )
+
+    def __str__(self):
+        return f"Group {self.group.name}, Match {self.game_number}: {self.home_team.country_code} v {self.away_team.country_code}"
 
 
 class GroupMatchBet(models.Model):
@@ -109,9 +142,55 @@ class GroupMatchBet(models.Model):
         (DRAW, "Draw")
     ]
 
+    # Fields
     bet = models.CharField(
         max_length=1,
         choices=MATCH_RESULT_CHOICES
         )
+    match = models.ForeignKey(
+            GroupMatch,
+            on_delete=models.CASCADE
+            )
+
     def __str__(self):
-        return f"Game {self.game_number}: {self.bet}"
+        return f"Group {self.match.group.name}, Match {self.match.game_number}: {self.bet}"
+
+
+class FinalMatch(Match):
+    FIRST_HALF = "1H"
+    SECOND_HALF = "2H"
+    FIRST_ET = "1E"
+    SECOND_ET = "2E"
+    PEN_SHOOTOUT = "PS"
+    MATCH_PERIOD_CHOICES = [
+        (FIRST_HALF, "First Half"),
+        (SECOND_HALF, "Second Half"),
+        (FIRST_ET, "First Half of Extra Time"),
+        (SECOND_ET, "Second Half of Extra Time"),
+        (PEN_SHOOTOUT, "Penality Shootout")
+    ]
+
+    EUROPEAN = "EU"
+    SOUTH_AMERICAN = "SA"
+    OTHER = "OT"
+    REF_CONTINENT_CHOICES = [
+        (EUROPEAN, "European"),
+        (SOUTH_AMERICAN, "South American"),
+        (OTHER, "Other Continent")
+    ]
+
+    # Fields
+    first_goal_period = models.CharField(
+        max_length=2,
+        choices=MATCH_PERIOD_CHOICES
+        )
+    has_own_goal = models.BooleanField(default=False)
+    yellow_cards = models.IntegerField(default=0)
+    goals = models.IntegerField(default=0)
+    ref_nationality = models.CharField(
+        max_length=2,
+        choices=REF_CONTINENT_CHOICES
+        )
+
+    def __str__(self):
+        return f"Final: {self.home_team.country_code} v {self.away_team.country_code}"
