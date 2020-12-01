@@ -14,6 +14,10 @@ class Tournament(models.Model):
 
 
 class Country(models.Model):
+
+    class Meta:
+        verbose_name_plural = "countries"
+
     name = models.CharField(max_length=20)
     country_code = models.CharField(max_length=3, default="")
     flag = models.ImageField()
@@ -94,6 +98,10 @@ class Venue(models.Model):
 
 
 class Match(models.Model):
+
+    class Meta:
+        verbose_name_plural = "matches"
+
     HOME = "H"
     AWAY = "A"
     DRAW = "D"
@@ -127,6 +135,10 @@ class Match(models.Model):
 
 
 class GroupMatch(Match):
+
+    class Meta:
+        verbose_name_plural = "group matches"
+
     group = models.ForeignKey(
             Group,
             on_delete=models.CASCADE
@@ -165,6 +177,10 @@ class GroupMatchBet(models.Model):
 
 
 class FinalMatch(Match):
+
+    class Meta:
+        verbose_name_plural = "final matches"
+
     FIRST_HALF = "1H"
     SECOND_HALF = "2H"
     FIRST_ET = "1E"
