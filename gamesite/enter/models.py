@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 
 
 class Tournament(models.Model):
@@ -16,6 +17,9 @@ class Country(models.Model):
     name = models.CharField(max_length=20)
     country_code = models.CharField(max_length=3, default="")
     flag = models.ImageField()
+
+    def __str__(self):
+        return self.name
 
 
 class Group(models.Model):
@@ -56,11 +60,11 @@ class Team(models.Model):
             )
     goals_scored = models.IntegerField(default=0)
     yellow_cards = models.IntegerField(default=0)
-    seconds_to_first_yellow = models.IntegerField()
-    seconds_to_first_goal = models.IntegerField()
+    seconds_to_first_yellow = models.IntegerField(default=5400)
+    seconds_to_first_goal = models.IntegerField(default=5400)
 
     def __str__(self):
-        return self.name
+        return self.country.name
 
 
 class Player(models.Model):
@@ -119,7 +123,7 @@ class Match(models.Model):
         )
 
     def __str__(self):
-        return f"Match {self.game_number}: {self.home_team.country_code} v {self.away_team.country_code}"
+        return f"Match {self.match_number}: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
 
 
 class GroupMatch(Match):
@@ -129,7 +133,7 @@ class GroupMatch(Match):
             )
 
     def __str__(self):
-        return f"Group {self.group.name}, Match {self.game_number}: {self.home_team.country_code} v {self.away_team.country_code}"
+        return f"Group {self.group.name}, Match {self.match_number}: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
 
 
 class GroupMatchBet(models.Model):
@@ -151,9 +155,13 @@ class GroupMatchBet(models.Model):
             GroupMatch,
             on_delete=models.CASCADE
             )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+        )
 
     def __str__(self):
-        return f"Group {self.match.group.name}, Match {self.match.game_number}: {self.bet}"
+        return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.bet}"
 
 
 class FinalMatch(Match):
@@ -184,13 +192,13 @@ class FinalMatch(Match):
         max_length=2,
         choices=MATCH_PERIOD_CHOICES
         )
-    has_own_goal = models.BooleanField(default=False)
+    own_goal = models.BooleanField(default=False)
     yellow_cards = models.IntegerField(default=0)
     goals = models.IntegerField(default=0)
-    ref_nationality = models.CharField(
+    ref_continent = models.CharField(
         max_length=2,
         choices=REF_CONTINENT_CHOICES
         )
 
     def __str__(self):
-        return f"Final: {self.home_team.country_code} v {self.away_team.country_code}"
+        return f"Final: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
