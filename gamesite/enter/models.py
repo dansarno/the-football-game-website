@@ -20,7 +20,7 @@ class Country(models.Model):
 
     name = models.CharField(max_length=20)
     country_code = models.CharField(max_length=3, default="")
-    flag = models.ImageField()
+    flag = models.ImageField(upload_to='flags_and_logos')
 
     def __str__(self):
         return self.name
@@ -58,6 +58,7 @@ class Team(models.Model):
             Country,
             on_delete=models.CASCADE
             )
+    logo = models.ImageField(upload_to='flags_and_logos', blank=True, null=True)
     group = models.ForeignKey(
             Group,
             on_delete=models.CASCADE
