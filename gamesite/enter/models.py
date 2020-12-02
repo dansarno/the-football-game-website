@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import User
+# from users.models import User
 
 
 class Tournament(models.Model):
@@ -168,10 +168,10 @@ class GroupMatchBet(models.Model):
             GroupMatch,
             on_delete=models.CASCADE
             )
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-        )
+    # user = models.ForeignKey(
+    #     User,
+    #     on_delete=models.CASCADE
+    #     )
 
     def __str__(self):
         return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.bet}"
