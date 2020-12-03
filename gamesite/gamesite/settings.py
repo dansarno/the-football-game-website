@@ -31,9 +31,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'enter',
-    'feed',
-    'users',
+    'enter.apps.EnterConfig',  # 'enter',
+    'feed.apps.FeedConfig',  # 'feed',
+    'users.apps.UsersConfig',  # 'users',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',

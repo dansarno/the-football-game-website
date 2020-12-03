@@ -12,6 +12,9 @@
   <!-- My CSS -->
   <link href="{% static 'feed/feed.css' %}" rel="stylesheet">
 
+<!--  Favourite Icon-->
+  <link rel="shortcut icon" href="{%  static 'images/favicon.png' %}">
+
   {% if title %}
   <title>Euro 2020 Game - {{ title }}</title>
   {% else %}
@@ -65,7 +68,7 @@
           </p>
         </div>
       </div>
-      <div class="col">
+      <div class="col-9">
         {% if messages %}
           {% for message in messages %}
           <div class="alert alert-{{ message.tags }}">
