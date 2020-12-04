@@ -8,3 +8,11 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile: {self.user.username}"
+
+
+class AccessCode(models.Model):
+    code = models.CharField(max_length=6)
+    remaining = models.PositiveSmallIntegerField(default=5)
+
+    def __str__(self):
+        return f"Code: {self.code} ({self.remaining})"
