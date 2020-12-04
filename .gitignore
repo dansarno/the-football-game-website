@@ -12,6 +12,7 @@ __pycache__
 # Folders
 scratch/*
 venv/*
+research/*
 
 # Other
 .idea
