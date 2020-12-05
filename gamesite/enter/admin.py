@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Team, FinalMatch, Group, GroupMatch, \
     Player, Country, Venue, Tournament, GroupMatchBet
+from django.utils.html import format_html
 
 
 @admin.register(Team)
@@ -30,7 +31,12 @@ class PlayerAdmin(admin.ModelAdmin):
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country_code', 'flag')
+    list_display = ('name', 'country_code', 'show_flag')
+
+    def show_flag(self, obj):
+        return format_html('<img src="{}" width="30"/>'.format(obj.flag.url))
+
+    show_flag.short_description = 'Flag'
 
 
 @admin.register(Venue)
