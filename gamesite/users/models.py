@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from random import randint
+
+
+def generate_random_code():
+    return ''.join([f"{randint(0, 9)}" for _ in range(0, 10)])
 
 
 class Profile(models.Model):
@@ -11,7 +16,7 @@ class Profile(models.Model):
 
 
 class AccessCode(models.Model):
-    code = models.CharField(max_length=6)
+    code = models.CharField(max_length=10, default=generate_random_code)
     remaining = models.PositiveSmallIntegerField(default=5)
 
     def __str__(self):
