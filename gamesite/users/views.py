@@ -15,13 +15,16 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'users/register.html', {
+        'title': "Register",
         'form': form
     })
 
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    return render(request, 'users/profile.html', {
+        'title': "My Profile"
+    })
 
 
 @login_required
@@ -39,6 +42,7 @@ def profile_edit(request):
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     return render(request, 'users/profile_edit.html', {
+        'title': "My Profile",
         'u_form': u_form,
         'p_form': p_form
     })

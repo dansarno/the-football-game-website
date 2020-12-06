@@ -15,7 +15,7 @@ class UserRegisterForm(UserCreationForm):
 
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")
-        valid_code = AccessCode.objects.filter(code=access_code).first()
+        valid_code = AccessCode.objects.filter(code=access_code).first()  # could use a get and try/except block here
         if not valid_code:
             raise forms.ValidationError("This is not a valid access code")
         elif valid_code.remaining <= 0:
