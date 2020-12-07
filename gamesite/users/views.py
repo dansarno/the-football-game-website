@@ -23,7 +23,7 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'users/profile.html', {
-        'title': "My Profile"
+        'title': request.user.username
     })
 
 
@@ -42,7 +42,7 @@ def profile_edit(request):
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     return render(request, 'users/profile_edit.html', {
-        'title': "My Profile",
+        'title': request.user.username,
         'u_form': u_form,
         'p_form': p_form
     })

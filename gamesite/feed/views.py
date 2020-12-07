@@ -4,14 +4,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Post
 
 
-def home(request, template_name="feed/home.html"):
-    posts = Post.objects.all()
-    return render(request, template_name, {
-        'title': "Home",
-        'posts': posts
-    })
-
-
 class PostListView(ListView):
     model = Post
     template_name = 'feed/home.html'
