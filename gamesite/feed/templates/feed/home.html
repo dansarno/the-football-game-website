@@ -1,7 +1,7 @@
-{% extends "feed/layout.html" %}
+{% extends "feed/base.html" %}
 
 {% block content %}
-<h3>Feed</h3>
+<h2>Feed</h2>
 {% for post in posts %}
 <article class="media content-section">
   <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
