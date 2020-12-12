@@ -219,3 +219,35 @@ class FinalMatch(Match):
 
     def __str__(self):
         return f"Final: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
+
+
+class Bets(models.Model):
+    GROUP_MATCHES = "FM"
+    GROUP_WINNERS = "GW"
+    TOP_GOALSCORING_GROUP = "TG"
+    TOP_GOALSCORING_PLAYER = "TP"
+    BEST_TEAMS_SUCCESS = "TS"
+    FIFTY_FIFTIES = "FF"
+    TOURNAMENT_CHOICES = "TC"
+    FINAL_CHOICES = "FC"
+    BET_CATEGORY_CHOICES = [
+        (GROUP_MATCHES, "Group Matches"),
+        (GROUP_WINNERS, "Group Winners"),
+        (TOP_GOALSCORING_GROUP, "Top Goalscoring Group"),
+        (TOP_GOALSCORING_PLAYER, "Top Goalscoring Player"),
+        (BEST_TEAMS_SUCCESS, "Best Teams Success"),
+        (FIFTY_FIFTIES, "50/50s"),
+        (TOURNAMENT_CHOICES, "Tournament Multiple Choice"),
+        (FINAL_CHOICES, "Final Multiple Choice")
+    ]
+
+    category = models.CharField(max_length=2, choices=BET_CATEGORY_CHOICES)
+
+
+class Entry(models.Model):
+    date_created = models.DateTimeField()
+    date_submitted = models.DateTimeField()
+    has_paid = models.BooleanField(default=False)
+    has_submitted = models.BooleanField(default=False)
+    position = models.IntegerField(blank=True, null=True)
+    bets = models.OneToOneField(Bets, on_delete=models.CASCADE)
