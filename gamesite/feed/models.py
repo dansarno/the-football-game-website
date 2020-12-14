@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from gamesite.enter.models import Match
 
 
 class Post(models.Model):
@@ -15,3 +16,8 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('feed:detail', kwargs={'pk': self.pk})
+
+
+class MatchResultPost(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)
