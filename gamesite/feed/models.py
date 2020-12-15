@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
-from gamesite.enter.models import Match
+from enter.models import Match
 
 
 class Post(models.Model):
@@ -21,3 +21,6 @@ class Post(models.Model):
 class MatchResultPost(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Result: {self.match.home_team} vs {self.match.away_team} ({self.match.result})'
