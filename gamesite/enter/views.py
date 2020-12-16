@@ -2,6 +2,7 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from .forms import GroupMatchForm, GroupMatchOutcomeForm
 
 games = ["foo", "bar", "baz"]
 CHOICES = [("home", "Home"), ("draw", "Draw"), ("away", "Away")]
