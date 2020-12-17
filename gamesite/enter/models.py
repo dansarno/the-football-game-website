@@ -280,7 +280,8 @@ class Match(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     result = models.CharField(
         max_length=1,
-        choices=MATCH_RESULT_CHOICES
+        choices=MATCH_RESULT_CHOICES,
+        blank=True
         )
 
     def __str__(self):
@@ -307,7 +308,7 @@ class GroupMatchOutcome(models.Model):
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.result}"
+        return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.result} = {self.winning_amount}"
 
 
 class GroupMatchBet(models.Model):

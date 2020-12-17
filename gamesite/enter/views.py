@@ -3,19 +3,21 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import GroupMatchForm, GroupMatchOutcomeForm
+from .models import GroupMatch
 
 games = ["foo", "bar", "baz"]
-CHOICES = [("home", "Home"), ("draw", "Draw"), ("away", "Away")]
 submissions = []
 
 
 class GroupGamesForm(forms.Form):
+    CHOICES = [("home", "Home"), ("draw", "Draw"), ("away", "Away")]
     game1 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Turkey vs Italy")
     game2 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Wales vs Switzerland")
     game3 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="England vs Crotia")
 
 
 def index(request, form_class=GroupGamesForm, template_name="enter/index.html", success_url="enter:confirm"):
+    matches = GroupMatch.objects.all()
     if request.method == "POST":
         form = form_class(request.POST)
         if form.is_valid():
@@ -30,7 +32,7 @@ def index(request, form_class=GroupGamesForm, template_name="enter/index.html", 
 
     return render(request, template_name, {
         "title": "Enter",
-        "games": games,
+        "matches": matches,
         "form": form_class()
     })
 
