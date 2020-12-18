@@ -24,6 +24,22 @@
         </tr>
         {% endfor %}
       </table>
+
+      <table>
+      {% for match in matches %}
+      <tr>
+        <td>{{ match.home_team.country.name }} vs {{ match.away_team.country.name }}</td>
+        {% for field in test_form %}
+          {% for radio in field %}
+          <td>{{ radio.tag }}</td>
+          {% endfor %}
+        {% endfor %}
+<!--        {% for outcome in match.groupmatchoutcome_set.all %}-->
+<!--        <td>{{ outcome.winning_amount }}</td>-->
+<!--        {% endfor %}-->
+      </tr>
+      {% endfor %}
+      </table>
     </div>
   </div>
   <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">

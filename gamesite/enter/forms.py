@@ -7,7 +7,9 @@ class GroupMatchForm(forms.ModelForm):
         model: GroupMatch
 
 
-class GroupMatchOutcomeForm(forms.ModelForm):
-    class Meta:
-        model = GroupMatchOutcome
-        exclude = ('match',)
+class GroupMatchOutcomeForm(forms.Form):
+    outcomes = forms.ModelChoiceField(queryset=GroupMatchOutcome.objects.none())
+
+    def __init__(self, match):
+        super(GroupMatchOutcomeForm, self).__init__()
+        self.fields['outcomes'].queryset = match.groupmatchoutcome_set.all

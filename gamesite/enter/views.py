@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import GroupMatchForm, GroupMatchOutcomeForm
-from .models import GroupMatch
+from .models import GroupMatch, GroupMatchOutcome
 
 games = ["foo", "bar", "baz"]
 submissions = []
@@ -33,7 +33,8 @@ def index(request, form_class=GroupGamesForm, template_name="enter/index.html", 
     return render(request, template_name, {
         "title": "Enter",
         "matches": matches,
-        "form": form_class()
+        "form": form_class(),
+        "test_form": GroupMatchOutcomeForm
     })
 
 
