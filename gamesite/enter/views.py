@@ -9,14 +9,18 @@ games = ["foo", "bar", "baz"]
 submissions = []
 
 
-class GroupGamesForm(forms.Form):
+class GroupGamesForm1(forms.Form):
     CHOICES = [("home", "Home"), ("draw", "Draw"), ("away", "Away")]
     game1 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Turkey vs Italy")
     game2 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="Wales vs Switzerland")
     game3 = forms.ChoiceField(choices=CHOICES, required=True, widget=forms.RadioSelect, label="England vs Crotia")
 
 
-def index(request, form_class=GroupGamesForm, template_name="enter/index.html", success_url="enter:confirm"):
+class GroupGamesForm2(forms.Form):
+    match1 = forms.ModelChoiceField(queryset=GroupMatch.objects.first().groupmatchoutcome_set.all())
+
+
+def index(request, form_class=GroupGamesForm1, template_name="enter/index.html", success_url="enter:confirm"):
     matches = GroupMatch.objects.all()
     if request.method == "POST":
         form = form_class(request.POST)
@@ -33,8 +37,7 @@ def index(request, form_class=GroupGamesForm, template_name="enter/index.html", 
     return render(request, template_name, {
         "title": "Enter",
         "matches": matches,
-        "form": form_class(),
-        "test_form": GroupMatchOutcomeForm
+        "form": form_class()
     })
 
 
