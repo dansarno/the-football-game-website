@@ -304,7 +304,7 @@ class GroupMatch(Match):
 
 class GroupMatchOutcome(models.Model):
     match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
-    result = models.CharField(max_length=1, choices=GroupMatch.MATCH_RESULT_CHOICES)
+    outcome = models.CharField(max_length=1, choices=GroupMatch.MATCH_RESULT_CHOICES)
     winning_amount = models.IntegerField()
 
     def __str__(self):
