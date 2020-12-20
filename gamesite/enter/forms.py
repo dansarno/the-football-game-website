@@ -20,3 +20,11 @@ class GroupMatchOutcomeForm(forms.Form):
                                   required=True,
                                   widget=forms.RadioSelect,
                                   label=GroupMatch.objects.get(pk=3))
+    match4 = NameModelChoiceField(queryset=GroupMatchOutcome.objects.filter(match_id=4).order_by('-result'),
+                                  required=True,
+                                  widget=forms.RadioSelect,
+                                  label=GroupMatch.objects.get(pk=4))
+    match5 = NameModelChoiceField(queryset=GroupMatchOutcome.objects.filter(match_id=5).order_by('-result'),
+                                  required=True,
+                                  widget=forms.RadioSelect,
+                                  label=GroupMatch.objects.get(pk=5))

@@ -11,15 +11,17 @@
       <table>
         <tr>
           <th></th>
+          <th></th>
           <th>Home</th>
           <th>Draw</th>
           <th>Away</th>
         </tr>
         {% for field in form %}
         <tr>
-          <td class="game_label">{{ field.label.home_team.country.name }} vs {{ field.label.away_team.country.name }}</td>
+          <td class="match_label text-muted">{{ field.label.ko_time|date:'D d' }}</td>
+          <td class="match_label">{{ field.label.home_team.country.name }} vs {{ field.label.away_team.country.name }}</td>
           {% for radio in field %}
-          <td>{{ radio }}</td>
+          <td class="match_radio">{{ radio }}</td>
           {% endfor %}
         </tr>
         {% endfor %}

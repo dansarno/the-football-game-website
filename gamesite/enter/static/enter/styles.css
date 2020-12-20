@@ -6,7 +6,11 @@ td {
     text-align: center;
 }
 
-.game_label {
+.match_label {
+    text-align: left;
+}
+
+.match_radio {
     text-align: left;
 }
 
