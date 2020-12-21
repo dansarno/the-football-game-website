@@ -324,7 +324,8 @@ class GroupMatchBet(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
-        return f"Bet by {self.entry.profile.user.username} on {self.bet.match} ({self.bet.outcome})"
+        return f"Bet ({self.bet.outcome}) on {self.bet.match.home_team.country.country_code} vs " \
+               f"{self.bet.match.away_team.country.country_code} by {self.entry.profile.user.username}"
 
 
 class FinalMatch(Match):
