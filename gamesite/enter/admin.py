@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Team, FinalMatch, Group, GroupMatch, \
+from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
     Player, Country, Venue, Tournament, GroupMatchBet, GroupMatchOutcome
 from django.utils.html import format_html
+
+
+@admin.register(Entry)
+class EntryAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Team)

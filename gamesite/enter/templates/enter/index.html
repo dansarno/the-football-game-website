@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1 class="text-center">Submission Form</h1>
-<form action="{% url 'enter:confirm' %}" method="post">
+<form method="POST">
   {% csrf_token %}
   <div class="row">
     <div class="form_section col-md-6 col-lg-4 rounded-lg" id="group_games">

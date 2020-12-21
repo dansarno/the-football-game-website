@@ -1,14 +1,22 @@
 from django.db import models
+from django.utils import timezone
 from users.models import Profile
 
 
 class Entry(models.Model):
-    date_created = models.DateTimeField()
-    date_submitted = models.DateTimeField()
+
+    class Meta:
+        verbose_name_plural = "entries"
+
+    date_created = models.DateTimeField(default=timezone.now)
+    date_submitted = models.DateTimeField(blank=True, null=True)
     has_paid = models.BooleanField(default=False)
     has_submitted = models.BooleanField(default=False)
     position = models.IntegerField(blank=True, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Entry {self.id}: {self.profile.user.username}"
 
 
 class Tournament(models.Model):
@@ -308,12 +316,15 @@ class GroupMatchOutcome(models.Model):
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.result} = {self.winning_amount}"
+        return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.outcome} = {self.winning_amount}"
 
 
 class GroupMatchBet(models.Model):
     bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return f"Bet by {self.entry.profile.user.username} on {self.bet.match}"
 
 
 class FinalMatch(Match):
