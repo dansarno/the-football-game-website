@@ -37,7 +37,7 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
 
     return render(request, template_name, {
         "title": "Enter",
-        "form": GroupMatchOutcomeForm()
+        "group_matches_form": GroupMatchOutcomeForm()
     })
 
 
