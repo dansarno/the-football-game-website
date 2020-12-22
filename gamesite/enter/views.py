@@ -7,14 +7,16 @@ from .models import GroupMatchBet, Entry
 
 
 @login_required
-def index(request, form_class=GroupMatchOutcomeForm, template_name="enter/index.html", success_url="enter:confirm"):
+def index(request, template_name="enter/index.html", success_url="enter:confirm"):
     if request.method == "POST":
-        form = form_class(request.POST)
-        if form.is_valid():
-            if not request.user.profile.entry_set.all():
+        group_matches_form = GroupMatchOutcomeForm(request.POST)
+        # Add other forms here
+        if group_matches_form.is_valid():
+            existing_entries = request.user.profile.entry_set.all()
+            if not existing_entries:
                 new_entry = Entry(profile=request.user.profile)
                 new_entry.save()
-            for field_name, field_value in form.cleaned_data.items():
+            for field_name, field_value in group_matches_form.cleaned_data.items():
                 existing_bet = GroupMatchBet.objects.filter(bet__match=field_value.match,
                                                             entry=request.user.profile.entry_set.first()
                                                             # TODO need to change first()
@@ -30,12 +32,12 @@ def index(request, form_class=GroupMatchOutcomeForm, template_name="enter/index.
         else:
             return render(request, template_name, {
                 "title": "Enter",
-                "form": form
+                "form": group_matches_form
             })
 
     return render(request, template_name, {
         "title": "Enter",
-        "form": form_class()
+        "form": GroupMatchOutcomeForm()
     })
 
 
