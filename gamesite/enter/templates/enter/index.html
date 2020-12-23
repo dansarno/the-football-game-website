@@ -4,6 +4,7 @@
 <h1 class="text-center">Submission Form</h1>
 <form method="POST">
   {% csrf_token %}
+
   <div class="row">
     <div class="form_section col-md-6 col-lg-4 rounded-lg" id="group_games">
       <h3>Group Matches</h3>
@@ -27,7 +28,14 @@
         {% endfor %}
       </table>
     </div>
+
+    <div class="form_section col-md-6 col-lg-4 rounded-lg" id="tournament-bets">
+      <h3>Tournament Totals</h3>
+      <p class="help_text">Select one of each.</p>
+      {{ tournament_bets_form }}
+    </div>
   </div>
+
   <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">
 </form>
 {% endblock content %}

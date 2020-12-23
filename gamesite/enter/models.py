@@ -215,12 +215,20 @@ class TournamentGoalsOutcome(models.Model):
     max_goals_range = models.IntegerField()
     winning_amount = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.tournament.name} goals: {self.min_goals_range} - {self.max_goals_range}" \
+               f" = {self.winning_amount}"
+
 
 class TournamentRedCardsOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_red_cards_range = models.IntegerField()
     max_red_cards_range = models.IntegerField()
     winning_amount = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.tournament.name} red cards: {self.min_red_cards_range} - {self.max_red_cards_range}" \
+               f" = {self.winning_amount}"
 
 
 class TournamentOwnGoalsOutcome(models.Model):
@@ -229,12 +237,20 @@ class TournamentOwnGoalsOutcome(models.Model):
     max_own_goals_range = models.IntegerField()
     winning_amount = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.tournament.name} own goals: {self.min_own_goals_range} - {self.max_own_goals_range}" \
+               f" = {self.winning_amount}"
+
 
 class TournamentHatricksOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_hatricks_range = models.IntegerField()
     max_hatricks_range = models.IntegerField()
     winning_amount = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.tournament.name} hatricks: {self.min_hatricks_range} - {self.max_hatricks_range}" \
+               f" = {self.winning_amount}"
 
 
 class TournamentBetGroup(models.Model):

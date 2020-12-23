@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .forms import GroupMatchOutcomeForm
+from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm
 from .models import GroupMatchBet, Entry
 
 
@@ -10,8 +10,9 @@ from .models import GroupMatchBet, Entry
 def index(request, template_name="enter/index.html", success_url="enter:confirm"):
     if request.method == "POST":
         group_matches_form = GroupMatchOutcomeForm(request.POST)
+        tournament_bets_form = TournamentBetGroupForm(request.POST)
         # Add other forms here
-        if group_matches_form.is_valid():
+        if group_matches_form.is_valid() and tournament_bets_form.is_valid():
             existing_entries = request.user.profile.entry_set.all()
             if not existing_entries:
                 new_entry = Entry(profile=request.user.profile)
@@ -32,12 +33,14 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         else:
             return render(request, template_name, {
                 "title": "Enter",
-                "form": group_matches_form
+                "group_matches_form": group_matches_form,
+                "tournament_bets_form": tournament_bets_form
             })
 
     return render(request, template_name, {
         "title": "Enter",
-        "group_matches_form": GroupMatchOutcomeForm()
+        "group_matches_form": GroupMatchOutcomeForm(),
+        "tournament_bets_form": TournamentBetGroupForm()
     })
 
 

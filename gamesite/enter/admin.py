@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
-    Player, Country, Venue, Tournament, GroupMatchBet, GroupMatchOutcome
+    Player, Country, Venue, Tournament, TournamentGoalsOutcome, GroupMatchBet, GroupMatchOutcome, \
+    TournamentRedCardsOutcome, TournamentOwnGoalsOutcome, TournamentHatricksOutcome
 from django.utils.html import format_html
 
 
@@ -56,6 +57,26 @@ class VenueAdmin(admin.ModelAdmin):
 
 @admin.register(Tournament)
 class TournamentAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TournamentGoalsOutcome)
+class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TournamentRedCardsOutcome)
+class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TournamentOwnGoalsOutcome)
+class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TournamentHatricksOutcome)
+class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
     pass
 
 

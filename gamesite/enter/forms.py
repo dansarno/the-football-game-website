@@ -1,5 +1,6 @@
 from django import forms
-from .models import GroupMatch, GroupMatchOutcome
+from .models import GroupMatch, GroupMatchOutcome, TournamentBetGroup, TournamentGoalsOutcome, \
+    TournamentOwnGoalsOutcome, TournamentHatricksOutcome, TournamentRedCardsOutcome
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
@@ -28,3 +29,22 @@ class GroupMatchOutcomeForm(forms.Form):
                                   required=True,
                                   widget=forms.RadioSelect,
                                   label=GroupMatch.objects.get(pk=5))
+
+
+class TournamentBetGroupForm(forms.ModelForm):
+    total_goals_bet = NameModelChoiceField(queryset=TournamentGoalsOutcome.objects.all().order_by('min_goals_range'),
+                                           required=True,
+                                           widget=forms.RadioSelect)
+    total_red_cards_bet = NameModelChoiceField(queryset=TournamentRedCardsOutcome.objects.all().order_by('min_red_cards_range'),
+                                               required=True,
+                                               widget=forms.RadioSelect)
+    total_own_goals_bet = NameModelChoiceField(queryset=TournamentOwnGoalsOutcome.objects.all().order_by('min_own_goals_range'),
+                                               required=True,
+                                               widget=forms.RadioSelect)
+    total_hatricks_bet = NameModelChoiceField(queryset=TournamentHatricksOutcome.objects.all().order_by('min_hatricks_range'),
+                                              required=True,
+                                              widget=forms.RadioSelect)
+
+    class Meta:
+        model = TournamentBetGroup
+        exclude = ('entry',)
