@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('entry', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.entry')),
                 ('total_goals_bet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.tournamentgoalsoutcome')),
-                ('total_hatricks_bet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.tournamenthatricksoutcome')),
+                ('total_hattricks_bet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.tournamenthatricksoutcome')),
                 ('total_own_goals_bet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.tournamentowngoalsoutcome')),
                 ('total_red_cards_bet', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='enter.tournamentredcardsoutcome')),
             ],

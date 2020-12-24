@@ -6,6 +6,10 @@ td {
     text-align: center;
 }
 
+label {
+    margin-bottom: 0;
+}
+
 .match_label {
     text-align: left;
 }
@@ -27,4 +31,9 @@ td {
 p.help_text {
     color: grey;
     margin-top: 5px;
+}
+
+table.outcomes-table {
+  table-layout: fixed;
+  width: 100%;
 }

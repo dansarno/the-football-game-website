@@ -8,10 +8,12 @@ from .models import GroupMatchBet, Entry
 
 @login_required
 def index(request, template_name="enter/index.html", success_url="enter:confirm"):
+    print(f"{request.method}")
     if request.method == "POST":
         group_matches_form = GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = TournamentBetGroupForm(request.POST)
         # Add other forms here
+        print(tournament_bets_form.errors)
         if group_matches_form.is_valid() and tournament_bets_form.is_valid():
             existing_entries = request.user.profile.entry_set.all()
             if not existing_entries:
@@ -29,6 +31,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                     new_bet = GroupMatchBet(bet=field_value,
                                             entry=request.user.profile.entry_set.first())  # TODO need to change first()
                     new_bet.save()
+            print("Now the tournament...")
+            tournament_bets_form.save()
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {

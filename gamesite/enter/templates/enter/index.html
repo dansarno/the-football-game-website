@@ -32,7 +32,42 @@
     <div class="form_section col-md-6 col-lg-4 rounded-lg" id="tournament-bets">
       <h3>Tournament Totals</h3>
       <p class="help_text">Select one of each.</p>
-      {{ tournament_bets_form }}
+      {% for field in tournament_bets_form %}
+        {{ field.label }}
+      <table>
+      <tr>
+      <td class="pt-0 pb-0">
+          <table>
+                {% for choice in field.field.queryset %}
+                  <tr>
+                    <td class="pt-0 pb-0">{{ choice.min_value }} to {{ choice.max_value }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      <td>
+          <table>
+                {% for radio in field %}
+                  <tr>
+                    <td class="match_radio text-muted">{{ radio }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      </tr>
+      </table>
+<!--        <table class="outcomes-table">-->
+<!--        {% for choice in field.field.queryset %}-->
+<!--          <tr>-->
+<!--          <td>{{ choice.min_value }} to {{ choice.max_value }}</td>-->
+<!--          <td class="text-muted">-->
+<!--            <input value="{{ choice.id }}" type="radio" name="{{ field.label }}" required/>-->
+<!--            {{ choice.winning_amount }}-->
+<!--          </td>-->
+<!--         </tr>-->
+<!--        {% endfor %}-->
+<!--        </table>-->
+      {% endfor %}
     </div>
   </div>
 
