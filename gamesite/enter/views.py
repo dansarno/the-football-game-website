@@ -3,12 +3,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm
-from .models import GroupMatchBet, Entry
+from .models import GroupMatchBet, TournamentBetGroup, Entry
 
 
 @login_required
 def index(request, template_name="enter/index.html", success_url="enter:confirm"):
-    print(f"{request.method}")
     if request.method == "POST":
         group_matches_form = GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = TournamentBetGroupForm(request.POST)
@@ -20,19 +19,26 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                 new_entry = Entry(profile=request.user.profile)
                 new_entry.save()
             for field_name, field_value in group_matches_form.cleaned_data.items():
-                existing_bet = GroupMatchBet.objects.filter(bet__match=field_value.match,
-                                                            entry=request.user.profile.entry_set.first()
-                                                            # TODO need to change first()
-                                                            ).first()
-                if existing_bet:
-                    existing_bet.bet = field_value
-                    existing_bet.save()
+                existing_match_bet = GroupMatchBet.objects.filter(bet__match=field_value.match,
+                                                                  entry=request.user.profile.entry_set.first()
+                                                                  # TODO need to change first()
+                                                                  ).first()
+                if existing_match_bet:
+                    existing_match_bet.bet = field_value
+                    existing_match_bet.save()
                 else:
                     new_bet = GroupMatchBet(bet=field_value,
                                             entry=request.user.profile.entry_set.first())  # TODO need to change first()
                     new_bet.save()
-            print("Now the tournament...")
-            tournament_bets_form.save()
+
+            existing_tournament_bets = TournamentBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
+                                                                         # TODO need to change first()
+                                                                         ).first()
+            if existing_tournament_bets:
+                existing_tournament_bets.delete()  # Seems insecure!!!
+            tournament_bets = tournament_bets_form.save(commit=False)
+            tournament_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            tournament_bets.save()
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {
