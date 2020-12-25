@@ -258,7 +258,7 @@ class TournamentBetGroup(models.Model):
     total_red_cards_bet = models.ForeignKey(TournamentRedCardsOutcome, on_delete=models.CASCADE)
     total_own_goals_bet = models.ForeignKey(TournamentOwnGoalsOutcome, on_delete=models.CASCADE)
     total_hattricks_bet = models.ForeignKey(TournamentHattricksOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Tournament bets by {self.entry.profile.user.username}"
