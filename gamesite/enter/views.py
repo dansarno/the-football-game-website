@@ -50,7 +50,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": GroupMatchOutcomeForm(),
-        "tournament_bets_form": TournamentBetGroupForm(instance=request.user.profile.entry_set.first().tournamentbetgroup)
+        "tournament_bets_form": TournamentBetGroupForm()
+        # instance=request.user.profile.entry_set.first().tournamentbetgroup
     })
 
 
