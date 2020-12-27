@@ -1,6 +1,6 @@
 from django import forms
 from .models import GroupMatch, GroupMatchOutcome, TournamentBetGroup, TournamentGoalsOutcome, \
-    TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome
+    TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
@@ -33,22 +33,28 @@ class GroupMatchOutcomeForm(forms.Form):
 
 class TournamentBetGroupForm(forms.ModelForm):
     total_goals_bet = NameModelChoiceField(queryset=TournamentGoalsOutcome.objects.all().order_by('min_value'),
-                                             required=True,
-                                             widget=forms.RadioSelect,
-                                             label="Total tournament goals (excluding penalty shootouts)")
+                                           required=True,
+                                           widget=forms.RadioSelect,
+                                           label="Total tournament goals (excluding penalty shootouts)")
     total_red_cards_bet = NameModelChoiceField(queryset=TournamentRedCardsOutcome.objects.all().order_by('min_value'),
-                                                 required=True,
-                                                 widget=forms.RadioSelect,
-                                                 label="Total tournament red cards")
+                                               required=True,
+                                               widget=forms.RadioSelect,
+                                               label="Total tournament red cards")
     total_own_goals_bet = NameModelChoiceField(queryset=TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
-                                                 required=True,
-                                                 widget=forms.RadioSelect,
-                                                 label="Total tournament own goals")
+                                               required=True,
+                                               widget=forms.RadioSelect,
+                                               label="Total tournament own goals")
     total_hattricks_bet = NameModelChoiceField(queryset=TournamentHattricksOutcome.objects.all().order_by('min_value'),
-                                                 required=True,
-                                                 widget=forms.RadioSelect,
-                                                 label="Total hattricks")
+                                               required=True,
+                                               widget=forms.RadioSelect,
+                                               label="Total hattricks")
 
     class Meta:
         model = TournamentBetGroup
+        exclude = ('entry',)
+
+
+class FinalBetGroupForm(forms.ModelForm):
+    class Meta:
+        model = FinalBetGroup
         exclude = ('entry',)
