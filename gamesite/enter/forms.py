@@ -1,6 +1,7 @@
 from django import forms
 from .models import GroupMatch, GroupMatchOutcome, TournamentBetGroup, TournamentGoalsOutcome, \
-    TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup
+    TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup, \
+    FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
@@ -55,6 +56,15 @@ class TournamentBetGroupForm(forms.ModelForm):
 
 
 class FinalBetGroupForm(forms.ModelForm):
+    final_first_goal_bet = NameModelChoiceField(queryset=FinalFirstGoalOutcome.objects.all(),
+                                                required=True,
+                                                widget=forms.RadioSelect,
+                                                label="First goal to be scored in the final")
+    final_own_goals_bet = NameModelChoiceField(queryset=FinalOwnGoalOutcome.objects.all(),
+                                               required=True,
+                                               widget=forms.RadioSelect,
+                                               label="There will be an own goal")
+
     class Meta:
         model = FinalBetGroup
         exclude = ('entry',)
