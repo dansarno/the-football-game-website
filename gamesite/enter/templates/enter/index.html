@@ -40,7 +40,7 @@
           <table>
                 {% for choice in field.field.queryset %}
                   <tr>
-                    <td class="pt-0 pb-0">{{ choice.min_value }} to {{ choice.max_value }}</td>
+                    <td class="pt-0 pb-0">{{ choice.verbose_outcome }}</td>
                   </tr>
                 {% endfor %}
           </table>
@@ -81,7 +81,7 @@
           <table>
                 {% for choice in field.field.queryset %}
                   <tr>
-                    <td class="pt-0 pb-0">{{ choice.outcome_verbose }}</td>
+                    <td class="pt-0 pb-0">{{ choice.verbose_outcome }}</td>
                   </tr>
                 {% endfor %}
           </table>

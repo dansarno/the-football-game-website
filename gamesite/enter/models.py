@@ -213,44 +213,72 @@ class TournamentGoalsOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} goals: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        else:
+            return f"{self.min_value} to {self.max_value}"
+
 
 class TournamentRedCardsOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} red cards: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        else:
+            return f"{self.min_value} to {self.max_value}"
+
 
 class TournamentOwnGoalsOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} own goals: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        else:
+            return f"{self.min_value} to {self.max_value}"
+
 
 class TournamentHattricksOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} hattricks: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
+
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        else:
+            return f"{self.min_value} to {self.max_value}"
 
 
 class TournamentBetGroup(models.Model):
@@ -397,7 +425,7 @@ class FinalFirstGoalOutcome(models.Model):
     def __str__(self):
         return f"{self.outcome} = {self.winning_amount}"
 
-    def outcome_verbose(self):
+    def verbose_outcome(self):
         return dict(FinalMatch.MATCH_PERIOD_CHOICES)[self.outcome]
 
 
@@ -409,14 +437,35 @@ class FinalOwnGoalOutcome(models.Model):
     def __str__(self):
         return f"{self.outcome} = {self.winning_amount}"
 
+    def verbose_outcome(self):
+        if self.outcome:
+            return "Yes there will be"
+        else:
+            return "No there won't be"
+
 
 class FinalYellowCardsOutcome(models.Model):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
-    outcome = models.IntegerField()
+    min_value = models.IntegerField()
+    max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.outcome} = {self.winning_amount}"
+        if self.is_highest_value:
+            return f"Final yellows: {self.min_value} or more = {self.winning_amount}"
+        elif self.max_value == self.min_value:
+            return f"Final yellows: {self.min_value} = {self.winning_amount}"
+        else:
+            return f"Final yellows: {self.min_value} to {self.max_value} = {self.winning_amount}"
+
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        elif self.max_value == self.min_value:
+            return self.min_value
+        else:
+            return f"{self.min_value} to {self.max_value}"
 
 
 class FinalRefContinentOutcome(models.Model):
@@ -427,17 +476,32 @@ class FinalRefContinentOutcome(models.Model):
     def __str__(self):
         return f"{self.outcome} = {self.winning_amount}"
 
-    def outcome_verbose(self):
+    def verbose_outcome(self):
         return dict(FinalMatch.REF_CONTINENT_CHOICES)[self.outcome]
 
 
 class FinalGoalsOutcome(models.Model):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
-    outcome = models.IntegerField()
+    min_value = models.IntegerField()
+    max_value = models.IntegerField()
+    is_highest_value = models.BooleanField(default=False)
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.outcome} = {self.winning_amount}"
+        if self.is_highest_value:
+            return f"Final goals: {self.min_value} or more = {self.winning_amount}"
+        elif self.max_value == self.min_value:
+            return f"Final goals: {self.min_value} = {self.winning_amount}"
+        else:
+            return f"Final goals: {self.min_value} to {self.max_value} = {self.winning_amount}"
+
+    def verbose_outcome(self):
+        if self.is_highest_value:
+            return f"{self.min_value} or more"
+        elif self.max_value == self.min_value:
+            return self.min_value
+        else:
+            return f"{self.min_value} to {self.max_value}"
 
 
 class FinalBetGroup(models.Model):
