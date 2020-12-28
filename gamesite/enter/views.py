@@ -2,8 +2,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm
-from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, Entry
+from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm, BestTeamsSuccessBetGroupForm
+from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsSuccessBetGroup, Entry
 
 
 @login_required
@@ -12,8 +12,10 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         group_matches_form = GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = TournamentBetGroupForm(request.POST)
         final_bets_form = FinalBetGroupForm(request.POST)
+        best_teams_success_bets_form = BestTeamsSuccessBetGroupForm(request.POST)
         # Add other forms here
-        if group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid():
+        if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
+                and best_teams_success_bets_form.is_valid()):
             existing_entries = request.user.profile.entry_set.all()
             if not existing_entries:
                 new_entry = Entry(profile=request.user.profile)
@@ -48,21 +50,25 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
             final_bets = final_bets_form.save(commit=False)
             final_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
             final_bets.save()
+            best_teams_success_bets = best_teams_success_bets_form.save(commit=False)
+            best_teams_success_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            best_teams_success_bets.save()
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {
                 "title": "Enter",
                 "group_matches_form": group_matches_form,
                 "tournament_bets_form": tournament_bets_form,
-                "final_bets_form": final_bets_form
+                "final_bets_form": final_bets_form,
+                "best_teams_success_bets_form": best_teams_success_bets_form
             })
 
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": GroupMatchOutcomeForm(),
-        "tournament_bets_form": TournamentBetGroupForm(),
-        # instance=request.user.profile.entry_set.first().tournamentbetgroup
-        "final_bets_form": FinalBetGroupForm()
+        "tournament_bets_form": TournamentBetGroupForm(), # instance=request.user.profile.entry_set.first().tournamentbetgroup
+        "final_bets_form": FinalBetGroupForm(),
+        "best_teams_success_bets_form": BestTeamsSuccessBetGroupForm()
     })
 
 

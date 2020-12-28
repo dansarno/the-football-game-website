@@ -3,7 +3,8 @@ from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
     Player, Country, Venue, Tournament, TournamentGoalsOutcome, GroupMatchBet, GroupMatchOutcome, \
     TournamentRedCardsOutcome, TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentBetGroup, \
     FinalBetGroup, FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, \
-    FinalOwnGoalOutcome
+    FinalOwnGoalOutcome, BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, \
+    HighestScoringTeamOutcome, MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome
 from django.utils.html import format_html
 
 
@@ -14,7 +15,16 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('country', 'show_country_code', 'show_logo', 'group')
+
+    def show_logo(self, obj):
+        return format_html('<img src="{}" width="30"/>'.format(obj.logo.url))
+
+    def show_country_code(self, obj):
+        return obj.country.country_code
+
+    show_logo.short_description = 'Logo'
+    show_country_code.short_description = 'Code'
 
 
 @admin.register(FinalMatch)
@@ -119,4 +129,44 @@ class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(FinalGoalsOutcome)
 class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(BestTeamsSuccessBetGroup)
+class BestTeamsSuccessBetGroupAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ToReachSemiFinalOutcome)
+class ToReachSemiFinalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ToReachFinalOutcome)
+class ToReachFinalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ToWinOutcome)
+class ToWinOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(HighestScoringTeamOutcome)
+class HighestScoringTeamOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(MostYellowCardsOutcome)
+class MostYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FastestYellowCardsOutcome)
+class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FastestGoalOutcome)
+class FastestGoalOutcomeAdmin(admin.ModelAdmin):
     pass

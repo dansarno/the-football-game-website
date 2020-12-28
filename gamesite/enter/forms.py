@@ -1,8 +1,9 @@
 from django import forms
 from .models import GroupMatch, TournamentBetGroup, TournamentGoalsOutcome, \
     TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup, \
-    FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome
-
+    FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome, \
+    BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, HighestScoringTeamOutcome, \
+    MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome
 
 group_matches = GroupMatch.objects.all()
 
@@ -86,4 +87,39 @@ class FinalBetGroupForm(forms.ModelForm):
 
     class Meta:
         model = FinalBetGroup
+        exclude = ('entry',)
+
+
+class BestTeamsSuccessBetGroupForm(forms.ModelForm):
+    to_reach_semi_final_bet = NameModelChoiceField(queryset=ToReachSemiFinalOutcome.objects.all(),
+                                                   required=True,
+                                                   widget=forms.RadioSelect,
+                                                   label="To reach the semi final")
+    to_reach_final_bet = NameModelChoiceField(queryset=ToReachFinalOutcome.objects.all(),
+                                              required=True,
+                                              widget=forms.RadioSelect,
+                                              label="To reach the final")
+    to_win_bet = NameModelChoiceField(queryset=ToWinOutcome.objects.all(),
+                                      required=True,
+                                      widget=forms.RadioSelect,
+                                      label="To win the Euros")
+    highest_scoring_team_bet = NameModelChoiceField(queryset=HighestScoringTeamOutcome.objects.all(),
+                                                    required=True,
+                                                    widget=forms.RadioSelect,
+                                                    label="Highest scoring team")
+    most_yellow_cards_bet = NameModelChoiceField(queryset=MostYellowCardsOutcome.objects.all(),
+                                                 required=True,
+                                                 widget=forms.RadioSelect,
+                                                 label="Most yellow cards")
+    fastest_yellow_card_bet = NameModelChoiceField(queryset=FastestYellowCardsOutcome.objects.all(),
+                                                   required=True,
+                                                   widget=forms.RadioSelect,
+                                                   label="Fastest yellow card")
+    fastest_tournament_goal_bet = NameModelChoiceField(queryset=FastestGoalOutcome.objects.all(),
+                                                       required=True,
+                                                       widget=forms.RadioSelect,
+                                                       label="Fastest Euro goal")
+
+    class Meta:
+        model = BestTeamsSuccessBetGroup
         exclude = ('entry',)
