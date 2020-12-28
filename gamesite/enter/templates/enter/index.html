@@ -69,6 +69,37 @@
 <!--        </table>-->
       {% endfor %}
     </div>
+
+  <div class="form_section col-md-6 col-lg-4 rounded-lg" id="final-bets">
+      <h3>During the Final</h3>
+      <p class="help_text">Select one of each.</p>
+      {% for field in final_bets_form %}
+        {{ field.label }}
+      <table>
+      <tr>
+      <td class="pt-0 pb-0">
+          <table>
+                {% for choice in field.field.queryset %}
+                  <tr>
+                    <td class="pt-0 pb-0">{{ choice.outcome_verbose }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      <td>
+          <table>
+                {% for radio in field %}
+                  <tr>
+                    <td class="match_radio text-muted">{{ radio }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      </tr>
+      </table>
+      {% endfor %}
+    </div>
+
   </div>
 
   <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">

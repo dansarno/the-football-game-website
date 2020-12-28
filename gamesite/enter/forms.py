@@ -64,6 +64,18 @@ class FinalBetGroupForm(forms.ModelForm):
                                                required=True,
                                                widget=forms.RadioSelect,
                                                label="There will be an own goal")
+    final_yellow_cards_bet = NameModelChoiceField(queryset=FinalYellowCardsOutcome.objects.all(),
+                                                  required=True,
+                                                  widget=forms.RadioSelect,
+                                                  label="Number of yellow cards")
+    final_ref_continent_bet = NameModelChoiceField(queryset=FinalRefContinentOutcome.objects.all(),
+                                                   required=True,
+                                                   widget=forms.RadioSelect,
+                                                   label="Continent of the ref in the final")
+    final_goals_bet = NameModelChoiceField(queryset=FinalGoalsOutcome.objects.all(),
+                                           required=True,
+                                           widget=forms.RadioSelect,
+                                           label="Total goals in the final (excluding a penalty shootout)")
 
     class Meta:
         model = FinalBetGroup

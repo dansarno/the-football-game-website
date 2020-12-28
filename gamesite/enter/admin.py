@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
     Player, Country, Venue, Tournament, TournamentGoalsOutcome, GroupMatchBet, GroupMatchOutcome, \
-    TournamentRedCardsOutcome, TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentBetGroup
+    TournamentRedCardsOutcome, TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentBetGroup, \
+    FinalBetGroup, FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, \
+    FinalOwnGoalOutcome
 from django.utils.html import format_html
 
 
@@ -87,4 +89,34 @@ class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(GroupMatchBet)
 class GroupMatchBetAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalBetGroup)
+class FinalBetGroupAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalFirstGoalOutcome)
+class FinalFirstGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalYellowCardsOutcome)
+class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalOwnGoalOutcome)
+class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalRefContinentOutcome)
+class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FinalGoalsOutcome)
+class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
     pass
