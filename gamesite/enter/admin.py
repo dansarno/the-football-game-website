@@ -15,14 +15,18 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('country', 'show_country_code', 'show_logo', 'group')
+    list_display = ('country', 'show_country_flag', 'show_country_code', 'show_logo', 'group')
 
     def show_logo(self, obj):
         return format_html('<img src="{}" width="30"/>'.format(obj.logo.url))
 
+    def show_country_flag(self, obj):
+        return format_html('<img src="{}" width="30"/>'.format(obj.country.flag.url))
+
     def show_country_code(self, obj):
         return obj.country.country_code
 
+    show_country_flag.short_description = 'Flag'
     show_logo.short_description = 'Logo'
     show_country_code.short_description = 'Code'
 
