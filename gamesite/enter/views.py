@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm
-from .models import GroupMatchBet, TournamentBetGroup, Entry
+from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, Entry
 
 
 @login_required
@@ -34,8 +34,14 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
             existing_tournament_bets = TournamentBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
                                                                          # TODO need to change first()
                                                                          ).first()
+            existing_final_bets = FinalBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
+                                                               # TODO need to change first()
+                                                               ).first()
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
+            if existing_final_bets:
+                existing_final_bets.delete()  # Seems insecure!!!
+
             tournament_bets = tournament_bets_form.save(commit=False)
             tournament_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
             tournament_bets.save()
@@ -54,7 +60,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": GroupMatchOutcomeForm(),
-        "tournament_bets_form": TournamentBetGroupForm(),  # instance=request.user.profile.entry_set.first().tournamentbetgroup
+        "tournament_bets_form": TournamentBetGroupForm(),
+        # instance=request.user.profile.entry_set.first().tournamentbetgroup
         "final_bets_form": FinalBetGroupForm()
     })
 

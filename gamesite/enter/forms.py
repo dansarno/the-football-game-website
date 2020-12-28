@@ -4,7 +4,7 @@ from .models import GroupMatch, TournamentBetGroup, TournamentGoalsOutcome, \
     FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome
 
 
-all_matches = GroupMatch.objects.all()
+group_matches = GroupMatch.objects.all()
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
@@ -13,30 +13,30 @@ class NameModelChoiceField(forms.ModelChoiceField):
 
 
 class GroupMatchOutcomeForm(forms.Form):
-    match1 = NameModelChoiceField(queryset=all_matches[0].groupmatchoutcome_set.all().order_by('-outcome'),
+    match1 = NameModelChoiceField(queryset=group_matches[0].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[0])
-    match2 = NameModelChoiceField(queryset=all_matches[1].groupmatchoutcome_set.all().order_by('-outcome'),
+                                  label=group_matches[0])
+    match2 = NameModelChoiceField(queryset=group_matches[1].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[1])
-    match3 = NameModelChoiceField(queryset=all_matches[2].groupmatchoutcome_set.all().order_by('-outcome'),
+                                  label=group_matches[1])
+    match3 = NameModelChoiceField(queryset=group_matches[2].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[2])
-    match4 = NameModelChoiceField(queryset=all_matches[3].groupmatchoutcome_set.all().order_by('-outcome'),
+                                  label=group_matches[2])
+    match4 = NameModelChoiceField(queryset=group_matches[3].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[3])
-    match5 = NameModelChoiceField(queryset=all_matches[4].groupmatchoutcome_set.all().order_by('-outcome'),
+                                  label=group_matches[3])
+    match5 = NameModelChoiceField(queryset=group_matches[4].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[4])
-    match6 = NameModelChoiceField(queryset=all_matches[5].groupmatchoutcome_set.all().order_by('-outcome'),
+                                  label=group_matches[4])
+    match6 = NameModelChoiceField(queryset=group_matches[5].groupmatchoutcome_set.all().order_by('-outcome'),
                                   required=True,
                                   widget=forms.RadioSelect,
-                                  label=all_matches[5])
+                                  label=group_matches[5])
 
 
 class TournamentBetGroupForm(forms.ModelForm):

@@ -512,6 +512,9 @@ class FinalBetGroup(models.Model):
     final_goals_bet = models.ForeignKey(FinalGoalsOutcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"Final bets by {self.entry.profile.user.username}"
+
 
 class Bets(models.Model):
     GROUP_MATCHES = "FM"
