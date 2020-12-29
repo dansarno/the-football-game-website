@@ -91,31 +91,31 @@ class FinalBetGroupForm(forms.ModelForm):
 
 
 class BestTeamsSuccessBetGroupForm(forms.ModelForm):
-    to_reach_semi_final_bet = NameModelChoiceField(queryset=ToReachSemiFinalOutcome.objects.all(),
+    to_reach_semi_final_bet = NameModelChoiceField(queryset=ToReachSemiFinalOutcome.objects.all().order_by('team'),
                                                    required=True,
                                                    widget=forms.RadioSelect,
                                                    label="To reach the semi final")
-    to_reach_final_bet = NameModelChoiceField(queryset=ToReachFinalOutcome.objects.all(),
+    to_reach_final_bet = NameModelChoiceField(queryset=ToReachFinalOutcome.objects.all().order_by('team'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="To reach the final")
-    to_win_bet = NameModelChoiceField(queryset=ToWinOutcome.objects.all(),
+    to_win_bet = NameModelChoiceField(queryset=ToWinOutcome.objects.all().order_by('team'),
                                       required=True,
                                       widget=forms.RadioSelect,
                                       label="To win the Euros")
-    highest_scoring_team_bet = NameModelChoiceField(queryset=HighestScoringTeamOutcome.objects.all(),
+    highest_scoring_team_bet = NameModelChoiceField(queryset=HighestScoringTeamOutcome.objects.all().order_by('team'),
                                                     required=True,
                                                     widget=forms.RadioSelect,
                                                     label="Highest scoring team")
-    most_yellow_cards_bet = NameModelChoiceField(queryset=MostYellowCardsOutcome.objects.all(),
+    most_yellow_cards_bet = NameModelChoiceField(queryset=MostYellowCardsOutcome.objects.all().order_by('team'),
                                                  required=True,
                                                  widget=forms.RadioSelect,
                                                  label="Most yellow cards")
-    fastest_yellow_card_bet = NameModelChoiceField(queryset=FastestYellowCardsOutcome.objects.all(),
+    fastest_yellow_card_bet = NameModelChoiceField(queryset=FastestYellowCardsOutcome.objects.all().order_by('team'),
                                                    required=True,
                                                    widget=forms.RadioSelect,
                                                    label="Fastest yellow card")
-    fastest_tournament_goal_bet = NameModelChoiceField(queryset=FastestGoalOutcome.objects.all(),
+    fastest_tournament_goal_bet = NameModelChoiceField(queryset=FastestGoalOutcome.objects.all().order_by('team'),
                                                        required=True,
                                                        widget=forms.RadioSelect,
                                                        label="Fastest Euro goal")
