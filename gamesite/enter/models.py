@@ -379,10 +379,7 @@ class GroupMatch(Match):
     class Meta:
         verbose_name_plural = "group matches"
 
-    group = models.ForeignKey(
-            Group,
-            on_delete=models.CASCADE
-            )
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Group {self.group.name}, Match {self.match_number}: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"

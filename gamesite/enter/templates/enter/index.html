@@ -6,7 +6,7 @@
   {% csrf_token %}
 
   <div class="row">
-    <div class="form_section col-md-6 col-lg-4 rounded-lg" id="group_games">
+    <div class="form_section col-md-6 col-lg-6  rounded-lg" id="group_games">
       <h3>Group Matches</h3>
       <p class="help_text">Select either home, draw or away wins for every game below.</p>
       <table>
@@ -29,7 +29,7 @@
       </table>
     </div>
 
-    <div class="form_section col-md-6 col-lg-4 rounded-lg" id="tournament-bets">
+    <div class="form_section col-md-6 col-lg-3 rounded-lg" id="tournament-bets">
       <h3>Tournament Totals</h3>
       <p class="help_text">Select one of each.</p>
       {% for field in tournament_bets_form %}
@@ -70,7 +70,7 @@
       {% endfor %}
     </div>
 
-  <div class="form_section col-md-6 col-lg-4 rounded-lg" id="final-bets">
+  <div class="form_section col-md-6 col-lg-3 rounded-lg" id="final-bets">
       <h3>During the Final</h3>
       <p class="help_text">Select one of each.</p>
       {% for field in final_bets_form %}
