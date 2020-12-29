@@ -5,7 +5,7 @@ from .models import GroupMatch, TournamentBetGroup, TournamentGoalsOutcome, \
     BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, HighestScoringTeamOutcome, \
     MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome
 
-group_matches = GroupMatch.objects.all()
+group_matches = GroupMatch.objects.all().order_by('ko_time')
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
