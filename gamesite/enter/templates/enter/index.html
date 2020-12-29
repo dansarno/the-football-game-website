@@ -100,6 +100,49 @@
       {% endfor %}
     </div>
 
+    <div class="form_section col-md-12 col-lg-8 rounded-lg" id="best-team-bets">
+      <h3>Top Teams</h3>
+      <p class="help_text">Select one from each column.</p>
+
+      <table>
+        <tr>
+          <th></th>
+          {% for field in best_teams_success_bets_form %}
+          <th>{{ field.label }}</th>
+          {% endfor %}
+        </tr>
+
+        <tr>
+          <td>
+          <table>
+            {% for field in best_teams_success_bets_form %}
+            {% if forloop.first %}
+            {% for choice in field.field.queryset %}
+            <tr>
+              <td>{{ choice.team.country.name }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+          </table>
+          </td>
+
+          {% for field in best_teams_success_bets_form %}
+          <td>
+          <table>
+            {% for radio in field %}
+            <tr>
+              <td class="text-muted">{{ radio }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+          </td>
+          {% endfor %}
+        </tr>
+
+      </table>
+    </div>
+
   </div>
 
   <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">

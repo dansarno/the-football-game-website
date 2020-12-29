@@ -39,10 +39,16 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
             existing_final_bets = FinalBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
                                                                # TODO need to change first()
                                                                ).first()
+            existing_top_teams_bets = BestTeamsSuccessBetGroup.objects.filter(
+                entry=request.user.profile.entry_set.first()
+                # TODO need to change first()
+                ).first()
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
             if existing_final_bets:
                 existing_final_bets.delete()  # Seems insecure!!!
+            if existing_top_teams_bets:
+                existing_top_teams_bets.delete()  # Seems insecure!!!
 
             tournament_bets = tournament_bets_form.save(commit=False)
             tournament_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
@@ -66,7 +72,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": GroupMatchOutcomeForm(),
-        "tournament_bets_form": TournamentBetGroupForm(), # instance=request.user.profile.entry_set.first().tournamentbetgroup
+        "tournament_bets_form": TournamentBetGroupForm(),
+        # instance=request.user.profile.entry_set.first().tournamentbetgroup
         "final_bets_form": FinalBetGroupForm(),
         "best_teams_success_bets_form": BestTeamsSuccessBetGroupForm()
     })
