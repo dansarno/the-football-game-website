@@ -218,7 +218,7 @@ class BestTeamsSuccessBetGroup(models.Model):
     most_yellow_cards_bet = models.ForeignKey(MostYellowCardsOutcome, on_delete=models.CASCADE)
     fastest_yellow_card_bet = models.ForeignKey(FastestYellowCardsOutcome, on_delete=models.CASCADE)
     fastest_tournament_goal_bet = models.ForeignKey(FastestGoalOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Top teams bets by {self.entry.profile.user.username}"
@@ -537,7 +537,7 @@ class FinalBetGroup(models.Model):
     final_yellow_cards_bet = models.ForeignKey(FinalYellowCardsOutcome, on_delete=models.CASCADE)
     final_ref_continent_bet = models.ForeignKey(FinalRefContinentOutcome, on_delete=models.CASCADE)
     final_goals_bet = models.ForeignKey(FinalGoalsOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Final bets by {self.entry.profile.user.username}"
