@@ -98,7 +98,7 @@ class GroupWinnerOutcome(models.Model):
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"Group {self.group.name}, {self.team.name}, {self.winning_amount}"
+        return f"Group {self.group.name}, {self.team.country.name} = {self.winning_amount}"
 
 
 class GroupWinnerBet(models.Model):
@@ -106,7 +106,7 @@ class GroupWinnerBet(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.bet.group.name}, {self.bet.team.name}"
+        return f"Group {self.bet.group.name}, {self.bet.team.country.name} by {self.entry.profile.user.username}"
 
 
 class TopGoalScoringGroupOutcome(models.Model):

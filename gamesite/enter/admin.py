@@ -4,7 +4,8 @@ from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
     TournamentRedCardsOutcome, TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentBetGroup, \
     FinalBetGroup, FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, \
     FinalOwnGoalOutcome, BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, \
-    HighestScoringTeamOutcome, MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome
+    HighestScoringTeamOutcome, MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome, \
+    GroupWinnerOutcome, GroupWinnerBet
 from django.utils.html import format_html
 
 
@@ -173,4 +174,14 @@ class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(FastestGoalOutcome)
 class FastestGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(GroupWinnerOutcome)
+class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(GroupWinnerBet)
+class GroupWinnerBetAdmin(admin.ModelAdmin):
     pass

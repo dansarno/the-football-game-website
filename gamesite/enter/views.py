@@ -2,8 +2,9 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm, BestTeamsSuccessBetGroupForm
-from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsSuccessBetGroup, Entry
+from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm, BestTeamsSuccessBetGroupForm, \
+    GroupWinnerOutcomeForm
+from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsSuccessBetGroup, GroupWinnerBet, Entry
 
 
 @login_required
@@ -13,9 +14,10 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         tournament_bets_form = TournamentBetGroupForm(request.POST)
         final_bets_form = FinalBetGroupForm(request.POST)
         best_teams_success_bets_form = BestTeamsSuccessBetGroupForm(request.POST)
+        group_winner_bets_form = GroupWinnerOutcomeForm(request.POST)
         # Add other forms here
         if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
-                and best_teams_success_bets_form.is_valid()):
+                and best_teams_success_bets_form.is_valid() and group_winner_bets_form.is_valid()):
             existing_entries = request.user.profile.entry_set.all()
             if not existing_entries:
                 new_entry = Entry(profile=request.user.profile)
@@ -33,6 +35,19 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                                             entry=request.user.profile.entry_set.first())  # TODO need to change first()
                     new_bet.save()
 
+            for field_name, field_value in group_winner_bets_form.cleaned_data.items():
+                existing_group_winner_bet = GroupWinnerBet.objects.filter(bet__group=field_value.group,
+                                                                          entry=request.user.profile.entry_set.first()
+                                                                          # TODO need to change first()
+                                                                          ).first()
+                if existing_group_winner_bet:
+                    existing_group_winner_bet.bet = field_value
+                    existing_group_winner_bet.save()
+                else:
+                    new_bet = GroupWinnerBet(bet=field_value,
+                                             entry=request.user.profile.entry_set.first())  # TODO need to change first()
+                    new_bet.save()
+
             existing_tournament_bets = TournamentBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
                                                                          # TODO need to change first()
                                                                          ).first()
@@ -42,7 +57,7 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
             existing_top_teams_bets = BestTeamsSuccessBetGroup.objects.filter(
                 entry=request.user.profile.entry_set.first()
                 # TODO need to change first()
-                ).first()
+            ).first()
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
             if existing_final_bets:
@@ -66,7 +81,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                 "group_matches_form": group_matches_form,
                 "tournament_bets_form": tournament_bets_form,
                 "final_bets_form": final_bets_form,
-                "best_teams_success_bets_form": best_teams_success_bets_form
+                "best_teams_success_bets_form": best_teams_success_bets_form,
+                "group_winner_bets_form": group_winner_bets_form
             })
 
     return render(request, template_name, {
@@ -75,7 +91,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         "tournament_bets_form": TournamentBetGroupForm(),
         # instance=request.user.profile.entry_set.first().tournamentbetgroup
         "final_bets_form": FinalBetGroupForm(),
-        "best_teams_success_bets_form": BestTeamsSuccessBetGroupForm()
+        "best_teams_success_bets_form": BestTeamsSuccessBetGroupForm(),
+        "group_winner_bets_form": GroupWinnerOutcomeForm()
     })
 
 

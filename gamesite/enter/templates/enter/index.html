@@ -31,6 +31,36 @@
       </table>
     </div>
 
+    <div class="form_section col-md-6 col-lg-3 rounded-lg" id="group_winners-bets">
+      <h3>Group Winners</h3>
+      <p class="help_text">Select one winner in each group.</p>
+      {% for field in group_winner_bets_form %}
+        <b>{{ field.label }}</b>
+      <table>
+      <tr>
+      <td class="pt-0 pb-0">
+          <table>
+                {% for choice in field.field.queryset %}
+                  <tr>
+                    <td class="pt-0 pb-0">{{ choice.team.country.name }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      <td>
+          <table>
+                {% for radio in field %}
+                  <tr>
+                    <td class="match_radio text-muted">{{ radio }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      </tr>
+      </table>
+      {% endfor %}
+    </div>
+
     <div class="form_section col-md-6 col-lg-3 rounded-lg" id="tournament-bets">
       <h3>Tournament Totals</h3>
       <p class="help_text">Select one of each.</p>
