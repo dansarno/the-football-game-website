@@ -224,11 +224,20 @@ class BestTeamsSuccessBetGroup(models.Model):
         return f"Top teams bets by {self.entry.profile.user.username}"
 
 
+class FiftyFiftyQuestion(models.Model):
+    question = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.question
+
+
 class FiftyFiftyOutcome(models.Model):
-    choice_a = models.CharField(max_length=100)
-    choice_b = models.CharField(max_length=100)
-    winning_amount_a = models.IntegerField()
-    winning_amount_b = models.IntegerField()
+    fifty_fifty = models.ForeignKey(FiftyFiftyQuestion, on_delete=models.CASCADE)
+    outcome = models.BooleanField()
+    winning_amount = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.fifty_fifty.question}, {self.outcome} = {self.winning_amount}"
 
 
 class FiftyFiftyBet(models.Model):
