@@ -175,6 +175,30 @@
       </table>
     </div>
 
+    <div class="form_section col-md-6 col-lg-5 rounded-lg" id="fifty-fifty-bets">
+      <h3>50/50's</h3>
+      <p class="help_text">Select one of each.</p>
+      <table>
+        <tr>
+          <th></th>
+          <th>Yes</th>
+          <th>No</th>
+        </tr>
+        {% for field in fifty_fifty_bets_form %}
+      <tr>
+      <td class="pt-0 pb-0">
+          {{ field.label.question }}
+      </td>
+      {% for radio in field %}
+      <td class="match_radio text-muted">
+         {{ radio }}
+      </td>
+      {% endfor %}
+      </tr>
+        {% endfor %}
+      </table>
+    </div>
+
   </div>
 
   <input type="submit" class="btn btn-primary btn-lg" value="Confirm and Review">

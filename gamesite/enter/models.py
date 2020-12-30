@@ -244,6 +244,9 @@ class FiftyFiftyBet(models.Model):
     bet = models.ForeignKey(FiftyFiftyOutcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.bet.fifty_fifty.question}, {self.bet.outcome}  by {self.entry.profile.user.username}"
+
 
 class TournamentGoalsOutcome(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
