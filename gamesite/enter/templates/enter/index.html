@@ -132,6 +132,35 @@
       {% endfor %}
     </div>
 
+    <div class="form_section col-md-6 col-lg-3 rounded-lg" id="top-goalscoring-group-bets">
+      <h3>Top Goalscoring Group</h3>
+      <p class="help_text">Select one group.</p>
+      {% for field in top_goal_group_bets_form %}
+      <table>
+      <tr>
+      <td class="pt-0 pb-0">
+          <table>
+                {% for choice in field.field.queryset %}
+                  <tr>
+                    <td class="pt-0 pb-0">Group {{ choice.group.name }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      <td>
+          <table>
+                {% for radio in field %}
+                  <tr>
+                    <td class="match_radio text-muted">{{ radio }}</td>
+                  </tr>
+                {% endfor %}
+          </table>
+      </td>
+      </tr>
+      </table>
+      {% endfor %}
+    </div>
+
     <div class="form_section col-md-12 col-lg-8 rounded-lg" id="best-team-bets">
       <h3>Top Teams</h3>
       <p class="help_text">Select one from each column.</p>

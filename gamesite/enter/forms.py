@@ -3,7 +3,8 @@ from .models import GroupMatch, TournamentBetGroup, TournamentGoalsOutcome, \
     TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup, \
     FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome, \
     BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, HighestScoringTeamOutcome, \
-    MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome, GroupWinnerOutcome, FiftyFiftyQuestion
+    MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome, GroupWinnerOutcome, FiftyFiftyQuestion, \
+    TopGoalscoringGroupBet, TopGoalScoringGroupOutcome
 
 group_matches = GroupMatch.objects.all().order_by('ko_time')
 fifty_fifty_questions = FiftyFiftyQuestion.objects.all()
@@ -254,3 +255,13 @@ class FiftyFiftyOutcomeForm(forms.Form):
                                          required=True,
                                          widget=forms.RadioSelect,
                                          label=fifty_fifty_questions[8])
+
+
+class TopGoalScoringGroupBetForm(forms.ModelForm):
+    bet = NameModelChoiceField(queryset=TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
+                               required=True,
+                               widget=forms.RadioSelect)
+
+    class Meta:
+        model = TopGoalscoringGroupBet
+        exclude = ('entry',)

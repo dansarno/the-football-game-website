@@ -3,9 +3,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .forms import GroupMatchOutcomeForm, TournamentBetGroupForm, FinalBetGroupForm, BestTeamsSuccessBetGroupForm, \
-    GroupWinnerOutcomeForm, FiftyFiftyOutcomeForm
+    GroupWinnerOutcomeForm, FiftyFiftyOutcomeForm, TopGoalScoringGroupBetForm
 from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsSuccessBetGroup, GroupWinnerBet, \
-    FiftyFiftyBet, Entry
+    FiftyFiftyBet, TopGoalscoringGroupBet, Entry
 
 
 @login_required
@@ -17,6 +17,7 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         best_teams_success_bets_form = BestTeamsSuccessBetGroupForm(request.POST)
         group_winner_bets_form = GroupWinnerOutcomeForm(request.POST)
         fifty_fifty_bets_form = FiftyFiftyOutcomeForm(request.POST)
+        top_goal_group_bets_form = TopGoalScoringGroupBetForm(request.POST)
         # Add other forms here
         if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
                 and best_teams_success_bets_form.is_valid() and group_winner_bets_form.is_valid() and
@@ -74,12 +75,18 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                 entry=request.user.profile.entry_set.first()
                 # TODO need to change first()
             ).first()
+            existing_top_goal_group_bet = TopGoalscoringGroupBet.objects.filter(
+                entry=request.user.profile.entry_set.first()
+                # TODO need to change first()
+                ).first()
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
             if existing_final_bets:
                 existing_final_bets.delete()  # Seems insecure!!!
             if existing_top_teams_bets:
                 existing_top_teams_bets.delete()  # Seems insecure!!!
+            if existing_top_goal_group_bet:
+                existing_top_goal_group_bet.delete()  # Seems insecure!!!
 
             tournament_bets = tournament_bets_form.save(commit=False)
             tournament_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
@@ -90,6 +97,9 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
             best_teams_success_bets = best_teams_success_bets_form.save(commit=False)
             best_teams_success_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
             best_teams_success_bets.save()
+            top_goal_group_bets = top_goal_group_bets_form.save(commit=False)
+            top_goal_group_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            top_goal_group_bets.save()
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {
@@ -99,7 +109,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
                 "final_bets_form": final_bets_form,
                 "best_teams_success_bets_form": best_teams_success_bets_form,
                 "group_winner_bets_form": group_winner_bets_form,
-                "fifty_fifty_bets_form": fifty_fifty_bets_form
+                "fifty_fifty_bets_form": fifty_fifty_bets_form,
+                "top_goal_group_bets_form": top_goal_group_bets_form
             })
 
     return render(request, template_name, {
@@ -110,7 +121,8 @@ def index(request, template_name="enter/index.html", success_url="enter:confirm"
         "final_bets_form": FinalBetGroupForm(),
         "best_teams_success_bets_form": BestTeamsSuccessBetGroupForm(),
         "group_winner_bets_form": GroupWinnerOutcomeForm(),
-        "fifty_fifty_bets_form": FiftyFiftyOutcomeForm()
+        "fifty_fifty_bets_form": FiftyFiftyOutcomeForm(),
+        "top_goal_group_bets_form": TopGoalScoringGroupBetForm()
     })
 
 

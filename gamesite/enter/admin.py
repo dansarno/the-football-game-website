@@ -5,7 +5,8 @@ from .models import Entry, Team, FinalMatch, Group, GroupMatch, \
     FinalBetGroup, FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, \
     FinalOwnGoalOutcome, BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, \
     HighestScoringTeamOutcome, MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome, \
-    GroupWinnerOutcome, GroupWinnerBet, FiftyFiftyOutcome, FiftyFiftyBet, FiftyFiftyQuestion
+    GroupWinnerOutcome, GroupWinnerBet, FiftyFiftyOutcome, FiftyFiftyBet, FiftyFiftyQuestion, TopGoalscoringGroupBet, \
+    TopGoalScoringGroupOutcome
 from django.utils.html import format_html
 
 
@@ -199,4 +200,14 @@ class FiftyFiftyBetAdmin(admin.ModelAdmin):
 
 @admin.register(FiftyFiftyQuestion)
 class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TopGoalscoringGroupBet)
+class TopGoalscoringGroupBetAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TopGoalScoringGroupOutcome)
+class TopGoalScoringGroupOutcomeAdmin(admin.ModelAdmin):
     pass
