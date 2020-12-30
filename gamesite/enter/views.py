@@ -10,8 +10,10 @@ from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsS
 
 @login_required
 def index(request):
+    existing_entries = request.user.profile.entry_set.all()
     return render(request, "enter/index.html", {
-        "title": "Entry Manager"
+        "title": "Entry Manager",
+        "entries": existing_entries
     })
 
 

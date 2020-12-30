@@ -93,3 +93,16 @@ a.article-title:hover {
 .sticky-offset {
     top: 70px;
 }
+
+.entry_section {
+    border: 2px solid lightgrey;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.new_entry_section {
+    border: 2px solid lightgrey;
+    border-style: dashed;
+    border-radius: 15px;
+    padding: 10px;
+}

@@ -1,13 +1,29 @@
 {% extends "feed/base.html" %}
 
 {% block content %}
-<h1>Entry Manager</h1>
-<text>Summary</text>
-<!--<form>-->
-<!--  {% for submission in submission %}-->
-<!--  {{ submission }}-->
-<!--  {% endfor %}-->
-<!--  <input type="submit" class="btn btn-primary btn-lg">-->
-<!--</form>-->
-<!--<a href="{% url 'enter:index' %}">Back to submission</a>-->
+<h1>Your Entries</h1>
+<div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.</div>
+
+<div class="row">
+  {% for entry in entries %}
+    <div class="col-md-6 col-lg-4">
+      <div class="entry_section">
+        <h3>Entry {{ forloop.counter }}</h3>
+        <h5>75% Complete</h5>
+        <a href="{% url 'enter:entry' %}">Edit Entry</a>
+      </div>
+     </div>
+  {% endfor %}
+
+  {% if entries.count < 3 %}
+  <div class="col-md-6 col-lg-4">
+    <div class="new_entry_section">
+      <h3>+</h3>
+      <a href="{% url 'enter:entry' %}">Add Entry</a>
+    </div>
+   </div>
+  {% endif %}
+
+</div>
+
 {% endblock content %}
