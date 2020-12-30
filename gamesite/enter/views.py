@@ -9,7 +9,14 @@ from .models import GroupMatchBet, TournamentBetGroup, FinalBetGroup, BestTeamsS
 
 
 @login_required
-def index(request, template_name="enter/index.html", success_url="enter:confirm"):
+def index(request):
+    return render(request, "enter/index.html", {
+        "title": "Entry Manager"
+    })
+
+
+@login_required
+def entry(request, template_name="enter/entry.html", success_url="enter:confirm"):
     if request.method == "POST":
         group_matches_form = GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = TournamentBetGroupForm(request.POST)
