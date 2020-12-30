@@ -143,15 +143,16 @@ class TopGoalScoringPlayerOutcome(models.Model):
     winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.player.first_name} {self.player.last_name}, {self.winning_amount}"
+        return f"{self.player.first_name} {self.player.last_name} = {self.winning_amount}"
 
 
 class TopGoalscoringPlayerBet(models.Model):
-    bet = models.ForeignKey(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
+    player_bet = models.ForeignKey(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.bet.player.first_name} {self.bet.player.last_name}"
+        return f"{self.player_bet.player.first_name} {self.player_bet.player.last_name} " \
+               f"by {self.entry.profile.user.username}"
 
 
 class ToReachSemiFinalOutcome(models.Model):
