@@ -1,13 +1,8 @@
 from django import forms
-from .models import GroupMatch, TournamentBetGroup, TournamentGoalsOutcome, \
-    TournamentOwnGoalsOutcome, TournamentHattricksOutcome, TournamentRedCardsOutcome, FinalBetGroup, \
-    FinalFirstGoalOutcome, FinalRefContinentOutcome, FinalGoalsOutcome, FinalYellowCardsOutcome, FinalOwnGoalOutcome, \
-    BestTeamsSuccessBetGroup, ToReachSemiFinalOutcome, ToReachFinalOutcome, ToWinOutcome, HighestScoringTeamOutcome, \
-    MostYellowCardsOutcome, FastestYellowCardsOutcome, FastestGoalOutcome, GroupWinnerOutcome, FiftyFiftyQuestion, \
-    TopGoalscoringGroupBet, TopGoalScoringGroupOutcome, TopGoalScoringPlayerOutcome, TopGoalscoringPlayerBet
+from . import models
 
-group_matches = GroupMatch.objects.all().order_by('ko_time')
-fifty_fifty_questions = FiftyFiftyQuestion.objects.all()
+group_matches = models.GroupMatch.objects.all().order_by('ko_time')
+fifty_fifty_questions = models.FiftyFiftyQuestion.objects.all()
 
 
 class NameModelChoiceField(forms.ModelChoiceField):
@@ -107,114 +102,114 @@ class GroupMatchOutcomeForm(forms.Form):
 
 
 class GroupWinnerOutcomeForm(forms.Form):
-    group_a_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='A'),
+    group_a_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='A'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group A")
-    group_b_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='B'),
+    group_b_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='B'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group B")
-    group_c_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='C'),
+    group_c_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='C'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group C")
-    group_d_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='D'),
+    group_d_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='D'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group D")
-    group_e_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='E'),
+    group_e_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='E'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group E")
-    group_f_winner_bet = NameModelChoiceField(queryset=GroupWinnerOutcome.objects.filter(group__name='F'),
+    group_f_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='F'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="Group F")
 
 
 class TournamentBetGroupForm(forms.ModelForm):
-    total_goals_bet = NameModelChoiceField(queryset=TournamentGoalsOutcome.objects.all().order_by('min_value'),
+    total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('min_value'),
                                            required=True,
                                            widget=forms.RadioSelect,
                                            label="Total tournament goals (excluding penalty shootouts)")
-    total_red_cards_bet = NameModelChoiceField(queryset=TournamentRedCardsOutcome.objects.all().order_by('min_value'),
+    total_red_cards_bet = NameModelChoiceField(queryset=models.TournamentRedCardsOutcome.objects.all().order_by('min_value'),
                                                required=True,
                                                widget=forms.RadioSelect,
                                                label="Total tournament red cards")
-    total_own_goals_bet = NameModelChoiceField(queryset=TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
+    total_own_goals_bet = NameModelChoiceField(queryset=models.TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
                                                required=True,
                                                widget=forms.RadioSelect,
                                                label="Total tournament own goals")
-    total_hattricks_bet = NameModelChoiceField(queryset=TournamentHattricksOutcome.objects.all().order_by('min_value'),
+    total_hattricks_bet = NameModelChoiceField(queryset=models.TournamentHattricksOutcome.objects.all().order_by('min_value'),
                                                required=True,
                                                widget=forms.RadioSelect,
                                                label="Total hattricks")
 
     class Meta:
-        model = TournamentBetGroup
+        model = models.TournamentBetGroup
         exclude = ('entry',)
 
 
 class FinalBetGroupForm(forms.ModelForm):
-    final_first_goal_bet = NameModelChoiceField(queryset=FinalFirstGoalOutcome.objects.all(),
+    final_first_goal_bet = NameModelChoiceField(queryset=models.FinalFirstGoalOutcome.objects.all(),
                                                 required=True,
                                                 widget=forms.RadioSelect,
                                                 label="First goal to be scored in the final")
-    final_own_goals_bet = NameModelChoiceField(queryset=FinalOwnGoalOutcome.objects.all(),
+    final_own_goals_bet = NameModelChoiceField(queryset=models.FinalOwnGoalOutcome.objects.all(),
                                                required=True,
                                                widget=forms.RadioSelect,
                                                label="There will be an own goal")
-    final_yellow_cards_bet = NameModelChoiceField(queryset=FinalYellowCardsOutcome.objects.all(),
+    final_yellow_cards_bet = NameModelChoiceField(queryset=models.FinalYellowCardsOutcome.objects.all(),
                                                   required=True,
                                                   widget=forms.RadioSelect,
                                                   label="Number of yellow cards")
-    final_ref_continent_bet = NameModelChoiceField(queryset=FinalRefContinentOutcome.objects.all(),
+    final_ref_continent_bet = NameModelChoiceField(queryset=models.FinalRefContinentOutcome.objects.all(),
                                                    required=True,
                                                    widget=forms.RadioSelect,
                                                    label="Continent of the ref in the final")
-    final_goals_bet = NameModelChoiceField(queryset=FinalGoalsOutcome.objects.all(),
+    final_goals_bet = NameModelChoiceField(queryset=models.FinalGoalsOutcome.objects.all(),
                                            required=True,
                                            widget=forms.RadioSelect,
                                            label="Total goals in the final (excluding a penalty shootout)")
 
     class Meta:
-        model = FinalBetGroup
+        model = models.FinalBetGroup
         exclude = ('entry',)
 
 
 class BestTeamsSuccessBetGroupForm(forms.ModelForm):
-    to_reach_semi_final_bet = NameModelChoiceField(queryset=ToReachSemiFinalOutcome.objects.all().order_by('team'),
+    to_reach_semi_final_bet = NameModelChoiceField(queryset=models.ToReachSemiFinalOutcome.objects.all().order_by('team'),
                                                    required=True,
                                                    widget=forms.RadioSelect,
                                                    label="To reach the semi final")
-    to_reach_final_bet = NameModelChoiceField(queryset=ToReachFinalOutcome.objects.all().order_by('team'),
+    to_reach_final_bet = NameModelChoiceField(queryset=models.ToReachFinalOutcome.objects.all().order_by('team'),
                                               required=True,
                                               widget=forms.RadioSelect,
                                               label="To reach the final")
-    to_win_bet = NameModelChoiceField(queryset=ToWinOutcome.objects.all().order_by('team'),
+    to_win_bet = NameModelChoiceField(queryset=models.ToWinOutcome.objects.all().order_by('team'),
                                       required=True,
                                       widget=forms.RadioSelect,
                                       label="To win the Euros")
-    highest_scoring_team_bet = NameModelChoiceField(queryset=HighestScoringTeamOutcome.objects.all().order_by('team'),
+    highest_scoring_team_bet = NameModelChoiceField(queryset=models.HighestScoringTeamOutcome.objects.all().order_by('team'),
                                                     required=True,
                                                     widget=forms.RadioSelect,
                                                     label="Highest scoring team")
-    most_yellow_cards_bet = NameModelChoiceField(queryset=MostYellowCardsOutcome.objects.all().order_by('team'),
+    most_yellow_cards_bet = NameModelChoiceField(queryset=models.MostYellowCardsOutcome.objects.all().order_by('team'),
                                                  required=True,
                                                  widget=forms.RadioSelect,
                                                  label="Most yellow cards")
-    fastest_yellow_card_bet = NameModelChoiceField(queryset=FastestYellowCardsOutcome.objects.all().order_by('team'),
+    fastest_yellow_card_bet = NameModelChoiceField(queryset=models.FastestYellowCardsOutcome.objects.all().order_by('team'),
                                                    required=True,
                                                    widget=forms.RadioSelect,
                                                    label="Fastest yellow card")
-    fastest_tournament_goal_bet = NameModelChoiceField(queryset=FastestGoalOutcome.objects.all().order_by('team'),
+    fastest_tournament_goal_bet = NameModelChoiceField(queryset=models.FastestGoalOutcome.objects.all().order_by('team'),
                                                        required=True,
                                                        widget=forms.RadioSelect,
                                                        label="Fastest Euro goal")
 
     class Meta:
-        model = BestTeamsSuccessBetGroup
+        model = models.BestTeamsSuccessBetGroup
         exclude = ('entry',)
 
 
@@ -258,20 +253,20 @@ class FiftyFiftyOutcomeForm(forms.Form):
 
 
 class TopGoalScoringGroupBetForm(forms.ModelForm):
-    bet = NameModelChoiceField(queryset=TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
+    bet = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
                                required=True,
                                widget=forms.RadioSelect)
 
     class Meta:
-        model = TopGoalscoringGroupBet
+        model = models.TopGoalscoringGroupBet
         exclude = ('entry',)
 
 
 class TopGoalScoringPlayerBetForm(forms.ModelForm):
-    player_bet = NameModelChoiceField(queryset=TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
+    player_bet = NameModelChoiceField(queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
                                       required=True,
                                       widget=forms.RadioSelect)
 
     class Meta:
-        model = TopGoalscoringPlayerBet
+        model = models.TopGoalscoringPlayerBet
         exclude = ('entry',)
