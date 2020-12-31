@@ -40,7 +40,7 @@
             {% if user.is_authenticated %}
             <img class="rounded-circle account-img-sm" src="{{ request.user.profile.profile_picture.url }}">
             <a class="nav-item nav-link" href="{% url 'feed:create' %}">New Post</a>
-            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+            <a class="nav-item nav-link" href="{% url 'profile' username=request.user.username %}">Profile</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>

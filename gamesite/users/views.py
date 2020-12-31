@@ -21,7 +21,7 @@ def register(request):
 
 
 @login_required
-def profile(request):
+def profile(request, username):
     return render(request, 'users/profile.html', {
         'title': request.user.username
     })
