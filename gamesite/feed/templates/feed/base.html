@@ -59,8 +59,12 @@
         <div class="sticky-top sticky-offset">
           <p>
           <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><i class="fas fa-cloud"></i>Home</li>
-            <li class="list-group-item list-group-item-light">Profile</li>
+            <li class="list-group-item list-group-item-light"><i class="fas fa-cloud"></i>
+              <a class="nav-item nav-link" href="{% url 'feed:home' %}">Home</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+              <a class="nav-item nav-link" href="{% url 'profile' username=request.user.username %}">Profile</a>
+            </li>
             <li class="list-group-item list-group-item-light">Table</li>
             <li class="list-group-item list-group-item-light">Explore</li>
             <li class="list-group-item list-group-item-light">Matches</li>
