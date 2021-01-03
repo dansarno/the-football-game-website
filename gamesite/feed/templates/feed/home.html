@@ -4,10 +4,12 @@
 <h2>Feed</h2>
 {% for post in posts %}
 <article class="media content-section">
-  <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
+  <a class="mr-2" href="{% url 'profile' username=post.author.username %}">
+    <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
+  </a>
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ post.author }}</a>
+      <a class="mr-2" href="{% url 'profile' username=post.author.username %}">{{ post.author }}</a>
       <small class="text-muted">{{ post.date_posted }}</small>
     </div>
     <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title|title }}</a></h3>

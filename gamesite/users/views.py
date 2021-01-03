@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from .models import User
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
@@ -22,8 +23,10 @@ def register(request):
 
 @login_required
 def profile(request, username):
+    user = get_object_or_404(User, username=username)
     return render(request, 'users/profile.html', {
-        'title': request.user.username
+        'title': user.username,
+        'user': user
     })
 
 
@@ -42,7 +45,7 @@ def profile_edit(request):
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
     return render(request, 'users/profile_edit.html', {
-        'title': request.user.username,
+        'title': f"edit {request.user.username}",
         'u_form': u_form,
         'p_form': p_form
     })

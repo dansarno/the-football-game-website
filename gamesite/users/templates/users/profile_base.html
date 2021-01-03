@@ -10,8 +10,10 @@
       {% else %}
       <h2 class="account-heading">{{ user.username }}</h2>
       {% endif %}
+      {% if request.user == user %}
       {% block button %}
       {% endblock button %}
+      {% endif %}
     </div>
   </div>
 </div>

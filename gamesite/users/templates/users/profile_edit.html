@@ -3,7 +3,7 @@
 
 {% block button %}
 <div>
-  <a href="{% url 'profile' %}" class="btn btn-light btn-sm">Back</a>
+  <a href="{% url 'profile' username=request.user.username %}" class="btn btn-light btn-sm">Back</a>
 </div>
 {% endblock button %}
 
