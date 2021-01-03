@@ -106,7 +106,7 @@ class GroupWinnerBet(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.bet.group.name}, {self.bet.team.country.name} by {self.entry.profile.user.username}"
+        return f"Group {self.bet.group.name}, {self.bet.team.country.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class TopGoalScoringGroupOutcome(models.Model):
@@ -122,7 +122,7 @@ class TopGoalscoringGroupBet(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.bet.group.name} by {self.entry.profile.user.username}"
+        return f"Group {self.bet.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class Player(models.Model):
@@ -152,7 +152,7 @@ class TopGoalscoringPlayerBet(models.Model):
 
     def __str__(self):
         return f"{self.player_bet.player.first_name} {self.player_bet.player.last_name} " \
-               f"by {self.entry.profile.user.username}"
+               f"by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class ToReachSemiFinalOutcome(models.Model):
@@ -222,7 +222,7 @@ class BestTeamsSuccessBetGroup(models.Model):
     entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Top teams bets by {self.entry.profile.user.username}"
+        return f"Top teams bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class FiftyFiftyQuestion(models.Model):
@@ -246,7 +246,7 @@ class FiftyFiftyBet(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.bet.fifty_fifty.question}, {self.bet.outcome}  by {self.entry.profile.user.username}"
+        return f"{self.bet.fifty_fifty.question}, {self.bet.outcome}  by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class TournamentGoalsOutcome(models.Model):
@@ -329,7 +329,7 @@ class TournamentBetGroup(models.Model):
     entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Tournament bets by {self.entry.profile.user.username}"
+        return f"Tournament bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class Venue(models.Model):
@@ -413,7 +413,7 @@ class GroupMatchBet(models.Model):
 
     def __str__(self):
         return f"Bet ({self.bet.outcome}) on {self.bet.match.home_team.country.country_code} vs " \
-               f"{self.bet.match.away_team.country.country_code} by {self.entry.profile.user.username}"
+               f"{self.bet.match.away_team.country.country_code} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class FinalMatch(Match):
@@ -550,7 +550,7 @@ class FinalBetGroup(models.Model):
     entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Final bets by {self.entry.profile.user.username}"
+        return f"Final bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class Bets(models.Model):

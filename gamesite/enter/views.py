@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from . import forms
 from . import models
 
@@ -16,7 +16,8 @@ def index(request):
 
 
 @login_required
-def entry(request, template_name="enter/entry.html", success_url="enter:confirm"):
+def entry(request, entry_id, template_name="enter/entry.html", success_url="enter:index"):
+    requested_entry = get_object_or_404(models.Entry, id=entry_id)
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentBetGroupForm(request.POST)
@@ -26,7 +27,6 @@ def entry(request, template_name="enter/entry.html", success_url="enter:confirm"
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(request.POST)
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(request.POST)
         top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
-        # Add other forms here
         if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
                 and best_teams_success_bets_form.is_valid() and group_winner_bets_form.is_valid() and
                 fifty_fifty_bets_form.is_valid()):
@@ -36,61 +36,39 @@ def entry(request, template_name="enter/entry.html", success_url="enter:confirm"
                 new_entry.save()
             for field_name, field_value in group_matches_form.cleaned_data.items():
                 existing_match_bet = models.GroupMatchBet.objects.filter(bet__match=field_value.match,
-                                                                  entry=request.user.profile.entry_set.first()
-                                                                  # TODO need to change first()
-                                                                  ).first()
+                                                                         entry=requested_entry).first()
                 if existing_match_bet:
                     existing_match_bet.bet = field_value
                     existing_match_bet.save()
                 else:
-                    new_bet = models.GroupMatchBet(bet=field_value,
-                                            entry=request.user.profile.entry_set.first())  # TODO need to change first()
+                    new_bet = models.GroupMatchBet(bet=field_value, entry=requested_entry)
                     new_bet.save()
 
             for field_name, field_value in group_winner_bets_form.cleaned_data.items():
                 existing_group_winner_bet = models.GroupWinnerBet.objects.filter(bet__group=field_value.group,
-                                                                          entry=request.user.profile.entry_set.first()
-                                                                          # TODO need to change first()
-                                                                          ).first()
+                                                                                 entry=requested_entry).first()
                 if existing_group_winner_bet:
                     existing_group_winner_bet.bet = field_value
                     existing_group_winner_bet.save()
                 else:
-                    new_bet = models.GroupWinnerBet(bet=field_value,
-                                             entry=request.user.profile.entry_set.first())  # TODO need to change first()
+                    new_bet = models.GroupWinnerBet(bet=field_value, entry=requested_entry)
                     new_bet.save()
 
             for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
                 existing_fifty_fifty_bet = models.FiftyFiftyBet.objects.filter(bet__fifty_fifty=field_value.fifty_fifty,
-                                                                        entry=request.user.profile.entry_set.first()
-                                                                        # TODO need to change first()
-                                                                        ).first()
+                                                                               entry=requested_entry).first()
                 if existing_fifty_fifty_bet:
                     existing_fifty_fifty_bet.bet = field_value
                     existing_fifty_fifty_bet.save()
                 else:
-                    new_bet = models.FiftyFiftyBet(bet=field_value,
-                                            entry=request.user.profile.entry_set.first())  # TODO need to change first()
+                    new_bet = models.FiftyFiftyBet(bet=field_value, entry=requested_entry)
                     new_bet.save()
 
-            existing_tournament_bets = models.TournamentBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
-                                                                         # TODO need to change first()
-                                                                         ).first()
-            existing_final_bets = models.FinalBetGroup.objects.filter(entry=request.user.profile.entry_set.first()
-                                                               # TODO need to change first()
-                                                               ).first()
-            existing_top_teams_bets = models.BestTeamsSuccessBetGroup.objects.filter(
-                entry=request.user.profile.entry_set.first()
-                # TODO need to change first()
-            ).first()
-            existing_top_goal_group_bet = models.TopGoalscoringGroupBet.objects.filter(
-                entry=request.user.profile.entry_set.first()
-                # TODO need to change first()
-                ).first()
-            existing_top_goal_player_bet = models.TopGoalscoringPlayerBet.objects.filter(
-                entry=request.user.profile.entry_set.first()
-                # TODO need to change first()
-            ).first()
+            existing_tournament_bets = models.TournamentBetGroup.objects.filter(entry=requested_entry).first()
+            existing_final_bets = models.FinalBetGroup.objects.filter(entry=requested_entry).first()
+            existing_top_teams_bets = models.BestTeamsSuccessBetGroup.objects.filter(entry=requested_entry).first()
+            existing_top_goal_group_bet = models.TopGoalscoringGroupBet.objects.filter(entry=requested_entry).first()
+            existing_top_goal_player_bet = models.TopGoalscoringPlayerBet.objects.filter(entry=requested_entry).first()
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
             if existing_final_bets:
@@ -103,19 +81,19 @@ def entry(request, template_name="enter/entry.html", success_url="enter:confirm"
                 existing_top_goal_player_bet.delete()  # Seems insecure!!!
 
             tournament_bets = tournament_bets_form.save(commit=False)
-            tournament_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            tournament_bets.entry = requested_entry
             tournament_bets.save()
             final_bets = final_bets_form.save(commit=False)
-            final_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            final_bets.entry = requested_entry
             final_bets.save()
             best_teams_success_bets = best_teams_success_bets_form.save(commit=False)
-            best_teams_success_bets.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            best_teams_success_bets.entry = requested_entry
             best_teams_success_bets.save()
             top_goal_group_bet = top_goal_group_bets_form.save(commit=False)
-            top_goal_group_bet.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            top_goal_group_bet.entry = requested_entry
             top_goal_group_bet.save()
             top_goal_player_bet = top_goal_player_bets_form.save(commit=False)
-            top_goal_player_bet.entry = request.user.profile.entry_set.first()  # TODO need to change first()
+            top_goal_player_bet.entry = requested_entry
             top_goal_player_bet.save()
             return HttpResponseRedirect(reverse(success_url))
         else:

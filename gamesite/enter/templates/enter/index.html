@@ -10,7 +10,7 @@
       <div class="entry_section">
         <h3>Entry {{ forloop.counter }}</h3>
         <h5>75% Complete</h5>
-        <a href="{% url 'enter:entry' %}">Edit Entry</a>
+        <a href="{% url 'enter:entry' entry.id %}">Edit Entry</a>
       </div>
      </div>
   {% endfor %}
