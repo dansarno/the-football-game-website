@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
+from django.core.exceptions import PermissionDenied
 from . import forms
 from . import models
 
@@ -18,6 +19,10 @@ def index(request):
 @login_required
 def entry(request, entry_id, template_name="enter/entry.html", success_url="enter:index"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
+
+    if request.user != requested_entry.profile.user:
+        raise PermissionDenied
+
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentBetGroupForm(request.POST)
