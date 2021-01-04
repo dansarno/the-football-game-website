@@ -17,6 +17,13 @@ def index(request):
 
 
 @login_required
+def new_entry(request):
+    new = models.Entry(profile=request.user.profile)
+    new.save()
+    return entry(request, new.id)
+
+
+@login_required
 def entry(request, entry_id, template_name="enter/entry.html", success_url="enter:index"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
 
@@ -35,10 +42,6 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
         if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
                 and best_teams_success_bets_form.is_valid() and group_winner_bets_form.is_valid() and
                 fifty_fifty_bets_form.is_valid()):
-            existing_entries = request.user.profile.entry_set.all()
-            if not existing_entries:
-                new_entry = models.Entry(profile=request.user.profile)
-                new_entry.save()
             for field_name, field_value in group_matches_form.cleaned_data.items():
                 existing_match_bet = models.GroupMatchBet.objects.filter(bet__match=field_value.match,
                                                                          entry=requested_entry).first()

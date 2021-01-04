@@ -119,7 +119,7 @@ class TopGoalScoringGroupOutcome(models.Model):
 
 class TopGoalscoringGroupBet(models.Model):
     bet = models.ForeignKey(TopGoalScoringGroupOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Group {self.bet.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
@@ -148,7 +148,7 @@ class TopGoalScoringPlayerOutcome(models.Model):
 
 class TopGoalscoringPlayerBet(models.Model):
     player_bet = models.ForeignKey(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.player_bet.player.first_name} {self.player_bet.player.last_name} " \
