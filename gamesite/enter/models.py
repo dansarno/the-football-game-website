@@ -9,6 +9,7 @@ class Entry(models.Model):
         verbose_name_plural = "entries"
 
     date_created = models.DateTimeField(default=timezone.now)
+    date_updated = models.DateTimeField(auto_now=True)
     date_submitted = models.DateTimeField(blank=True, null=True)
     has_paid = models.BooleanField(default=False)
     has_submitted = models.BooleanField(default=False)

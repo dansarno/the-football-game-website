@@ -7,10 +7,15 @@
 <div class="row">
   {% for entry in entries %}
     <div class="col-md-6 col-lg-4">
-      <div class="entry_section">
-        <h3>Entry {{ forloop.counter }}</h3>
-        <h5>75% Complete</h5>
-        <a href="{% url 'enter:entry' entry.id %}">Edit Entry</a>
+      <div class="card border-dark mb-4">
+        <div class="card-header"><b>Entry {{ forloop.counter }}</b></div>
+        <div class="card-body">
+          <p class="card-text">75% Complete</p>
+          <a href="{% url 'enter:entry' entry.id %}" class="btn btn-outline-primary">Edit</a>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Last updated {{ entry.date_updated}}</small>
+        </div>
       </div>
      </div>
   {% endfor %}
@@ -19,7 +24,7 @@
   <div class="col-md-6 col-lg-4">
     <div class="new_entry_section">
       <h3>+</h3>
-      <a href="{% url 'enter:new_entry' %}">Add Entry</a>
+      <a href="{% url 'enter:new_entry' %}" class="btn btn-outline-primary">Add</a>
     </div>
    </div>
   {% endif %}

@@ -103,6 +103,9 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
             top_goal_player_bet = top_goal_player_bets_form.save(commit=False)
             top_goal_player_bet.entry = requested_entry
             top_goal_player_bet.save()
+
+            requested_entry.save()
+
             return HttpResponseRedirect(reverse(success_url))
         else:
             return render(request, template_name, {
