@@ -10,7 +10,9 @@
       <div class="card border-dark mb-4">
         <div class="card-header"><b>Entry {{ forloop.counter }}</b></div>
         <div class="card-body">
-          <p class="card-text">75% Complete</p>
+          <p class="card-text">Completed: 75%</p>
+          <p class="card-text">Submitted: {{ entry.has_submitted|yesno:"Yes,No" }}</p>
+          <p class="card-text">Paid: {{ entry.has_paid|yesno:"Yes,No" }}</p>
           <a href="{% url 'enter:entry' entry.id %}" class="btn btn-outline-primary">Edit</a>
         </div>
         <div class="card-footer">
