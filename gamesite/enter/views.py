@@ -164,6 +164,18 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 
 
 @login_required
+def delete_entry(request, entry_id, success_url="enter:index"):
+    requested_entry = get_object_or_404(models.Entry, id=entry_id)
+
+    if request.user != requested_entry.profile.user:
+        raise PermissionDenied
+
+    requested_entry.delete()
+
+    return HttpResponseRedirect(reverse(success_url))
+
+
+@login_required
 def confirm(request):
     return render(request, "enter/confirm.html", {
         "title": "Review and Confirm"

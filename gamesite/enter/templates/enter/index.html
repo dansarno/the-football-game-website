@@ -14,7 +14,7 @@
           <p class="card-text">Submitted: {{ entry.has_submitted|yesno:"Yes,No" }}</p>
           <p class="card-text">Paid: {{ entry.has_paid|yesno:"Yes,No" }}</p>
           <a href="{% url 'enter:entry' entry.id %}" class="btn btn-outline-primary mr-1">Edit</a>
-          <a href="#" class="btn btn-outline-danger">Delete</a>
+          <a href="{% url 'enter:delete_entry' entry.id %}" class="btn btn-outline-danger">Delete</a>
         </div>
         <div class="card-footer">
           <small class="text-muted">Last updated {{ entry.date_updated}}</small>
