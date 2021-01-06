@@ -35,48 +35,26 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
         tournament_bets_form = forms.TournamentBetGroupForm(request.POST)
         final_bets_form = forms.FinalBetGroupForm(request.POST)
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(request.POST)
-        group_winner_bets_form = forms.GroupWinnerOutcomeForm(request.POST)
+        group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(request.POST)
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(request.POST)
         top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
         if (group_matches_form.is_valid() and tournament_bets_form.is_valid() and final_bets_form.is_valid()
-                and best_teams_success_bets_form.is_valid() and group_winner_bets_form.is_valid() and
+                and best_teams_success_bets_form.is_valid() and group_winners_form.is_valid() and
                 fifty_fifty_bets_form.is_valid()):
-            for field_name, field_value in group_matches_form.cleaned_data.items():
-                existing_match_bet = models.GroupMatchBet.objects.filter(bet__match=field_value.match,
-                                                                         entry=requested_entry).first()
-                if existing_match_bet:
-                    existing_match_bet.bet = field_value
-                    existing_match_bet.save()
-                else:
-                    new_bet = models.GroupMatchBet(bet=field_value, entry=requested_entry)
-                    new_bet.save()
 
-            for field_name, field_value in group_winner_bets_form.cleaned_data.items():
-                existing_group_winner_bet = models.GroupWinnerBet.objects.filter(bet__group=field_value.group,
-                                                                                 entry=requested_entry).first()
-                if existing_group_winner_bet:
-                    existing_group_winner_bet.bet = field_value
-                    existing_group_winner_bet.save()
-                else:
-                    new_bet = models.GroupWinnerBet(bet=field_value, entry=requested_entry)
-                    new_bet.save()
-
-            for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
-                existing_fifty_fifty_bet = models.FiftyFiftyBet.objects.filter(bet__fifty_fifty=field_value.fifty_fifty,
-                                                                               entry=requested_entry).first()
-                if existing_fifty_fifty_bet:
-                    existing_fifty_fifty_bet.bet = field_value
-                    existing_fifty_fifty_bet.save()
-                else:
-                    new_bet = models.FiftyFiftyBet(bet=field_value, entry=requested_entry)
-                    new_bet.save()
-
+            existing_match_bets = models.GroupMatchBetGroup.objects.filter(entry=requested_entry).first()
+            existing_group_winner_bets = models.GroupWinnerBetGroup.objects.filter(entry=requested_entry).first()
             existing_tournament_bets = models.TournamentBetGroup.objects.filter(entry=requested_entry).first()
             existing_final_bets = models.FinalBetGroup.objects.filter(entry=requested_entry).first()
             existing_top_teams_bets = models.BestTeamsSuccessBetGroup.objects.filter(entry=requested_entry).first()
             existing_top_goal_group_bet = models.TopGoalscoringGroupBet.objects.filter(entry=requested_entry).first()
             existing_top_goal_player_bet = models.TopGoalscoringPlayerBet.objects.filter(entry=requested_entry).first()
+            existing_fifty_fifty_bets = models.FiftyFiftyBetGroup.objects.filter(entry=requested_entry).first()
+            if existing_match_bets:
+                existing_match_bets.delete()  # Seems insecure!!!
+            if existing_group_winner_bets:
+                existing_group_winner_bets.delete()  # Seems insecure!!!
             if existing_tournament_bets:
                 existing_tournament_bets.delete()  # Seems insecure!!!
             if existing_final_bets:
@@ -87,7 +65,15 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
                 existing_top_goal_group_bet.delete()  # Seems insecure!!!
             if existing_top_goal_player_bet:
                 existing_top_goal_player_bet.delete()  # Seems insecure!!!
+            if existing_fifty_fifty_bets:
+                existing_fifty_fifty_bets.delete()  # Seems insecure!!!
 
+            match_bets = group_matches_form.save(commit=False)
+            match_bets.entry = requested_entry
+            match_bets.save()
+            group_winners_bets = group_winners_form.save(commit=False)
+            group_winners_bets.entry = requested_entry
+            group_winners_bets.save()
             tournament_bets = tournament_bets_form.save(commit=False)
             tournament_bets.entry = requested_entry
             tournament_bets.save()
@@ -103,6 +89,9 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
             top_goal_player_bet = top_goal_player_bets_form.save(commit=False)
             top_goal_player_bet.entry = requested_entry
             top_goal_player_bet.save()
+            fifty_fifty_bets = fifty_fifty_bets_form.save(commit=False)
+            fifty_fifty_bets.entry = requested_entry
+            fifty_fifty_bets.save()
 
             requested_entry.save()
 
@@ -114,7 +103,7 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
                 "tournament_bets_form": tournament_bets_form,
                 "final_bets_form": final_bets_form,
                 "best_teams_success_bets_form": best_teams_success_bets_form,
-                "group_winner_bets_form": group_winner_bets_form,
+                "group_winner_bets_form": group_winners_form,
                 "fifty_fifty_bets_form": fifty_fifty_bets_form,
                 "top_goal_group_bets_form": top_goal_group_bets_form,
                 "top_goal_player_bets_form": top_goal_player_bets_form
@@ -122,15 +111,14 @@ def entry(request, entry_id, template_name="enter/entry.html", success_url="ente
 
     return render(request, template_name, {
         "title": "Enter",
-        "group_matches_form": forms.GroupMatchOutcomeForm(),
-        "tournament_bets_form": forms.TournamentBetGroupForm(),
-        # instance=request.user.profile.entry_set.first().tournamentbetgroup
-        "final_bets_form": forms.FinalBetGroupForm(),
-        "best_teams_success_bets_form": forms.BestTeamsSuccessBetGroupForm(),
-        "group_winner_bets_form": forms.GroupWinnerOutcomeForm(),
-        "fifty_fifty_bets_form": forms.FiftyFiftyOutcomeForm(),
-        "top_goal_group_bets_form": forms.TopGoalScoringGroupBetForm(),
-        "top_goal_player_bets_form": forms.TopGoalScoringPlayerBetForm()
+        "group_matches_form": forms.GroupMatchOutcomeForm(instance=requested_entry.groupmatchbetgroup),
+        "tournament_bets_form": forms.TournamentBetGroupForm(instance=requested_entry.tournamentbetgroup),
+        "final_bets_form": forms.FinalBetGroupForm(instance=requested_entry.finalbetgroup),
+        "best_teams_success_bets_form": forms.BestTeamsSuccessBetGroupForm(instance=requested_entry.bestteamssuccessbetgroup),
+        "group_winner_bets_form": forms.GroupWinnerOutcomeForm(instance=requested_entry.groupwinnerbetgroup),
+        "fifty_fifty_bets_form": forms.FiftyFiftyOutcomeForm(instance=requested_entry.fiftyfiftybetgroup),
+        "top_goal_group_bets_form": forms.TopGoalScoringGroupBetForm(instance=requested_entry.topgoalscoringgroupbet),
+        "top_goal_player_bets_form": forms.TopGoalScoringPlayerBetForm(instance=requested_entry.topgoalscoringplayerbet)
     })
 
 

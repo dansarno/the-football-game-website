@@ -101,6 +101,11 @@ class GroupMatchBetAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(models.GroupMatchBetGroup)
+class GroupMatchBetGroupAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.FinalBetGroup)
 class FinalBetGroupAdmin(admin.ModelAdmin):
     pass
@@ -181,6 +186,11 @@ class GroupWinnerBetAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(models.GroupWinnerBetGroup)
+class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.FiftyFiftyOutcome)
 class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
     pass
@@ -188,6 +198,11 @@ class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(models.FiftyFiftyBet)
 class FiftyFiftyBetAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FiftyFiftyBetGroup)
+class FiftyFiftyBetGroupAdmin(admin.ModelAdmin):
     pass
 
 
