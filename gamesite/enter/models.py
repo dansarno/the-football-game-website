@@ -102,14 +102,6 @@ class GroupWinnerOutcome(models.Model):
         return f"Group {self.group.name}, {self.team.country.name} = {self.winning_amount}"
 
 
-class GroupWinnerBet(models.Model):
-    bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Group {self.bet.group.name}, {self.bet.team.country.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
-
-
 class GroupWinnerBetGroup(models.Model):
     group_a_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupAoutcome_set')
     group_b_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupBoutcome_set')
@@ -253,14 +245,6 @@ class FiftyFiftyOutcome(models.Model):
 
     def __str__(self):
         return f"{self.fifty_fifty.question}, {self.outcome} = {self.winning_amount}"
-
-
-class FiftyFiftyBet(models.Model):
-    bet = models.ForeignKey(FiftyFiftyOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.bet.fifty_fifty.question}, {self.bet.outcome}  by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class FiftyFiftyBetGroup(models.Model):
@@ -435,15 +419,6 @@ class GroupMatchOutcome(models.Model):
 
     def __str__(self):
         return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.outcome} = {self.winning_amount}"
-
-
-class GroupMatchBet(models.Model):
-    bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, default=None)
-
-    def __str__(self):
-        return f"Bet ({self.bet.outcome}) on {self.bet.match.home_team.country.country_code} vs " \
-               f"{self.bet.match.away_team.country.country_code} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class GroupMatchBetGroup(models.Model):

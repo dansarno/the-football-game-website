@@ -96,11 +96,6 @@ class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.GroupMatchBet)
-class GroupMatchBetAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(models.GroupMatchBetGroup)
 class GroupMatchBetGroupAdmin(admin.ModelAdmin):
     pass
@@ -181,11 +176,6 @@ class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.GroupWinnerBet)
-class GroupWinnerBetAdmin(admin.ModelAdmin):
-    pass
-
-
 @admin.register(models.GroupWinnerBetGroup)
 class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
     pass
@@ -193,11 +183,6 @@ class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
 
 @admin.register(models.FiftyFiftyOutcome)
 class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FiftyFiftyBet)
-class FiftyFiftyBetAdmin(admin.ModelAdmin):
     pass
 
 
