@@ -89,6 +89,11 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
 
 
 @login_required
+def create_random_entry(request, template_name="enter/entry.html", success_url="enter:index"):
+    pass
+
+
+@login_required
 def edit_entry(request, entry_id, template_name="enter/entry.html", success_url="enter:index"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
 

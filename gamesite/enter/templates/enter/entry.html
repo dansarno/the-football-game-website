@@ -24,7 +24,9 @@
           <td class="match_label text-muted">{{ field.label.ko_time|date:'D d' }}</td>
           <td class="match_label">{{ field.label.home_team.country.name }} vs {{ field.label.away_team.country.name }}</td>
           {% for radio in field %}
-          <td class="match_radio text-muted">{{ radio }}</td>
+          <td class="text-muted">
+              {{ radio }}
+          </td>
           {% endfor %}
         </tr>
         {% endfor %}
