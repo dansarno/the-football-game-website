@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'score')
 
 
 @admin.register(models.Team)
@@ -33,7 +33,8 @@ class FinalMatchAdmin(admin.ModelAdmin):
 
 @admin.register(models.GroupMatch)
 class GroupMatchAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('groupmatch', 'result')
+    ordering = ['match_number']
 
 
 @admin.register(models.GroupMatchOutcome)

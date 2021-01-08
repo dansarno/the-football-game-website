@@ -15,6 +15,7 @@ class Entry(models.Model):
     has_submitted = models.BooleanField(default=False)
     position = models.IntegerField(blank=True, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
 
     def __str__(self):
         return f"Entry {self.id}: {self.profile.user.username}"
