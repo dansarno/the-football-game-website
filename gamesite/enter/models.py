@@ -422,6 +422,11 @@ class GroupMatchOutcome(models.Model):
         return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.outcome} = {self.winning_amount}"
 
 
+class GroupMatchBet(models.Model):
+    bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+
+
 class GroupMatchBetGroup(models.Model):
     match1_bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE, related_name='match1outcome_set')
     match2_bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE, related_name='match2outcome_set')
