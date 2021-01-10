@@ -399,7 +399,7 @@ class Match(models.Model):
         )
 
     def __str__(self):
-        return f"Match {self.match_number}: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
+        return f"Match {self.match_number}"
 
 
 class GroupMatch(Match):
@@ -420,11 +420,6 @@ class GroupMatchOutcome(models.Model):
 
     def __str__(self):
         return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.outcome} = {self.winning_amount}"
-
-
-class GroupMatchBet(models.Model):
-    bet = models.ForeignKey(GroupMatchOutcome, on_delete=models.CASCADE)
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
 
 class GroupMatchBetGroup(models.Model):
