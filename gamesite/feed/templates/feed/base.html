@@ -57,19 +57,18 @@
     <div class="row">
       <div class="col-3">
         <div class="sticky-top sticky-offset">
-          <p>
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><i class="fas fa-cloud"></i>
-              <a class="nav-item nav-link" href="{% url 'feed:home' %}">Home</a>
-            </li>
-            <li class="list-group-item list-group-item-light">Profile</li>
-            <li class="list-group-item list-group-item-light">Table</li>
-            <li class="list-group-item list-group-item-light">Explore</li>
-            <li class="list-group-item list-group-item-light">Matches</li>
-            <li class="list-group-item list-group-item-light">About</li>
-            <li class="list-group-item list-group-item-light">Contact</li>
-          </ul>
-          </p>
+          <div class="card account-profile">
+          {% if user.is_authenticated %}
+            <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
+            <a class="nav-item nav-link" href="{% url 'profile' username=request.user.username %}">
+              {% if request.user.first_name and user.last_name %}
+              {{ request.user.first_name }} {{ request.user.last_name }}
+              {% else %}
+              {{ request.user.username }}
+              {% endif %}
+            </a>
+          {% endif %}
+          </div>
         </div>
       </div>
       <div class="col-9 mt-4">
