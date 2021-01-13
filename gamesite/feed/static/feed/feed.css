@@ -147,3 +147,15 @@ a.article-title:hover {
   padding: 0; /* Remove padding */
   margin: 0; /* Remove margins */
 }
+
+.circle {
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  border-radius: 50%;
+  border-color: #000000;
+  font-size: 20px;
+  color: #000000;
+  text-align: center;
+  background: #dedede;
+}

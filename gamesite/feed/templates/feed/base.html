@@ -57,7 +57,7 @@
     <div class="row">
       <div class="col-3">
         <div class="sticky-top sticky-offset">
-          <div class="card" id="account-profile">
+          <div class="card border-light shadow-sm" id="account-profile">
             <div class="card-body text-center">
               <a href="{% url 'profile' username=request.user.username %}">
                 <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
@@ -70,11 +70,9 @@
               {% endif %}
               </div>
               <h5>Score</h5>
-              <ul class="score-list">
-                {% for entry in request.user.profile.entry_set.all %}
-                  <li>Entry {{ forloop.counter}}: {{ entry.score }}</li>
-                {% endfor %}
-              </ul>
+              {% for entry in request.user.profile.entry_set.all %}
+                <div class="circle">{{ entry.score }}</div>
+              {% endfor %}
             </div>
             <div class="card-footer">
             </div>

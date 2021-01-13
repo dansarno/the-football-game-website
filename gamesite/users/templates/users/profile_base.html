@@ -1,9 +1,13 @@
 {% extends "feed/base.html" %}
 
 {% block content %}
-<div class="content-section">
-  <div class="media">
-    <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}">
+<div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2">
+        <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}">
+      </div>
+      <div class="col-10">
     <div class="media-body">
       {% if user.first_name and user.last_name %}
       <h2 class="account-heading">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</h2>
@@ -14,12 +18,14 @@
       {% block button %}
       {% endblock button %}
       {% endif %}
+      </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="content-section">
-  <div class="media">
+<div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
     {% block profile %}
     {% endblock profile %}
   </div>

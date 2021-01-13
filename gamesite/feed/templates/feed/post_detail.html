@@ -1,21 +1,30 @@
 {% extends "feed/base.html" %}
 
 {% block content %}
-<article class="media content-section">
-  <img class="rounded-circle article-img" src="{{ object.author.profile.profile_picture.url }}">
-  <div class="media-body">
-    <div class="article-metadata">
-      <a class="mr-2" href="#">{{ object.author }}</a>
-      <small class="text-muted">{{ object.date_posted }}</small>
-      {% if object.author == user %}
-      <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'feed:update' object.id %}">Update</a>
-        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'feed:delete' object.id %}">Delete</a>
+<h2>Post Detail</h2>
+<div class="card border-light shadow-sm">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-1">
+        <img class="rounded-circle article-img" src="{{ object.author.profile.profile_picture.url }}">
       </div>
-      {% endif %}
+      <div class="col-11">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'profile' username=post.author.username %}">{{ object.author }}</a>
+            <small class="text-muted">{{ object.date_posted }}</small>
+            {% if object.author == user %}
+            <div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'feed:update' object.id %}">Update</a>
+              <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'feed:delete' object.id %}">Delete</a>
+            </div>
+            {% endif %}
+          </div>
+          <h3 class="article-title">{{ object.title|title }}</h3>
+          <p class="article-content">{{ object.content }}</p>
+        </div>
+      </div>
     </div>
-    <h3 class="article-title">{{ object.title|title }}</h3>
-    <p class="article-content">{{ object.content }}</p>
   </div>
-</article>
+</div>
 {% endblock content %}
