@@ -219,7 +219,12 @@ class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(models.History)
 class HistoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'show_winning_amount', 'date')
+
+    def show_winning_amount(self, obj):
+        return obj.outcome.get_value().winning_amount
+
+    show_winning_amount.short_description = 'Winning Amount'
 
 
 @admin.register(models.Outcome)

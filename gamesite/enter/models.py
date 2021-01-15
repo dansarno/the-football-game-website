@@ -612,29 +612,48 @@ class Bets(models.Model):
 
 
 class Outcome(models.Model):
-    group_match_outcome = models.OneToOneField(GroupMatchOutcome, on_delete=models.CASCADE)
-    group_winner_outcome = models.OneToOneField(GroupWinnerOutcome, on_delete=models.CASCADE)
-    top_goalscoring_group_outcome = models.OneToOneField(TopGoalScoringGroupOutcome, on_delete=models.CASCADE)
-    top_goalscoring_player_outcome = models.OneToOneField(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
-    to_reach_semifinal_outcome = models.OneToOneField(ToReachSemiFinalOutcome, on_delete=models.CASCADE)
-    to_reach_final_outcome = models.OneToOneField(ToReachFinalOutcome, on_delete=models.CASCADE)
-    to_win_outcome = models.OneToOneField(ToWinOutcome, on_delete=models.CASCADE)
-    highest_scoring_team_outcome = models.OneToOneField(HighestScoringTeamOutcome, on_delete=models.CASCADE)
-    most_yellow_cards_outcome = models.OneToOneField(MostYellowCardsOutcome, on_delete=models.CASCADE)
-    fastest_goal_outcome = models.OneToOneField(FastestGoalOutcome, on_delete=models.CASCADE)
-    fastest_yellow_cards_outcome = models.OneToOneField(FastestYellowCardsOutcome, on_delete=models.CASCADE)
-    fifty_fifty_outcome = models.OneToOneField(FiftyFiftyOutcome, on_delete=models.CASCADE)
-    tournament_red_cards_outcome = models.OneToOneField(TournamentRedCardsOutcome, on_delete=models.CASCADE)
-    tournament_own_goals_outcome = models.OneToOneField(TournamentOwnGoalsOutcome, on_delete=models.CASCADE)
-    tournament_goals_outcome = models.OneToOneField(TournamentGoalsOutcome, on_delete=models.CASCADE)
-    tournament_hattricks_outcome = models.OneToOneField(TournamentHattricksOutcome, on_delete=models.CASCADE)
-    final_first_goal_outcome = models.OneToOneField(FinalFirstGoalOutcome, on_delete=models.CASCADE)
-    final_goals_outcome = models.OneToOneField(FinalGoalsOutcome, on_delete=models.CASCADE)
-    final_own_goals_outcome = models.OneToOneField(FinalOwnGoalOutcome, on_delete=models.CASCADE)
-    final_ref_continent_outcome = models.OneToOneField(FinalRefContinentOutcome, on_delete=models.CASCADE)
-    final_yellow_cards_outcome = models.OneToOneField(FinalYellowCardsOutcome, on_delete=models.CASCADE)
+    group_match_outcome = models.OneToOneField(GroupMatchOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    group_winner_outcome = models.OneToOneField(GroupWinnerOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    top_goalscoring_group_outcome = models.OneToOneField(TopGoalScoringGroupOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    top_goalscoring_player_outcome = models.OneToOneField(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    to_reach_semifinal_outcome = models.OneToOneField(ToReachSemiFinalOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    to_reach_final_outcome = models.OneToOneField(ToReachFinalOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    to_win_outcome = models.OneToOneField(ToWinOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    highest_scoring_team_outcome = models.OneToOneField(HighestScoringTeamOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    most_yellow_cards_outcome = models.OneToOneField(MostYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    fastest_goal_outcome = models.OneToOneField(FastestGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    fastest_yellow_cards_outcome = models.OneToOneField(FastestYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    fifty_fifty_outcome = models.OneToOneField(FiftyFiftyOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    tournament_red_cards_outcome = models.OneToOneField(TournamentRedCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    tournament_own_goals_outcome = models.OneToOneField(TournamentOwnGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    tournament_goals_outcome = models.OneToOneField(TournamentGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    tournament_hattricks_outcome = models.OneToOneField(TournamentHattricksOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    final_first_goal_outcome = models.OneToOneField(FinalFirstGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    final_goals_outcome = models.OneToOneField(FinalGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    final_own_goals_outcome = models.OneToOneField(FinalOwnGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    final_ref_continent_outcome = models.OneToOneField(FinalRefContinentOutcome, on_delete=models.CASCADE, null=True, blank=True)
+    final_yellow_cards_outcome = models.OneToOneField(FinalYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
+
+    def get_value(self):
+        for field in Outcome._meta.fields:
+            if field.name in ('group_match_outcome', 'group_winner_outcome', 'top_goalscoring_group_outcome',
+                              'top_goalscoring_player_outcome', 'to_reach_semifinal_outcome', 'to_reach_final_outcome',
+                              'to_win_outcome', 'highest_scoring_team_outcome', 'most_yellow_cards_outcome',
+                              'fastest_goal_outcome', 'fastest_yellow_cards_outcome', 'fifty_fifty_outcome',
+                              'tournament_red_cards_outcome', 'tournament_own_goals_outcome',
+                              'tournament_goals_outcome', 'tournament_hattricks_outcome', 'final_first_goal_outcome',
+                              'final_goals_outcome', 'final_own_goals_outcome', 'final_ref_continent_outcome',
+                              'final_yellow_cards_outcome'):
+                if getattr(self, field.name):
+                    return getattr(self, field.name)
+
+    def __str__(self):
+        return self.get_value().__str__()
 
 
 class History(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.outcome}"
