@@ -588,27 +588,27 @@ class FinalBetGroup(models.Model):
         return f"Final bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
-class Bets(models.Model):
-    GROUP_MATCHES = "FM"
-    GROUP_WINNERS = "GW"
-    TOP_GOALSCORING_GROUP = "TG"
-    TOP_GOALSCORING_PLAYER = "TP"
-    BEST_TEAMS_SUCCESS = "TS"
-    FIFTY_FIFTIES = "FF"
-    TOURNAMENT_CHOICES = "TC"
-    FINAL_CHOICES = "FC"
-    BET_CATEGORY_CHOICES = [
-        (GROUP_MATCHES, "Group Matches"),
-        (GROUP_WINNERS, "Group Winners"),
-        (TOP_GOALSCORING_GROUP, "Top Goalscoring Group"),
-        (TOP_GOALSCORING_PLAYER, "Top Goalscoring Player"),
-        (BEST_TEAMS_SUCCESS, "Best Teams Success"),
-        (FIFTY_FIFTIES, "50/50s"),
-        (TOURNAMENT_CHOICES, "Tournament Multiple Choice"),
-        (FINAL_CHOICES, "Final Multiple Choice")
-    ]
-
-    category = models.CharField(max_length=2, choices=BET_CATEGORY_CHOICES)
+# class Bets(models.Model):
+#     GROUP_MATCHES = "FM"
+#     GROUP_WINNERS = "GW"
+#     TOP_GOALSCORING_GROUP = "TG"
+#     TOP_GOALSCORING_PLAYER = "TP"
+#     BEST_TEAMS_SUCCESS = "TS"
+#     FIFTY_FIFTIES = "FF"
+#     TOURNAMENT_CHOICES = "TC"
+#     FINAL_CHOICES = "FC"
+#     BET_CATEGORY_CHOICES = [
+#         (GROUP_MATCHES, "Group Matches"),
+#         (GROUP_WINNERS, "Group Winners"),
+#         (TOP_GOALSCORING_GROUP, "Top Goalscoring Group"),
+#         (TOP_GOALSCORING_PLAYER, "Top Goalscoring Player"),
+#         (BEST_TEAMS_SUCCESS, "Best Teams Success"),
+#         (FIFTY_FIFTIES, "50/50s"),
+#         (TOURNAMENT_CHOICES, "Tournament Multiple Choice"),
+#         (FINAL_CHOICES, "Final Multiple Choice")
+#     ]
+#
+#     category = models.CharField(max_length=2, choices=BET_CATEGORY_CHOICES)
 
 
 class Outcome(models.Model):
@@ -634,7 +634,7 @@ class Outcome(models.Model):
     final_ref_continent_outcome = models.OneToOneField(FinalRefContinentOutcome, on_delete=models.CASCADE, null=True, blank=True)
     final_yellow_cards_outcome = models.OneToOneField(FinalYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
 
-    def get_value(self):
+    def get_outcome(self):
         for field in Outcome._meta.fields:
             if field.name in ('group_match_outcome', 'group_winner_outcome', 'top_goalscoring_group_outcome',
                               'top_goalscoring_player_outcome', 'to_reach_semifinal_outcome', 'to_reach_final_outcome',
@@ -648,7 +648,7 @@ class Outcome(models.Model):
                     return getattr(self, field.name)
 
     def __str__(self):
-        return self.get_value().__str__()
+        return self.get_outcome().__str__()
 
 
 class History(models.Model):

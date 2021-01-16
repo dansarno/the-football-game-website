@@ -222,7 +222,7 @@ class HistoryAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'show_winning_amount', 'date')
 
     def show_winning_amount(self, obj):
-        return obj.outcome.get_value().winning_amount
+        return obj.outcome.get_outcome().winning_amount
 
     show_winning_amount.short_description = 'Winning Amount'
 

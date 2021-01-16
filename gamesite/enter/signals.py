@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.db.models import Q
 from . import models
@@ -124,14 +124,13 @@ from . import models
 #             new_successful_bet_group.entry.save()
 
 
-@receiver(pre_save, sender=models.GroupMatch)
+@receiver(post_save, sender=models.GroupMatch)
 def match_result(sender, instance, **kwargs):
     correct_outcome = None
     if instance.result:
         correct_outcome = instance.groupmatchoutcome_set.get(choice=instance.result)
-    this_match_outcomes = instance.groupmatchoutcome_set.all()
     for event in models.History.objects.all():
-        if event.outcome.group_match_outcome in this_match_outcomes:
+        if instance == event.outcome.get_outcome().match:
             if correct_outcome:
                 event.outcome.group_match_outcome = correct_outcome
                 event.outcome.save()
@@ -145,3 +144,20 @@ def match_result(sender, instance, **kwargs):
     new_event = models.History(outcome=new_outcome)
     new_event.save()
     return
+
+
+@receiver(post_save, sender=models.History)
+def update_scores(sender, instance, **kwargs):
+    for entry in models.Entry.objects.all():
+        score_total = 0
+        entry_bets = entry.bet_set
+        for event in models.History.objects.all():
+            if event.outcome in entry_bets:
+                score_total += event.outcome.get_outcome().winning_amount
+        entry.score = score_total
+        entry.save()
+
+
+@receiver(post_delete, sender=models.History)
+def subtract_scores(sender, instance, **kwargs):
+    pass
