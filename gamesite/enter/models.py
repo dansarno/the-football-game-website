@@ -21,6 +21,13 @@ class Entry(models.Model):
         return f"Entry {self.id}: {self.profile.user.username}"
 
 
+class Bet(models.Model):
+    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
 class Tournament(models.Model):
     name = models.CharField(max_length=20)
     goals_scored = models.IntegerField(default=0)
@@ -124,12 +131,11 @@ class TopGoalScoringGroupOutcome(models.Model):
         return f"Group {self.group.name} = {self.winning_amount}"
 
 
-class TopGoalscoringGroupBet(models.Model):
-    bet = models.ForeignKey(TopGoalScoringGroupOutcome, on_delete=models.CASCADE)
-    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+class TopGoalscoringGroupBet(Bet):
+    choice = models.ForeignKey(TopGoalScoringGroupOutcome, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.bet.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
+        return f"Group {self.choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class Player(models.Model):
@@ -153,12 +159,11 @@ class TopGoalScoringPlayerOutcome(models.Model):
         return f"{self.player.first_name} {self.player.last_name} = {self.winning_amount}"
 
 
-class TopGoalscoringPlayerBet(models.Model):
-    player_bet = models.ForeignKey(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
-    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+class TopGoalscoringPlayerBet(Bet):
+    choice = models.ForeignKey(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.player_bet.player.first_name} {self.player_bet.player.last_name} " \
+        return f"{self.choice.player.first_name} {self.choice.player.last_name} " \
                f"by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
