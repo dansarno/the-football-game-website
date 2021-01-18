@@ -130,7 +130,7 @@ def match_result(sender, instance, **kwargs):
     if instance.result:
         correct_outcome = instance.groupmatchoutcome_set.get(choice=instance.result)
     for event in models.History.objects.all():
-        if instance == event.outcome.get_outcome().match:
+        if instance == event.outcome.outcome.match:
             if correct_outcome:
                 event.outcome.group_match_outcome = correct_outcome
                 event.outcome.save()
@@ -139,10 +139,8 @@ def match_result(sender, instance, **kwargs):
                 event.outcome.delete()
                 event.delete()
             return
-    new_outcome = models.Outcome(group_match_outcome=correct_outcome)
-    new_outcome.save()
-    new_event = models.History(outcome=new_outcome)
-    new_event.save()
+    new_outcome = models.Outcome.objects.create(group_match_outcome=correct_outcome)
+    models.History.objects.create(outcome=new_outcome)
     return
 
 
@@ -153,11 +151,11 @@ def update_scores(sender, instance, **kwargs):
         entry_bets = entry.bet_set
         for event in models.History.objects.all():
             if event.outcome in entry_bets:
-                score_total += event.outcome.get_outcome().winning_amount
+                score_total += event.outcome.outcome.winning_amount
         entry.score = score_total
         entry.save()
 
 
 @receiver(post_delete, sender=models.History)
 def subtract_scores(sender, instance, **kwargs):
-    pass
+    print("Hello")

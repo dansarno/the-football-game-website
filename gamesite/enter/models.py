@@ -639,7 +639,8 @@ class Outcome(models.Model):
     final_ref_continent_outcome = models.OneToOneField(FinalRefContinentOutcome, on_delete=models.CASCADE, null=True, blank=True)
     final_yellow_cards_outcome = models.OneToOneField(FinalYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
 
-    def get_outcome(self):
+    @property
+    def outcome(self):
         for field in Outcome._meta.fields:
             if field.name in ('group_match_outcome', 'group_winner_outcome', 'top_goalscoring_group_outcome',
                               'top_goalscoring_player_outcome', 'to_reach_semifinal_outcome', 'to_reach_final_outcome',
@@ -653,7 +654,7 @@ class Outcome(models.Model):
                     return getattr(self, field.name)
 
     def __str__(self):
-        return self.get_outcome().__str__()
+        return self.outcome.__str__()
 
 
 class History(models.Model):
