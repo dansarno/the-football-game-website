@@ -272,7 +272,7 @@ class FiftyFiftyOutcomeForm(forms.ModelForm):
 
 
 class TopGoalScoringGroupBetForm(forms.ModelForm):
-    bet = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
+    group_choice = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
                                required=True,
                                widget=forms.RadioSelect)
 
@@ -282,7 +282,7 @@ class TopGoalScoringGroupBetForm(forms.ModelForm):
 
 
 class TopGoalScoringPlayerBetForm(forms.ModelForm):
-    player_bet = NameModelChoiceField(
+    choice = NameModelChoiceField(
         queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
         required=True,
         widget=forms.RadioSelect)
