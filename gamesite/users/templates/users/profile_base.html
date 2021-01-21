@@ -8,17 +8,17 @@
         <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}">
       </div>
       <div class="col-10">
-    <div class="media-body">
-      {% if user.first_name and user.last_name %}
-      <h2 class="account-heading">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</h2>
-      {% else %}
-      <h2 class="account-heading">{{ user.username }}</h2>
-      {% endif %}
-      {% if request.user == user %}
-      {% block button %}
-      {% endblock button %}
-      {% endif %}
-      </div>
+        <div class="media-body">
+          {% if user.first_name and user.last_name %}
+          <h2 class="account-heading">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</h2>
+          {% else %}
+          <h2 class="account-heading">{{ user.username }}</h2>
+          {% endif %}
+          {% if request.user == user %}
+          {% block button %}
+          {% endblock button %}
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

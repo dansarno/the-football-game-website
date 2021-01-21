@@ -63,15 +63,15 @@
                 <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
               </a>
               <div>
-              {% if request.user.first_name and user.last_name %}
-              <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
-              {% else %}
-              <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.username }}</a>
-              {% endif %}
+                {% if request.user.first_name and user.last_name %}
+                <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
+                {% else %}
+                <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.username }}</a>
+                {% endif %}
               </div>
               <h5>Score</h5>
               {% for entry in request.user.profile.entry_set.all %}
-                <div class="circle">{{ entry.score }}</div>
+              <div class="circle">{{ entry.score }}</div>
               {% endfor %}
             </div>
             <div class="card-footer">
