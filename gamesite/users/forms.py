@@ -6,12 +6,14 @@ from .models import Profile, AccessCode
 
 
 class UserRegisterForm(UserCreationForm):
+    first_name = forms.CharField(max_length=150)
+    last_name = forms.CharField(max_length=150)
     email = forms.EmailField()
     access_code = forms.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2', 'access_code']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'access_code']
 
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")
