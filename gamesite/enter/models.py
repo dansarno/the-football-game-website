@@ -135,7 +135,7 @@ class TopGoalscoringGroupBet(Bet):
     group_choice = models.ForeignKey(TopGoalScoringGroupOutcome, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
+        return f"Group {self.group_choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class Player(models.Model):
