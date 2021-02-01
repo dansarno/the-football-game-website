@@ -1,17 +1,25 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 
 
-class PostListView(ListView):
+def landing(request):
+    if request.user.is_authenticated:
+        return redirect('feed:home')
+    return render(request, 'feed/landing.html', {
+        'title': "Welcome",
+    })
+
+
+class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'feed/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post
 
 

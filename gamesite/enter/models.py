@@ -22,10 +22,7 @@ class Entry(models.Model):
 
 
 class Bet(models.Model):
-    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
 
 
 class Tournament(models.Model):
@@ -108,6 +105,13 @@ class GroupWinnerOutcome(models.Model):
 
     def __str__(self):
         return f"Group {self.group.name}, {self.team.country.name} = {self.winning_amount}"
+#
+#
+# class GroupWinnerBet(Bet):
+#     group_winner_choice = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f"Group {self.group_winner_choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class GroupWinnerBetGroup(models.Model):
