@@ -7,7 +7,7 @@ from .models import Post
 def landing(request):
     if request.user.is_authenticated:
         return redirect('feed:home')
-    return render(request, 'feed/landing.html', {
+    return render(request, 'feed/landing_uisual.html', {
         'title': "Welcome",
     })
 
