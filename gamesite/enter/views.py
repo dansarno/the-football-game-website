@@ -39,12 +39,15 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
             new_entry = models.Entry(profile=request.user.profile)
             new_entry.save()
 
+            for field_name, field_value in group_winners_form.cleaned_data.items():
+                models.GroupWinnerBet.objects.create(group_winner_choice=field_value, entry=new_entry)
+
             match_bets = group_matches_form.save(commit=False)
             match_bets.entry = new_entry
             match_bets.save()
-            group_winners_bets = group_winners_form.save(commit=False)
-            group_winners_bets.entry = new_entry
-            group_winners_bets.save()
+            # group_winners_bets = group_winners_form.save(commit=False)
+            # group_winners_bets.entry = new_entry
+            # group_winners_bets.save()
             tournament_bets = tournament_bets_form.save(commit=False)
             tournament_bets.entry = new_entry
             tournament_bets.save()
@@ -150,10 +153,22 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         tournament_bets_form = forms.TournamentBetGroupForm(instance=requested_entry.tournamentbetgroup)
         final_bets_form = forms.FinalBetGroupForm(instance=requested_entry.finalbetgroup)
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(instance=requested_entry.bestteamssuccessbetgroup)
-        group_winners_form = forms.GroupWinnerOutcomeForm(instance=requested_entry.groupwinnerbetgroup)
+        group_winner_bets = models.GroupWinnerBet.objects.filter(entry=requested_entry)
+        data = {'group_a_winner_bet': group_winner_bets[0].group_winner_choice,
+                'group_b_winner_bet': group_winner_bets[1].group_winner_choice,
+                'group_c_winner_bet': group_winner_bets[2].group_winner_choice,
+                'group_d_winner_bet': group_winner_bets[3].group_winner_choice,
+                'group_e_winner_bet': group_winner_bets[4].group_winner_choice,
+                'group_f_winner_bet': group_winner_bets[5].group_winner_choice
+                }
+        group_winners_form = forms.GroupWinnerOutcomeForm(initial=data)
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(instance=requested_entry.fiftyfiftybetgroup)
-        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(instance=requested_entry.topgoalscoringgroupbet)
-        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(instance=requested_entry.topgoalscoringplayerbet)
+        tsg_bet = models.TopGoalscoringGroupBet.objects.get(entry=requested_entry)
+        data = {'group_choice': tsg_bet.group_choice}
+        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(initial=data)
+        tsp_bet = models.TopGoalscoringPlayerBet.objects.get(entry=requested_entry)
+        data = {'choice': tsp_bet.choice}
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(initial=data)
 
     return render(request, template_name, {
         "title": "Enter",

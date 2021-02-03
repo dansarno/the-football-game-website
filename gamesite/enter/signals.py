@@ -144,16 +144,16 @@ def match_result(sender, instance, **kwargs):
     return
 
 
-@receiver(post_save, sender=models.History)
-def update_scores(sender, instance, **kwargs):
-    for entry in models.Entry.objects.all():
-        score_total = 0
-        entry_bets = entry.bet_set
-        for event in models.History.objects.all():
-            if event.outcome in entry_bets:
-                score_total += event.outcome.outcome.winning_amount
-        entry.score = score_total
-        entry.save()
+# @receiver(post_save, sender=models.History)
+# def update_scores(sender, instance, **kwargs):
+#     for entry in models.Entry.objects.all():
+#         score_total = 0
+#         entry_bets = entry.bet_set
+#         for event in models.History.objects.all():
+#             if event.outcome in entry_bets:
+#                 score_total += event.outcome.outcome.winning_amount
+#         entry.score = score_total
+#         entry.save()
 
 
 @receiver(post_delete, sender=models.History)

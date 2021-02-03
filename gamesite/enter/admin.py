@@ -177,8 +177,18 @@ class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.GroupWinnerBetGroup)
-class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
+@admin.register(models.Bet)
+class BetAdmin(admin.ModelAdmin):
+    pass
+
+
+# @admin.register(models.GroupWinnerBetGroup)
+# class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
+#     pass
+
+
+@admin.register(models.GroupWinnerBet)
+class GroupWinnerBetAdmin(admin.ModelAdmin):
     pass
 
 

@@ -105,26 +105,26 @@ class GroupWinnerOutcome(models.Model):
 
     def __str__(self):
         return f"Group {self.group.name}, {self.team.country.name} = {self.winning_amount}"
-#
-#
-# class GroupWinnerBet(Bet):
-#     group_winner_choice = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE)
-#
-#     def __str__(self):
-#         return f"Group {self.group_winner_choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
-class GroupWinnerBetGroup(models.Model):
-    group_a_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupAoutcome_set')
-    group_b_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupBoutcome_set')
-    group_c_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupCoutcome_set')
-    group_d_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupDoutcome_set')
-    group_e_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupEoutcome_set')
-    group_f_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupFoutcome_set')
-    entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+class GroupWinnerBet(Bet):
+    group_winner_choice = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group winner bets by {self.entry.profile.user.username} (entry {self.entry.id})"
+        return f"Group {self.group_winner_choice.group.name} by {self.entry.profile.user.username} (entry {self.entry.id})"
+#
+#
+# class GroupWinnerBetGroup(models.Model):
+#     group_a_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupAoutcome_set')
+#     group_b_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupBoutcome_set')
+#     group_c_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupCoutcome_set')
+#     group_d_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupDoutcome_set')
+#     group_e_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupEoutcome_set')
+#     group_f_winner_bet = models.ForeignKey(GroupWinnerOutcome, on_delete=models.CASCADE, related_name='groupFoutcome_set')
+#     entry = models.OneToOneField(Entry, on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f"Group winner bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
 class TopGoalScoringGroupOutcome(models.Model):

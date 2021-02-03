@@ -105,7 +105,7 @@ class GroupMatchOutcomeForm(forms.ModelForm):
         exclude = ('entry',)
 
 
-class GroupWinnerOutcomeForm(forms.ModelForm):
+class GroupWinnerOutcomeForm(forms.Form):
     group_a_winner_bet = NameModelChoiceField(queryset=models.GroupWinnerOutcome.objects.filter(group__name='A'),
                                               required=True,
                                               widget=forms.RadioSelect,
@@ -131,9 +131,9 @@ class GroupWinnerOutcomeForm(forms.ModelForm):
                                               widget=forms.RadioSelect,
                                               label="Group F")
 
-    class Meta:
-        model = models.GroupWinnerBetGroup
-        exclude = ('entry',)
+    # class Meta:
+    #     model = models.GroupWinnerBetGroup
+    #     exclude = ('entry',)
 
 
 class TournamentBetGroupForm(forms.ModelForm):
@@ -271,22 +271,22 @@ class FiftyFiftyOutcomeForm(forms.ModelForm):
         exclude = ('entry',)
 
 
-class TopGoalScoringGroupBetForm(forms.ModelForm):
+class TopGoalScoringGroupBetForm(forms.Form):
     group_choice = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
                                required=True,
                                widget=forms.RadioSelect)
 
-    class Meta:
-        model = models.TopGoalscoringGroupBet
-        exclude = ('entry',)
+    # class Meta:
+    #     model = models.TopGoalscoringGroupBet
+    #     exclude = ('entry',)
 
 
-class TopGoalScoringPlayerBetForm(forms.ModelForm):
+class TopGoalScoringPlayerBetForm(forms.Form):
     choice = NameModelChoiceField(
         queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
         required=True,
         widget=forms.RadioSelect)
 
-    class Meta:
-        model = models.TopGoalscoringPlayerBet
-        exclude = ('entry',)
+    # class Meta:
+    #     model = models.TopGoalscoringPlayerBet
+    #     exclude = ('entry',)
