@@ -130,7 +130,7 @@ def match_result(sender, instance, **kwargs):
     if instance.result:
         correct_outcome = instance.groupmatchoutcome_set.get(choice=instance.result)
     for event in models.History.objects.all():
-        if instance == event.outcome.outcome.match:
+        if instance == event.get_outcome().match:
             if correct_outcome:
                 event.outcome.group_match_outcome = correct_outcome
                 event.outcome.save()
