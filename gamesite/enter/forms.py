@@ -187,45 +187,41 @@ class NameModelChoiceField(forms.ModelChoiceField):
 #     class Meta:
 #         model = models.FinalBetGroup
 #         exclude = ('entry',)
-#
-#
-# class BestTeamsSuccessBetGroupForm(forms.ModelForm):
-#     to_reach_semi_final_bet = NameModelChoiceField(
-#         queryset=models.ToReachSemiFinalOutcome.objects.all().order_by('team'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="To reach the semi final")
-#     to_reach_final_bet = NameModelChoiceField(queryset=models.ToReachFinalOutcome.objects.all().order_by('team'),
-#                                               required=True,
-#                                               widget=forms.RadioSelect,
-#                                               label="To reach the final")
-#     to_win_bet = NameModelChoiceField(queryset=models.ToWinOutcome.objects.all().order_by('team'),
-#                                       required=True,
-#                                       widget=forms.RadioSelect,
-#                                       label="To win the Euros")
-#     highest_scoring_team_bet = NameModelChoiceField(
-#         queryset=models.HighestScoringTeamOutcome.objects.all().order_by('team'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Highest scoring team")
-#     most_yellow_cards_bet = NameModelChoiceField(queryset=models.MostYellowCardsOutcome.objects.all().order_by('team'),
-#                                                  required=True,
-#                                                  widget=forms.RadioSelect,
-#                                                  label="Most yellow cards")
-#     fastest_yellow_card_bet = NameModelChoiceField(
-#         queryset=models.FastestYellowCardsOutcome.objects.all().order_by('team'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Fastest yellow card")
-#     fastest_tournament_goal_bet = NameModelChoiceField(
-#         queryset=models.FastestGoalOutcome.objects.all().order_by('team'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Fastest Euro goal")
-#
-#     class Meta:
-#         model = models.BestTeamsSuccessBetGroup
-#         exclude = ('entry',)
+
+
+class BestTeamsSuccessBetGroupForm(forms.Form):
+    to_reach_semi_final_bet = NameModelChoiceField(
+        queryset=models.ToReachSemiFinalOutcome.objects.all().order_by('team'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="To reach the semi final")
+    to_reach_final_bet = NameModelChoiceField(queryset=models.ToReachFinalOutcome.objects.all().order_by('team'),
+                                              required=True,
+                                              widget=forms.RadioSelect,
+                                              label="To reach the final")
+    to_win_bet = NameModelChoiceField(queryset=models.ToWinOutcome.objects.all().order_by('team'),
+                                      required=True,
+                                      widget=forms.RadioSelect,
+                                      label="To win the Euros")
+    highest_scoring_team_bet = NameModelChoiceField(
+        queryset=models.HighestScoringTeamOutcome.objects.all().order_by('team'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Highest scoring team")
+    most_yellow_cards_bet = NameModelChoiceField(queryset=models.MostYellowCardsOutcome.objects.all().order_by('team'),
+                                                 required=True,
+                                                 widget=forms.RadioSelect,
+                                                 label="Most yellow cards")
+    fastest_yellow_card_bet = NameModelChoiceField(
+        queryset=models.FastestYellowCardsOutcome.objects.all().order_by('team'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Fastest yellow card")
+    fastest_tournament_goal_bet = NameModelChoiceField(
+        queryset=models.FastestGoalOutcome.objects.all().order_by('team'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Fastest Euro goal")
 
 
 class FiftyFiftyOutcomeForm(forms.Form):

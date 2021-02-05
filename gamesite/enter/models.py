@@ -115,7 +115,6 @@ class Team(models.Model):
 class GroupWinnerOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"Group {self.group.name}, {self.team.country.name} = {self.winning_amount}"
@@ -143,7 +142,6 @@ class GroupWinnerOutcome(Outcome):
 
 class TopGoalScoringGroupOutcome(Outcome):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"Group {self.group.name} = {self.winning_amount}"
@@ -171,7 +169,6 @@ class Player(models.Model):
 
 class TopGoalScoringPlayerOutcome(Outcome):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.player.first_name} {self.player.last_name} = {self.winning_amount}"
@@ -187,58 +184,51 @@ class TopGoalScoringPlayerOutcome(Outcome):
 
 class ToReachSemiFinalOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"To reach semi-final: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class ToReachFinalOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"To reach final: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class ToWinOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"To win: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class HighestScoringTeamOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"Highest scoring team: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class MostYellowCardsOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"Most yellow cards: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class FastestYellowCardsOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"Fastest yellow card: {self.team.country.country_code} = {self.winning_amount}"
 
 
 class FastestGoalOutcome(Outcome):
     team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={'is_top_team': True})
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
-        return f"{self.team.country.country_code} = {self.winning_amount}"
+        return f"Fastest goal: {self.team.country.country_code} = {self.winning_amount}"
 
 #
 # class BestTeamsSuccessBetGroup(models.Model):
@@ -265,7 +255,6 @@ class FiftyFiftyQuestion(models.Model):
 class FiftyFiftyOutcome(Outcome):
     fifty_fifty = models.ForeignKey(FiftyFiftyQuestion, on_delete=models.CASCADE)
     choice = models.BooleanField()
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.fifty_fifty.question}, {self.choice} = {self.winning_amount}"
@@ -292,7 +281,6 @@ class TournamentGoalsOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} goals: {self.min_value} - {self.max_value}" \
@@ -310,7 +298,6 @@ class TournamentRedCardsOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} red cards: {self.min_value} - {self.max_value}" \
@@ -328,7 +315,6 @@ class TournamentOwnGoalsOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} own goals: {self.min_value} - {self.max_value}" \
@@ -346,7 +332,6 @@ class TournamentHattricksOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.tournament.name} hattricks: {self.min_value} - {self.max_value}" \
@@ -439,7 +424,6 @@ class GroupMatch(Match):
 class GroupMatchOutcome(Outcome):
     match = models.ForeignKey(GroupMatch, on_delete=models.CASCADE)
     choice = models.CharField(max_length=1, choices=GroupMatch.MATCH_RESULT_CHOICES)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"Group {self.match.group.name}, Match {self.match.match_number}: {self.choice} = {self.winning_amount}"
@@ -515,7 +499,6 @@ class FinalMatch(Match):
 class FinalFirstGoalOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
     choice = models.CharField(max_length=2, choices=FinalMatch.MATCH_PERIOD_CHOICES)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.choice} = {self.winning_amount}"
@@ -527,7 +510,6 @@ class FinalFirstGoalOutcome(Outcome):
 class FinalOwnGoalOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
     choice = models.BooleanField()
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.choice} = {self.winning_amount}"
@@ -544,7 +526,6 @@ class FinalYellowCardsOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         if self.is_highest_value:
@@ -566,7 +547,6 @@ class FinalYellowCardsOutcome(Outcome):
 class FinalRefContinentOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
     choice = models.CharField(max_length=2, choices=FinalMatch.REF_CONTINENT_CHOICES)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         return f"{self.choice} = {self.winning_amount}"
@@ -580,7 +560,6 @@ class FinalGoalsOutcome(Outcome):
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
-    # winning_amount = models.IntegerField()
 
     def __str__(self):
         if self.is_highest_value:
@@ -609,56 +588,6 @@ class FinalGoalsOutcome(Outcome):
 #
 #     def __str__(self):
 #         return f"Final bets by {self.entry.profile.user.username} (entry {self.entry.id})"
-
-
-# class Bets(models.Model):
-#     GROUP_MATCHES = "FM"
-#     GROUP_WINNERS = "GW"
-#     TOP_GOALSCORING_GROUP = "TG"
-#     TOP_GOALSCORING_PLAYER = "TP"
-#     BEST_TEAMS_SUCCESS = "TS"
-#     FIFTY_FIFTIES = "FF"
-#     TOURNAMENT_CHOICES = "TC"
-#     FINAL_CHOICES = "FC"
-#     BET_CATEGORY_CHOICES = [
-#         (GROUP_MATCHES, "Group Matches"),
-#         (GROUP_WINNERS, "Group Winners"),
-#         (TOP_GOALSCORING_GROUP, "Top Goalscoring Group"),
-#         (TOP_GOALSCORING_PLAYER, "Top Goalscoring Player"),
-#         (BEST_TEAMS_SUCCESS, "Best Teams Success"),
-#         (FIFTY_FIFTIES, "50/50s"),
-#         (TOURNAMENT_CHOICES, "Tournament Multiple Choice"),
-#         (FINAL_CHOICES, "Final Multiple Choice")
-#     ]
-#
-#     category = models.CharField(max_length=2, choices=BET_CATEGORY_CHOICES)
-
-
-# class Outcome(models.Model):
-#     group_match_outcome = models.OneToOneField(GroupMatchOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     group_winner_outcome = models.OneToOneField(GroupWinnerOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     top_goalscoring_group_outcome = models.OneToOneField(TopGoalScoringGroupOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     top_goalscoring_player_outcome = models.OneToOneField(TopGoalScoringPlayerOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     to_reach_semifinal_outcome = models.OneToOneField(ToReachSemiFinalOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     to_reach_final_outcome = models.OneToOneField(ToReachFinalOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     to_win_outcome = models.OneToOneField(ToWinOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     highest_scoring_team_outcome = models.OneToOneField(HighestScoringTeamOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     most_yellow_cards_outcome = models.OneToOneField(MostYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     fastest_goal_outcome = models.OneToOneField(FastestGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     fastest_yellow_cards_outcome = models.OneToOneField(FastestYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     fifty_fifty_outcome = models.OneToOneField(FiftyFiftyOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     tournament_red_cards_outcome = models.OneToOneField(TournamentRedCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     tournament_own_goals_outcome = models.OneToOneField(TournamentOwnGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     tournament_goals_outcome = models.OneToOneField(TournamentGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     tournament_hattricks_outcome = models.OneToOneField(TournamentHattricksOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     final_first_goal_outcome = models.OneToOneField(FinalFirstGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     final_goals_outcome = models.OneToOneField(FinalGoalsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     final_own_goals_outcome = models.OneToOneField(FinalOwnGoalOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     final_ref_continent_outcome = models.OneToOneField(FinalRefContinentOutcome, on_delete=models.CASCADE, null=True, blank=True)
-#     final_yellow_cards_outcome = models.OneToOneField(FinalYellowCardsOutcome, on_delete=models.CASCADE, null=True, blank=True)
-
-    # def __str__(self):
-    #     return self.outcome.__str__()
 
 
 class History(models.Model):

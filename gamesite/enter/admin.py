@@ -136,43 +136,43 @@ class TournamentAdmin(admin.ModelAdmin):
 # @admin.register(models.BestTeamsSuccessBetGroup)
 # class BestTeamsSuccessBetGroupAdmin(admin.ModelAdmin):
 #     pass
-#
-#
-# @admin.register(models.ToReachSemiFinalOutcome)
-# class ToReachSemiFinalOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.ToReachFinalOutcome)
-# class ToReachFinalOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.ToWinOutcome)
-# class ToWinOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.HighestScoringTeamOutcome)
-# class HighestScoringTeamOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.MostYellowCardsOutcome)
-# class MostYellowCardsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FastestYellowCardsOutcome)
-# class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FastestGoalOutcome)
-# class FastestGoalOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
+
+
+@admin.register(models.ToReachSemiFinalOutcome)
+class ToReachSemiFinalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.ToReachFinalOutcome)
+class ToReachFinalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.ToWinOutcome)
+class ToWinOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.HighestScoringTeamOutcome)
+class HighestScoringTeamOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.MostYellowCardsOutcome)
+class MostYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FastestYellowCardsOutcome)
+class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FastestGoalOutcome)
+class FastestGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
 # @admin.register(models.GroupWinnerOutcome)
 # class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
 #     pass
