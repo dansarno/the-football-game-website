@@ -1,6 +1,5 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
-from django.db.models import Q
 from . import models
 
 
@@ -144,18 +143,38 @@ def match_result(sender, instance, **kwargs):
     return
 
 
-# @receiver(post_save, sender=models.History)
-# def update_scores(sender, instance, **kwargs):
-#     for entry in models.Entry.objects.all():
-#         score_total = 0
-#         entry_bets = entry.bet_set
-#         for event in models.History.objects.all():
-#             if event.outcome in entry_bets:
-#                 score_total += event.outcome.outcome.winning_amount
-#         entry.score = score_total
-#         entry.save()
+@receiver(post_save, sender=models.History)
+def update_scores(sender, instance, **kwargs):
+    events = models.History.objects.all()
+    for entry in models.Entry.objects.all():
+        score_total = 0
+        for bet in models.Bet.objects.filter(entry=entry):
+            if bet.outcome in [event.outcome for event in events]:
+                score_total += bet.outcome.winning_amount
+                bet.success = True
+                bet.save()
+        entry.score = score_total
+        entry.save()
 
 
 @receiver(post_delete, sender=models.History)
-def subtract_scores(sender, instance, **kwargs):
-    print("Hello")
+def reduce_scores(sender, instance, **kwargs):
+    events = models.History.objects.all()
+    for entry in models.Entry.objects.all():
+        score_total = 0
+        for bet in models.Bet.objects.filter(entry=entry):
+            if bet.outcome in [event.outcome for event in events]:
+                score_total += bet.outcome.winning_amount
+                bet.success = True
+                bet.save()
+        entry.score = score_total
+        entry.save()
+    # Finally clear the success statuses
+    for bets_of_deleted_outcome in models.Bet.objects.filter(outcome=instance.outcome):
+        bets_of_deleted_outcome.success = None
+        bets_of_deleted_outcome.save()
+
+
+# @receiver(post_delete, sender=models.History)
+# def subtract_scores(sender, instance, **kwargs):
+#     print("Hello")

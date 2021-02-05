@@ -37,9 +37,9 @@ class GroupMatchAdmin(admin.ModelAdmin):
     ordering = ['match_number']
 
 
-@admin.register(models.GroupMatchOutcome)
-class GroupMatchOutcomeAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(models.GroupMatchOutcome)
+# class GroupMatchOutcomeAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(models.Group)
@@ -72,159 +72,167 @@ class TournamentAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.TournamentBetGroup)
-class TournamentBetGroupAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TournamentGoalsOutcome)
-class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TournamentRedCardsOutcome)
-class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TournamentOwnGoalsOutcome)
-class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TournamentHattricksOutcome)
-class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.GroupMatchBetGroup)
-class GroupMatchBetGroupAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalBetGroup)
-class FinalBetGroupAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalFirstGoalOutcome)
-class FinalFirstGoalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalYellowCardsOutcome)
-class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalOwnGoalOutcome)
-class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalRefContinentOutcome)
-class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalGoalsOutcome)
-class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.BestTeamsSuccessBetGroup)
-class BestTeamsSuccessBetGroupAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.ToReachSemiFinalOutcome)
-class ToReachSemiFinalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.ToReachFinalOutcome)
-class ToReachFinalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.ToWinOutcome)
-class ToWinOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.HighestScoringTeamOutcome)
-class HighestScoringTeamOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.MostYellowCardsOutcome)
-class MostYellowCardsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FastestYellowCardsOutcome)
-class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FastestGoalOutcome)
-class FastestGoalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.GroupWinnerOutcome)
-class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(models.TournamentBetGroup)
+# class TournamentBetGroupAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TournamentGoalsOutcome)
+# class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TournamentRedCardsOutcome)
+# class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TournamentOwnGoalsOutcome)
+# class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TournamentHattricksOutcome)
+# class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.GroupMatchBetGroup)
+# class GroupMatchBetGroupAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalBetGroup)
+# class FinalBetGroupAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalFirstGoalOutcome)
+# class FinalFirstGoalOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalYellowCardsOutcome)
+# class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalOwnGoalOutcome)
+# class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalRefContinentOutcome)
+# class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FinalGoalsOutcome)
+# class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.BestTeamsSuccessBetGroup)
+# class BestTeamsSuccessBetGroupAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.ToReachSemiFinalOutcome)
+# class ToReachSemiFinalOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.ToReachFinalOutcome)
+# class ToReachFinalOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.ToWinOutcome)
+# class ToWinOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.HighestScoringTeamOutcome)
+# class HighestScoringTeamOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.MostYellowCardsOutcome)
+# class MostYellowCardsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FastestYellowCardsOutcome)
+# class FastestYellowCardsOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FastestGoalOutcome)
+# class FastestGoalOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.GroupWinnerOutcome)
+# class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(models.Bet)
 class BetAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'get_success')
+
+    def get_success(self, obj):
+        if obj.success:
+            return True
+        else:
+            return False
+
+    get_success.short_description = 'Success'
 
 
 # @admin.register(models.GroupWinnerBetGroup)
 # class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
 #     pass
 
-
-@admin.register(models.GroupWinnerBet)
-class GroupWinnerBetAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FiftyFiftyOutcome)
-class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FiftyFiftyBetGroup)
-class FiftyFiftyBetGroupAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FiftyFiftyQuestion)
-class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TopGoalscoringGroupBet)
-class TopGoalscoringGroupBetAdmin(admin.ModelAdmin):
-    pass
-
-
+#
+# @admin.register(models.GroupWinnerBet)
+# class GroupWinnerBetAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FiftyFiftyOutcome)
+# class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FiftyFiftyBetGroup)
+# class FiftyFiftyBetGroupAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.FiftyFiftyQuestion)
+# class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TopGoalscoringGroupBet)
+# class TopGoalscoringGroupBetAdmin(admin.ModelAdmin):
+#     pass
+#
+#
 @admin.register(models.TopGoalScoringGroupOutcome)
 class TopGoalScoringGroupOutcomeAdmin(admin.ModelAdmin):
     pass
-
-
-@admin.register(models.TopGoalscoringPlayerBet)
-class TopGoalscoringPlayerBetAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.TopGoalScoringPlayerOutcome)
-class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
-    pass
+#
+#
+# @admin.register(models.TopGoalscoringPlayerBet)
+# class TopGoalscoringPlayerBetAdmin(admin.ModelAdmin):
+#     pass
+#
+#
+# @admin.register(models.TopGoalScoringPlayerOutcome)
+# class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(models.History)
@@ -232,7 +240,7 @@ class HistoryAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'show_winning_amount', 'date')
 
     def show_winning_amount(self, obj):
-        return obj.outcome.outcome.winning_amount
+        return obj.outcome.winning_amount
 
     show_winning_amount.short_description = 'Winning Amount'
 
