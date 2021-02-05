@@ -276,14 +276,9 @@ class TopGoalScoringGroupBetForm(forms.Form):
                                         required=True,
                                         widget=forms.RadioSelect)
 
-#
-#
-# class TopGoalScoringPlayerBetForm(forms.Form):
-#     choice = NameModelChoiceField(
-#         queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
-#         required=True,
-#         widget=forms.RadioSelect)
-#
-#     # class Meta:
-#     #     model = models.TopGoalscoringPlayerBet
-#     #     exclude = ('entry',)
+
+class TopGoalScoringPlayerBetForm(forms.Form):
+    choice = NameModelChoiceField(
+        queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
+        required=True,
+        widget=forms.RadioSelect)

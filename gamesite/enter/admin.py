@@ -228,11 +228,11 @@ class TopGoalScoringGroupOutcomeAdmin(admin.ModelAdmin):
 # @admin.register(models.TopGoalscoringPlayerBet)
 # class TopGoalscoringPlayerBetAdmin(admin.ModelAdmin):
 #     pass
-#
-#
-# @admin.register(models.TopGoalScoringPlayerOutcome)
-# class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
-#     pass
+
+
+@admin.register(models.TopGoalScoringPlayerOutcome)
+class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(models.History)

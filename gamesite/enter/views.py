@@ -27,7 +27,7 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
         # group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
         # fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(request.POST)
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(request.POST)
-        # top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
 
         # if (group_matches_form.is_valid() and
         #         tournament_bets_form.is_valid() and
@@ -36,7 +36,8 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
         #         group_winners_form.is_valid() and
         #         fifty_fifty_bets_form.is_valid()):
 
-        if (top_goal_group_bets_form.is_valid()):
+        if (top_goal_group_bets_form.is_valid() and
+                top_goal_player_bets_form.is_valid()):
             new_entry = models.Entry.objects.create(profile=request.user.profile)
 
             # for field_name, field_value in group_winners_form.cleaned_data.items():
@@ -57,14 +58,13 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
             # best_teams_success_bets = best_teams_success_bets_form.save(commit=False)
             # best_teams_success_bets.entry = new_entry
             # best_teams_success_bets.save()
+
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
             models.Bet.objects.create(outcome=group_choice, entry=new_entry)
-            # top_goal_group_bet = top_goal_group_bets_form.save(commit=False)
-            # top_goal_group_bet.entry = new_entry
-            # top_goal_group_bet.save()
-            # top_goal_player_bet = top_goal_player_bets_form.save(commit=False)
-            # top_goal_player_bet.entry = new_entry
-            # top_goal_player_bet.save()
+
+            choice = top_goal_player_bets_form.cleaned_data['choice']
+            models.Bet.objects.create(outcome=choice, entry=new_entry)
+
             # fifty_fifty_bets = fifty_fifty_bets_form.save(commit=False)
             # fifty_fifty_bets.entry = new_entry
             # fifty_fifty_bets.save()
@@ -78,7 +78,7 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
         # group_winners_form = forms.GroupWinnerOutcomeForm()
         # fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm()
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm()
-        # top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm()
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm()
 
     return render(request, template_name, {
         "title": "Enter",
@@ -89,7 +89,7 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
         # "group_winner_bets_form": group_winners_form,
         # "fifty_fifty_bets_form": fifty_fifty_bets_form,
         "top_goal_group_bets_form": top_goal_group_bets_form,
-        # "top_goal_player_bets_form": top_goal_player_bets_form
+        "top_goal_player_bets_form": top_goal_player_bets_form
     })
 
 
