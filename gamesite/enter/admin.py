@@ -1,5 +1,6 @@
 from django.contrib import admin
 from . import models
+from polymorphic.admin import PolymorphicParentModelAdmin, PolymorphicChildModelAdmin, PolymorphicChildModelFilter
 from django.utils.html import format_html
 
 
@@ -198,13 +199,13 @@ class BetAdmin(admin.ModelAdmin):
 # @admin.register(models.GroupWinnerBet)
 # class GroupWinnerBetAdmin(admin.ModelAdmin):
 #     pass
-#
-#
-# @admin.register(models.FiftyFiftyOutcome)
-# class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
+
+
+@admin.register(models.FiftyFiftyOutcome)
+class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
 # @admin.register(models.FiftyFiftyBetGroup)
 # class FiftyFiftyBetGroupAdmin(admin.ModelAdmin):
 #     pass

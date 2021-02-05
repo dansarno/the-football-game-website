@@ -226,51 +226,47 @@ class NameModelChoiceField(forms.ModelChoiceField):
 #     class Meta:
 #         model = models.BestTeamsSuccessBetGroup
 #         exclude = ('entry',)
-#
-#
-# class FiftyFiftyOutcomeForm(forms.ModelForm):
-#     question1_bet = NameModelChoiceField(queryset=fifty_fifty_questions[0].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[0])
-#     question2_bet = NameModelChoiceField(queryset=fifty_fifty_questions[1].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[1])
-#     question3_bet = NameModelChoiceField(queryset=fifty_fifty_questions[2].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[2])
-#     question4_bet = NameModelChoiceField(queryset=fifty_fifty_questions[3].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[3])
-#     question5_bet = NameModelChoiceField(queryset=fifty_fifty_questions[4].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[4])
-#     question6_bet = NameModelChoiceField(queryset=fifty_fifty_questions[5].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[5])
-#     question7_bet = NameModelChoiceField(queryset=fifty_fifty_questions[6].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[6])
-#     question8_bet = NameModelChoiceField(queryset=fifty_fifty_questions[7].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[7])
-#     question9_bet = NameModelChoiceField(queryset=fifty_fifty_questions[8].fiftyfiftyoutcome_set.order_by('-outcome'),
-#                                          required=True,
-#                                          widget=forms.RadioSelect,
-#                                          label=fifty_fifty_questions[8])
-#
-#     class Meta:
-#         model = models.FiftyFiftyBetGroup
-#         exclude = ('entry',)
-#
-#
+
+
+class FiftyFiftyOutcomeForm(forms.Form):
+    question1_bet = NameModelChoiceField(queryset=fifty_fifty_questions[0].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[0])
+    question2_bet = NameModelChoiceField(queryset=fifty_fifty_questions[1].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[1])
+    question3_bet = NameModelChoiceField(queryset=fifty_fifty_questions[2].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[2])
+    question4_bet = NameModelChoiceField(queryset=fifty_fifty_questions[3].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[3])
+    question5_bet = NameModelChoiceField(queryset=fifty_fifty_questions[4].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[4])
+    question6_bet = NameModelChoiceField(queryset=fifty_fifty_questions[5].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[5])
+    question7_bet = NameModelChoiceField(queryset=fifty_fifty_questions[6].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[6])
+    question8_bet = NameModelChoiceField(queryset=fifty_fifty_questions[7].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[7])
+    question9_bet = NameModelChoiceField(queryset=fifty_fifty_questions[8].fiftyfiftyoutcome_set.order_by('-choice'),
+                                         required=True,
+                                         widget=forms.RadioSelect,
+                                         label=fifty_fifty_questions[8])
+
+
 class TopGoalScoringGroupBetForm(forms.Form):
     group_choice = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
                                         required=True,
