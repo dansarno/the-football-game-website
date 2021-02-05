@@ -7,6 +7,9 @@ from polymorphic.models import PolymorphicModel
 class Outcome(PolymorphicModel):
     winning_amount = models.IntegerField()
 
+    def __str__(self):
+        return self
+
 
 class Entry(models.Model):
 
@@ -31,6 +34,9 @@ class Bet(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     success = models.BooleanField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.outcome} by {self.entry}"
 
 
 class Tournament(models.Model):
@@ -659,18 +665,5 @@ class History(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
 
-    # def __str__(self):
-    #     return f"{self.outcome}"
-
-    # def get_outcome(self):
-    #     for field in Outcome._meta.fields:
-    #         if field.name in ('group_match_outcome', 'group_winner_outcome', 'top_goalscoring_group_outcome',
-    #                           'top_goalscoring_player_outcome', 'to_reach_semifinal_outcome', 'to_reach_final_outcome',
-    #                           'to_win_outcome', 'highest_scoring_team_outcome', 'most_yellow_cards_outcome',
-    #                           'fastest_goal_outcome', 'fastest_yellow_cards_outcome', 'fifty_fifty_outcome',
-    #                           'tournament_red_cards_outcome', 'tournament_own_goals_outcome',
-    #                           'tournament_goals_outcome', 'tournament_hattricks_outcome', 'final_first_goal_outcome',
-    #                           'final_goals_outcome', 'final_own_goals_outcome', 'final_ref_continent_outcome',
-    #                           'final_yellow_cards_outcome'):
-    #             if getattr(self.outcome, field.name):
-    #                 return getattr(self.outcome, field.name)
+    def __str__(self):
+        return f"{self.outcome}"
