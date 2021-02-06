@@ -34,7 +34,7 @@ class MatchResultPost(models.Model):
 
 
 class CalledBetPost(models.Model):
-    bet = models.ForeignKey('enter.CalledBet', on_delete=models.CASCADE)
+    bet = models.OneToOneField('enter.CalledBet', on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
     sticker = models.ForeignKey(Sticker, on_delete=models.CASCADE, blank=True, null=True)
     comment = models.TextField(blank=True, null=True)

@@ -4,7 +4,12 @@ from enter.models import CalledBet
 from . import models
 
 
-# @receiver(post_save, sender=CalledBet)
-# def post_called_bet(sender, instance, **kwargs):
-#     print(instance)
-#     models.CalledBetPost.objects.create(bet=instance)
+@receiver(post_save, sender=CalledBet)
+def create_called_bet_post(sender, instance, created, **kwargs):
+    if created:
+        models.CalledBetPost.objects.create(bet=instance)
+
+
+@receiver(post_save, sender=CalledBet)
+def save_called_bet_post(sender, instance, **kwargs):
+    instance.calledbetpost.save()
