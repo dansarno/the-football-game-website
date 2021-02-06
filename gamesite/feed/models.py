@@ -31,3 +31,13 @@ class MatchResultPost(models.Model):
 
     def __str__(self):
         return f'Result: {self.match.match.home_team} vs {self.match.match.away_team} ({self.match.choice})'
+
+
+class CalledBetPost(models.Model):
+    bet = models.ForeignKey('enter.CalledBet', on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(default=timezone.now)
+    sticker = models.ForeignKey(Sticker, on_delete=models.CASCADE, blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f'Post: {self.bet}'

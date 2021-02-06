@@ -13,6 +13,11 @@ class MatchResultPostAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(models.CalledBetPost)
+class CalledBetPostAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.Sticker)
 class StickerAdmin(admin.ModelAdmin):
     list_display = ('name', 'show_sticker')
