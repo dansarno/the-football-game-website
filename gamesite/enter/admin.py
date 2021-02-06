@@ -236,8 +236,8 @@ class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.History)
-class HistoryAdmin(admin.ModelAdmin):
+@admin.register(models.CalledBet)
+class CalledBetAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'show_winning_amount', 'date')
 
     def show_winning_amount(self, obj):

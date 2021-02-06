@@ -545,7 +545,7 @@ class FinalGoalsOutcome(Outcome):
 #         return f"Final bets by {self.entry.profile.user.username} (entry {self.entry.id})"
 
 
-class History(models.Model):
+class CalledBet(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
     date = models.DateTimeField(default=timezone.now)
 
