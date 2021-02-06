@@ -188,89 +188,89 @@ class NameModelChoiceField(forms.ModelChoiceField):
 #         model = models.FinalBetGroup
 #         exclude = ('entry',)
 
-
-class BestTeamsSuccessBetGroupForm(forms.Form):
-    to_reach_semi_final_bet = NameModelChoiceField(
-        queryset=models.ToReachSemiFinalOutcome.objects.all().order_by('team'),
-        required=True,
-        widget=forms.RadioSelect,
-        label="To reach the semi final")
-    to_reach_final_bet = NameModelChoiceField(queryset=models.ToReachFinalOutcome.objects.all().order_by('team'),
-                                              required=True,
-                                              widget=forms.RadioSelect,
-                                              label="To reach the final")
-    to_win_bet = NameModelChoiceField(queryset=models.ToWinOutcome.objects.all().order_by('team'),
-                                      required=True,
-                                      widget=forms.RadioSelect,
-                                      label="To win the Euros")
-    highest_scoring_team_bet = NameModelChoiceField(
-        queryset=models.HighestScoringTeamOutcome.objects.all().order_by('team'),
-        required=True,
-        widget=forms.RadioSelect,
-        label="Highest scoring team")
-    most_yellow_cards_bet = NameModelChoiceField(queryset=models.MostYellowCardsOutcome.objects.all().order_by('team'),
-                                                 required=True,
-                                                 widget=forms.RadioSelect,
-                                                 label="Most yellow cards")
-    fastest_yellow_card_bet = NameModelChoiceField(
-        queryset=models.FastestYellowCardsOutcome.objects.all().order_by('team'),
-        required=True,
-        widget=forms.RadioSelect,
-        label="Fastest yellow card")
-    fastest_tournament_goal_bet = NameModelChoiceField(
-        queryset=models.FastestGoalOutcome.objects.all().order_by('team'),
-        required=True,
-        widget=forms.RadioSelect,
-        label="Fastest Euro goal")
-
-
-class FiftyFiftyOutcomeForm(forms.Form):
-    question1_bet = NameModelChoiceField(queryset=fifty_fifty_questions[0].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[0])
-    question2_bet = NameModelChoiceField(queryset=fifty_fifty_questions[1].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[1])
-    question3_bet = NameModelChoiceField(queryset=fifty_fifty_questions[2].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[2])
-    question4_bet = NameModelChoiceField(queryset=fifty_fifty_questions[3].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[3])
-    question5_bet = NameModelChoiceField(queryset=fifty_fifty_questions[4].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[4])
-    question6_bet = NameModelChoiceField(queryset=fifty_fifty_questions[5].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[5])
-    question7_bet = NameModelChoiceField(queryset=fifty_fifty_questions[6].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[6])
-    question8_bet = NameModelChoiceField(queryset=fifty_fifty_questions[7].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[7])
-    question9_bet = NameModelChoiceField(queryset=fifty_fifty_questions[8].fiftyfiftyoutcome_set.order_by('-choice'),
-                                         required=True,
-                                         widget=forms.RadioSelect,
-                                         label=fifty_fifty_questions[8])
-
-
-class TopGoalScoringGroupBetForm(forms.Form):
-    group_choice = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
-                                        required=True,
-                                        widget=forms.RadioSelect)
-
-
-class TopGoalScoringPlayerBetForm(forms.Form):
-    choice = NameModelChoiceField(
-        queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
-        required=True,
-        widget=forms.RadioSelect)
+#
+# class BestTeamsSuccessBetGroupForm(forms.Form):
+#     to_reach_semi_final_bet = NameModelChoiceField(
+#         queryset=models.ToReachSemiFinalOutcome.objects.all().order_by('team'),
+#         required=True,
+#         widget=forms.RadioSelect,
+#         label="To reach the semi final")
+#     to_reach_final_bet = NameModelChoiceField(queryset=models.ToReachFinalOutcome.objects.all().order_by('team'),
+#                                               required=True,
+#                                               widget=forms.RadioSelect,
+#                                               label="To reach the final")
+#     to_win_bet = NameModelChoiceField(queryset=models.ToWinOutcome.objects.all().order_by('team'),
+#                                       required=True,
+#                                       widget=forms.RadioSelect,
+#                                       label="To win the Euros")
+#     highest_scoring_team_bet = NameModelChoiceField(
+#         queryset=models.HighestScoringTeamOutcome.objects.all().order_by('team'),
+#         required=True,
+#         widget=forms.RadioSelect,
+#         label="Highest scoring team")
+#     most_yellow_cards_bet = NameModelChoiceField(queryset=models.MostYellowCardsOutcome.objects.all().order_by('team'),
+#                                                  required=True,
+#                                                  widget=forms.RadioSelect,
+#                                                  label="Most yellow cards")
+#     fastest_yellow_card_bet = NameModelChoiceField(
+#         queryset=models.FastestYellowCardsOutcome.objects.all().order_by('team'),
+#         required=True,
+#         widget=forms.RadioSelect,
+#         label="Fastest yellow card")
+#     fastest_tournament_goal_bet = NameModelChoiceField(
+#         queryset=models.FastestGoalOutcome.objects.all().order_by('team'),
+#         required=True,
+#         widget=forms.RadioSelect,
+#         label="Fastest Euro goal")
+#
+#
+# class FiftyFiftyOutcomeForm(forms.Form):
+#     question1_bet = NameModelChoiceField(queryset=fifty_fifty_questions[0].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[0])
+#     question2_bet = NameModelChoiceField(queryset=fifty_fifty_questions[1].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[1])
+#     question3_bet = NameModelChoiceField(queryset=fifty_fifty_questions[2].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[2])
+#     question4_bet = NameModelChoiceField(queryset=fifty_fifty_questions[3].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[3])
+#     question5_bet = NameModelChoiceField(queryset=fifty_fifty_questions[4].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[4])
+#     question6_bet = NameModelChoiceField(queryset=fifty_fifty_questions[5].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[5])
+#     question7_bet = NameModelChoiceField(queryset=fifty_fifty_questions[6].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[6])
+#     question8_bet = NameModelChoiceField(queryset=fifty_fifty_questions[7].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[7])
+#     question9_bet = NameModelChoiceField(queryset=fifty_fifty_questions[8].fiftyfiftyoutcome_set.order_by('-choice'),
+#                                          required=True,
+#                                          widget=forms.RadioSelect,
+#                                          label=fifty_fifty_questions[8])
+#
+#
+# class TopGoalScoringGroupBetForm(forms.Form):
+#     group_choice = NameModelChoiceField(queryset=models.TopGoalScoringGroupOutcome.objects.all().order_by('group__name'),
+#                                         required=True,
+#                                         widget=forms.RadioSelect)
+#
+#
+# class TopGoalScoringPlayerBetForm(forms.Form):
+#     choice = NameModelChoiceField(
+#         queryset=models.TopGoalScoringPlayerOutcome.objects.all().order_by('player__last_name'),
+#         required=True,
+#         widget=forms.RadioSelect)

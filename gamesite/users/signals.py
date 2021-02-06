@@ -22,7 +22,10 @@ def save_profile(sender, instance, **kwargs):
 
 def create_default_profile_picture(user):
     W, H = (300, 300)
-    initials = (user.first_name[0] + user.last_name[0]).upper()
+
+    initials = ""
+    if user.first_name and user.last_name:
+        initials = (user.first_name[0] + user.last_name[0]).upper()
 
     profile_picture = Image.new('RGBA', (W, H), color=0)
     d = ImageDraw.Draw(profile_picture)
