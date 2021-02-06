@@ -5,22 +5,23 @@ from . import models
 
 @receiver(post_save, sender=models.GroupMatch)
 def match_result(sender, instance, **kwargs):
-    correct_outcome = None
-    if instance.result:
-        correct_outcome = instance.groupmatchoutcome_set.get(choice=instance.result)
-    for event in models.CalledBet.objects.all():
-        if instance == event.get_outcome().match:
-            if correct_outcome:
-                event.outcome.group_match_outcome = correct_outcome
-                event.outcome.save()
-                event.save()
-            else:
-                event.outcome.delete()
-                event.delete()
-            return
-    new_outcome = models.Outcome.objects.create(group_match_outcome=correct_outcome)
-    models.CalledBet.objects.create(outcome=new_outcome)
-    return
+    pass
+    # correct_outcome = None
+    # if instance.result:
+    #     correct_outcome = instance.groupmatchoutcome_set.get(choice=instance.result)
+    # for event in models.CalledBet.objects.all():
+    #     if instance == event.get_outcome().match:
+    #         if correct_outcome:
+    #             event.outcome.group_match_outcome = correct_outcome
+    #             event.outcome.save()
+    #             event.save()
+    #         else:
+    #             event.outcome.delete()
+    #             event.delete()
+    #         return
+    # new_outcome = models.Outcome.objects.create(group_match_outcome=correct_outcome)
+    # models.CalledBet.objects.create(outcome=new_outcome)
+    # return
 
 
 @receiver(post_save, sender=models.CalledBet)

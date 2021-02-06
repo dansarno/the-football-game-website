@@ -38,9 +38,9 @@ class GroupMatchAdmin(admin.ModelAdmin):
     ordering = ['match_number']
 
 
-# @admin.register(models.GroupMatchOutcome)
-# class GroupMatchOutcomeAdmin(admin.ModelAdmin):
-#     pass
+@admin.register(models.GroupMatchOutcome)
+class GroupMatchOutcomeAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(models.Group)

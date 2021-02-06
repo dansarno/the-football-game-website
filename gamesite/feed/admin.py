@@ -8,6 +8,11 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'date_posted')
 
 
+@admin.register(models.MatchResultPost)
+class MatchResultPostAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.Sticker)
 class StickerAdmin(admin.ModelAdmin):
     list_display = ('name', 'show_sticker')
