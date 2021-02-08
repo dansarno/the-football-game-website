@@ -173,9 +173,9 @@ class FastestGoalOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-# @admin.register(models.GroupWinnerOutcome)
-# class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
-#     pass
+@admin.register(models.GroupWinnerOutcome)
+class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(models.Bet)
@@ -183,12 +183,19 @@ class BetAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'get_success')
 
     def get_success(self, obj):
-        if obj.success:
+        if obj.success is True:
             return True
-        else:
+        elif obj.success is False:
             return False
+        else:
+            return None
 
     get_success.short_description = 'Success'
+
+
+@admin.register(models.ChoiceGroup)
+class ChoiceGroupAdmin(admin.ModelAdmin):
+    pass
 
 
 # @admin.register(models.GroupWinnerBetGroup)
@@ -209,13 +216,13 @@ class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
 # @admin.register(models.FiftyFiftyBetGroup)
 # class FiftyFiftyBetGroupAdmin(admin.ModelAdmin):
 #     pass
-#
-#
-# @admin.register(models.FiftyFiftyQuestion)
-# class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
-#     pass
-#
-#
+
+
+@admin.register(models.FiftyFiftyQuestion)
+class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
+    pass
+
+
 # @admin.register(models.TopGoalscoringGroupBet)
 # class TopGoalscoringGroupBetAdmin(admin.ModelAdmin):
 #     pass

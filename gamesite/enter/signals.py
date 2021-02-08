@@ -26,31 +26,45 @@ def match_result(sender, instance, **kwargs):
 
 @receiver(post_save, sender=models.CalledBet)
 def update_scores(sender, instance, **kwargs):
-    events = models.CalledBet.objects.all()
-    for entry in models.Entry.objects.all():
+    called_bets = models.CalledBet.objects.all()
+    entries = models.Entry.objects.all()
+    for entry in entries:
         score_total = 0
-        for bet in models.Bet.objects.filter(entry=entry):
-            if bet.outcome in [event.outcome for event in events]:
-                score_total += bet.outcome.winning_amount
-                bet.success = True
-                bet.save()
+        for called_bet in called_bets:
+            bet_in_same_group = models.Bet.objects.filter(entry=entry,
+                                                          outcome__choice_group=called_bet.outcome.choice_group
+                                                          ).first()
+            if bet_in_same_group.outcome == called_bet.outcome:
+                score_total += called_bet.outcome.winning_amount
+                bet_in_same_group.success = True
+                bet_in_same_group.save()
+            else:
+                bet_in_same_group.success = False
+                bet_in_same_group.save()
         entry.score = score_total
         entry.save()
 
 
 @receiver(post_delete, sender=models.CalledBet)
 def reduce_scores(sender, instance, **kwargs):
-    events = models.CalledBet.objects.all()
-    for entry in models.Entry.objects.all():
+    called_bets = models.CalledBet.objects.all()
+    entries = models.Entry.objects.all()
+    for entry in entries:
         score_total = 0
-        for bet in models.Bet.objects.filter(entry=entry):
-            if bet.outcome in [event.outcome for event in events]:
-                score_total += bet.outcome.winning_amount
-                bet.success = True
-                bet.save()
+        for called_bet in called_bets:
+            bet_in_same_group = models.Bet.objects.filter(entry=entry,
+                                                          outcome__choice_group=called_bet.outcome.choice_group
+                                                          ).first()
+            if bet_in_same_group.outcome == called_bet.outcome:
+                score_total += called_bet.outcome.winning_amount
+                bet_in_same_group.success = True
+                bet_in_same_group.save()
+            else:
+                bet_in_same_group.success = False
+                bet_in_same_group.save()
         entry.score = score_total
         entry.save()
     # Finally clear the success statuses
-    for bets_of_deleted_outcome in models.Bet.objects.filter(outcome=instance.outcome):
-        bets_of_deleted_outcome.success = None
-        bets_of_deleted_outcome.save()
+    for bet_in_same_group in models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group):
+        bet_in_same_group.success = None
+        bet_in_same_group.save()

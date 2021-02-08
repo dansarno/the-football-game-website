@@ -5,10 +5,11 @@ from polymorphic.models import PolymorphicModel
 
 
 class Outcome(PolymorphicModel):
+    choice_group = models.ForeignKey('ChoiceGroup', on_delete=models.CASCADE, null=True)
     winning_amount = models.IntegerField()
 
-    def __str__(self):
-        return self
+    # def __str__(self):
+    #     return f"{self}"
 
 
 class Entry(models.Model):
@@ -37,6 +38,14 @@ class Bet(models.Model):
 
     def __str__(self):
         return f"{self.outcome} by {self.entry}"
+
+
+class ChoiceGroup(models.Model):
+    order = models.IntegerField()
+    when_called = models.DateTimeField()
+
+    def __str__(self):
+        return f"Choice Group ({self.order})"
 
 
 class Tournament(models.Model):
@@ -144,7 +153,7 @@ class TopGoalScoringGroupOutcome(Outcome):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.group.name} = {self.winning_amount}"
+        return f"Top Scoring: Group {self.group.name} = {self.winning_amount}"
 
 
 class Player(models.Model):
