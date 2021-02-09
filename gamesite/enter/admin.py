@@ -6,7 +6,7 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'score')
+    list_display = ('__str__', 'position', 'score')
 
 
 @admin.register(models.Team)

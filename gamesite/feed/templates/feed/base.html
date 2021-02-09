@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -72,14 +73,14 @@
               <hr/>
               <h5 class="mb-2 mt-3">Score</h5>
               {% for entry in request.user.profile.entry_set.all %}
-              <div class="circle">{{ entry.score }}</div>
+              <div class="circle">{{ entry.score|intcomma }}</div>
               {% empty %}
               You have no entries
               {% endfor %}
               <hr/>
               <h5 class="mb-2 mt-3">Position</h5>
               {% for entry in request.user.profile.entry_set.all %}
-              <div class="circle">{{ entry.position }}</div>
+              <div class="circle">{{ entry.position|ordinal }}</div>
               {% empty %}
               You have no entries
               {% endfor %}

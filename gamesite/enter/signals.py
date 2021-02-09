@@ -44,6 +44,16 @@ def update_scores(sender, instance, **kwargs):
         entry.score = score_total
         entry.save()
 
+    position = 1
+    ordered_entries = models.Entry.objects.order_by('-score', 'profile__user__first_name')
+    previous_score = ordered_entries[0].score
+    for entry in ordered_entries:
+        if entry.score < previous_score:
+            position += 1
+        entry.position = position
+        entry.save()
+        previous_score = entry.score
+
 
 @receiver(post_delete, sender=models.CalledBet)
 def reduce_scores(sender, instance, **kwargs):
@@ -64,6 +74,17 @@ def reduce_scores(sender, instance, **kwargs):
                 bet_in_same_group.save()
         entry.score = score_total
         entry.save()
+
+    position = 1
+    ordered_entries = models.Entry.objects.order_by('-score', 'profile__user__first_name')
+    previous_score = ordered_entries[0].score
+    for entry in ordered_entries:
+        if entry.score < previous_score:
+            position += 1
+        entry.position = position
+        entry.save()
+        previous_score = entry.score
+
     # Finally clear the success statuses
     for bet_in_same_group in models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group):
         bet_in_same_group.success = None

@@ -1,4 +1,5 @@
 {% extends "feed/base.html" %}
+{% load humanize %}
 
 {% block content %}
 <h1>Your Entries</h1>
@@ -19,7 +20,7 @@
         <a href="{% url 'enter:delete_entry' entry.id %}" class="btn btn-outline-danger">Delete</a>
       </div>
       <div class="card-footer">
-        <small class="text-muted">Last updated {{ entry.date_updated}}</small>
+        <small class="text-muted">Last updated: {{ entry.date_updated|naturaltime}}</small>
       </div>
     </div>
   </div>
