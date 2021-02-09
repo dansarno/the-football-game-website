@@ -4,7 +4,7 @@
 {% block content %}
 <h2>Feed</h2>
 {% for post in posts %}
-<div class="card border-light shadow-sm mb-4" id="feed-post">
+<div class="card border-light shadow-sm mb-4">
   <div class="card-body">
     <div class="row">
       <div class="col-1">
@@ -24,6 +24,9 @@
       </div>
     </div>
   </div>
+  {% if post.sticker %}
+  <img class="sticker-img" src="{{post.sticker.sticker_picture.url }}">
+  {% endif %}
 </div>
 {% empty %}
 <div class="card text-center border-light shadow-sm mb-4">

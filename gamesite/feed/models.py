@@ -18,6 +18,7 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    sticker = models.ForeignKey(Sticker, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return f'"{self.title}" by {self.author.username}'

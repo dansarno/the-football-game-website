@@ -79,6 +79,30 @@ a.article-title:hover {
   margin-right: 16px;
 }
 
+.card {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.sticker-img {
+  position: absolute;
+  top: -20%;
+  left: 92%;
+  height: 120px;
+  width: 120px;
+  margin-right: 16px;
+-webkit-filter: drop-shadow(3px 3px 0 white)
+                drop-shadow(-3px 3px 0 white)
+                drop-shadow(3px -3px 0 white)
+                drop-shadow(-3px -3px 0 white);
+
+filter: drop-shadow(3px 3px 0 white)
+        drop-shadow(-3px 3px 0 white)
+        drop-shadow(3px -3px 0 white)
+        drop-shadow(-3px -3px 0 white);
+}
+
 .article-metadata {
   padding-bottom: 1px;
   margin-bottom: 4px;
