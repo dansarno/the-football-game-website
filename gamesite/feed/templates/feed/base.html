@@ -80,7 +80,11 @@
               <hr/>
               <h5 class="mb-2 mt-3">Position</h5>
               {% for entry in request.user.profile.entry_set.all %}
-              <div class="circle">{{ entry.position|ordinal }}</div>
+                {% if entry.position %}
+                <div class="circle">{{ entry.position|ordinal }}</div>
+                {% else %}
+                 <div class="circle">--</div>
+                {% endif %}
               {% empty %}
               You have no entries
               {% endfor %}
