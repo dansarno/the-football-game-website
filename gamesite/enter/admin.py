@@ -181,6 +181,7 @@ class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
 @admin.register(models.Bet)
 class BetAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'get_success')
+    list_filter = ('entry',)
 
     def get_success(self, obj):
         if obj.success is True:

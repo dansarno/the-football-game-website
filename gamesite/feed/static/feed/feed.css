@@ -79,6 +79,22 @@ a.article-title:hover {
   margin-right: 16px;
 }
 
+.correct-dot {
+  height: 20px;
+  width: 20px;
+  background-color: #8cff75;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.incorrect-dot {
+  height: 20px;
+  width: 20px;
+  background-color: #ed5a5a;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .card {
   position: relative;
   top: 0;

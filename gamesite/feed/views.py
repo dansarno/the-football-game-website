@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
+from django.contrib.auth.decorators import login_required
+from enter import models
 
 
 def landing(request):
@@ -9,6 +11,15 @@ def landing(request):
         return redirect('feed:home')
     return render(request, 'feed/landing_uisual.html', {
         'title': "Welcome",
+    })
+
+
+@login_required
+def feed(request):
+    posts = Post.objects.order_by('-date_posted')
+    return render(request, 'feed/home.html', {
+        'title': "Home",
+        'posts': posts,
     })
 
 
