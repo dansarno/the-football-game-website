@@ -114,12 +114,9 @@
       </div>
       <div class="col-9 mt-4">
         {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-          {{ message }}
-        </div>
-        {% endfor %}
+        {% include 'feed/messages.html' %}
         {% endif %}
+
         {% block content %}
         {% endblock content %}
       </div>
