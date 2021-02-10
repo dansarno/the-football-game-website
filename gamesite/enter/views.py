@@ -1,10 +1,12 @@
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from . import forms
 from . import models
+from random import choice
 
 
 @login_required
@@ -90,8 +92,13 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
 
 
 @login_required
-def create_random_entry(request, template_name="enter/entry.html", success_url="enter:index"):
-    pass
+def create_random_entry(request, success_url="enter:index"):
+    new_entry = models.Entry.objects.create(profile=request.user.profile)
+    for choice_group in models.ChoiceGroup.objects.all():
+        random_choice = choice(choice_group.outcome_set.non_polymorphic().all())
+        models.Bet.objects.create(entry=new_entry, outcome=random_choice)
+    messages.add_message(request, messages.SUCCESS, 'Random entry created.')
+    return HttpResponseRedirect(reverse(success_url))
 
 
 @login_required
@@ -192,6 +199,7 @@ def delete_entry(request, entry_id, success_url="enter:index"):
         raise PermissionDenied
 
     requested_entry.delete()
+    messages.add_message(request, messages.SUCCESS, 'Entry deleted.')
 
     return HttpResponseRedirect(reverse(success_url))
 
