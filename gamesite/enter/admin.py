@@ -32,10 +32,20 @@ class FinalMatchAdmin(admin.ModelAdmin):
     pass
 
 
+class GroupMatchOutcomeInline(admin.TabularInline):
+    model = models.GroupMatchOutcome
+    max_num = 3
+    can_delete = False
+
+
 @admin.register(models.GroupMatch)
 class GroupMatchAdmin(admin.ModelAdmin):
     list_display = ('groupmatch', 'result')
     ordering = ['match_number']
+
+    inlines = [
+        GroupMatchOutcomeInline,
+    ]
 
 
 @admin.register(models.GroupMatchOutcome)
