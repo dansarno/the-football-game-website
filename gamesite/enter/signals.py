@@ -24,8 +24,7 @@ def match_result(sender, instance, **kwargs):
     # return
 
 
-@receiver(post_save, sender=models.CalledBet)
-def update_scores(sender, instance, **kwargs):
+def update_all():
     called_bets = models.CalledBet.objects.all()
     entries = models.Entry.objects.all()
     for entry in entries:
@@ -41,49 +40,94 @@ def update_scores(sender, instance, **kwargs):
             else:
                 bet_in_same_group.success = False
                 bet_in_same_group.save()
-        entry.score = score_total
+        entry.current_score = score_total
         entry.save()
 
-    position = 1
-    ordered_entries = models.Entry.objects.order_by('-score', 'profile__user__first_name')
-    previous_score = ordered_entries[0].score
-    for entry in ordered_entries:
-        if entry.score < previous_score:
-            position += 1
-        entry.position = position
-        entry.save()
-        previous_score = entry.score
+
+def recalculate_scores_and_positions(created, instance):
+    called_bets = models.CalledBet.objects.all()
+    entries = models.Entry.objects.all()
+    entries.update(current_score=0)
+    for called_bet in called_bets:
+        # 1. Update scores for those that won this called bet
+        for entry in entries:
+            bet_in_same_group = models.Bet.objects.filter(entry=entry,
+                                                          outcome__choice_group=called_bet.outcome.choice_group
+                                                          ).first()
+            if bet_in_same_group.outcome == called_bet.outcome:
+                entry.current_score += called_bet.outcome.winning_amount
+                entry.save()
+                bet_in_same_group.success = True
+                bet_in_same_group.save()
+            else:
+                bet_in_same_group.success = False
+                bet_in_same_group.save()
+
+            if created and called_bet == instance:
+                models.ScoreLog.objects.create(score=entry.current_score, entry=entry, called_bet=instance)
+            elif called_bet == instance:
+                score_log = models.ScoreLog.objects.filter(entry=entry, called_bet=instance).first()
+                score_log.score = entry.current_score
+                score_log.save()
+
+        # 2. Update positions given the new scores
+        position = 1
+        ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
+        previous_score = ordered_entries[0].current_score
+        for entry in ordered_entries:
+            if entry.current_score < previous_score:
+                position += 1
+            entry.current_position = position
+            entry.save()
+            if created and called_bet == instance:
+                models.PositionLog.objects.create(position=position, entry=entry, called_bet=instance)
+            elif called_bet == instance:
+                position_log = models.PositionLog.objects.filter(entry=entry, called_bet=instance).first()
+                position_log.position = position
+                position_log.save()
+            previous_score = entry.current_score
+
+
+def recalculate_from_new_or_edited(instance, created):
+    called_bets_after_this_one = models.CalledBet.objects.filter(date__gt=instance.date)
+
+
+@receiver(post_save, sender=models.CalledBet)
+def updated_called_bets(sender, instance, created, **kwargs):
+    # update_all()
+    recalculate_scores_and_positions(created, instance)
+
+    # position = 1
+    # ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
+    # previous_score = ordered_entries[0].current_score
+    # for entry in ordered_entries:
+    #     if entry.current_score < previous_score:
+    #         position += 1
+    #     entry.current_position = position
+    #     entry.save()
+    #     if created:
+    #         models.EntryStateLog.objects.create(position=position, score=entry.current_score, entry=entry, called_bet=instance)
+    #     else:
+    #         entry_state_log = models.EntryStateLog.objects.filter(entry=entry, called_bet=instance).first()
+    #         entry_state_log.position = position
+    #         entry_state_log.score = entry.current_score
+    #         entry_state_log.save()
+    #     previous_score = entry.current_score
 
 
 @receiver(post_delete, sender=models.CalledBet)
-def reduce_scores(sender, instance, **kwargs):
-    called_bets = models.CalledBet.objects.all()
-    entries = models.Entry.objects.all()
-    for entry in entries:
-        score_total = 0
-        for called_bet in called_bets:
-            bet_in_same_group = models.Bet.objects.filter(entry=entry,
-                                                          outcome__choice_group=called_bet.outcome.choice_group
-                                                          ).first()
-            if bet_in_same_group.outcome == called_bet.outcome:
-                score_total += called_bet.outcome.winning_amount
-                bet_in_same_group.success = True
-                bet_in_same_group.save()
-            else:
-                bet_in_same_group.success = False
-                bet_in_same_group.save()
-        entry.score = score_total
-        entry.save()
+def removed_from_called_bets(sender, instance, **kwargs):
+    update_all()
 
     position = 1
-    ordered_entries = models.Entry.objects.order_by('-score', 'profile__user__first_name')
-    previous_score = ordered_entries[0].score
+    ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
+    previous_score = ordered_entries[0].current_score
     for entry in ordered_entries:
-        if entry.score < previous_score:
+        if entry.current_score < previous_score:
             position += 1
-        entry.position = position
+        entry.current_position = position
         entry.save()
-        previous_score = entry.score
+        previous_score = entry.current_score
 
     # Finally clear the success statuses
     for bet_in_same_group in models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group):

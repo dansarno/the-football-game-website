@@ -6,7 +6,7 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'position', 'score')
+    list_display = ('__str__', 'current_position', 'current_score')
 
 
 @admin.register(models.Team)
@@ -262,6 +262,18 @@ class CalledBetAdmin(admin.ModelAdmin):
         return obj.outcome.winning_amount
 
     show_winning_amount.short_description = 'Winning Amount'
+
+
+@admin.register(models.ScoreLog)
+class ScoreLogAdmin(admin.ModelAdmin):
+    list_filter = ('entry',)
+    list_display = ('__str__', 'entry', 'score')
+
+
+@admin.register(models.PositionLog)
+class PositionLogAdmin(admin.ModelAdmin):
+    list_filter = ('entry',)
+    list_display = ('__str__', 'entry', 'position')
 
 
 @admin.register(models.Outcome)
