@@ -94,25 +94,7 @@ def recalculate_from_new_or_edited(instance, created):
 
 @receiver(post_save, sender=models.CalledBet)
 def updated_called_bets(sender, instance, created, **kwargs):
-    # update_all()
     recalculate_scores_and_positions(created, instance)
-
-    # position = 1
-    # ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
-    # previous_score = ordered_entries[0].current_score
-    # for entry in ordered_entries:
-    #     if entry.current_score < previous_score:
-    #         position += 1
-    #     entry.current_position = position
-    #     entry.save()
-    #     if created:
-    #         models.EntryStateLog.objects.create(position=position, score=entry.current_score, entry=entry, called_bet=instance)
-    #     else:
-    #         entry_state_log = models.EntryStateLog.objects.filter(entry=entry, called_bet=instance).first()
-    #         entry_state_log.position = position
-    #         entry_state_log.score = entry.current_score
-    #         entry_state_log.save()
-    #     previous_score = entry.current_score
 
 
 @receiver(post_delete, sender=models.CalledBet)
@@ -130,6 +112,4 @@ def removed_from_called_bets(sender, instance, **kwargs):
         previous_score = entry.current_score
 
     # Finally clear the success statuses
-    for bet_in_same_group in models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group):
-        bet_in_same_group.success = None
-        bet_in_same_group.save()
+    models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group).update(success=None)
