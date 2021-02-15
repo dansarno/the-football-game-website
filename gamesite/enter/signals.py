@@ -60,9 +60,9 @@ def recalculate_scores_and_positions_delete(instance):
         position = 1
         ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
-        for entry in ordered_entries:
+        for i, entry in enumerate(ordered_entries):
             if entry.current_score < previous_score:
-                position += 1
+                position = i + 1
             entry.current_position = position
             entry.save()
 
@@ -112,9 +112,9 @@ def recalculate_from_instance(instance, created):
         position = 1
         ordered_entries = models.Entry.objects.order_by('-current_score', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
-        for entry in ordered_entries:
+        for i, entry in enumerate(ordered_entries):
             if entry.current_score < previous_score:
-                position += 1
+                position = i + 1
             entry.current_position = position
             entry.save()
             if created and called_bet == instance:
