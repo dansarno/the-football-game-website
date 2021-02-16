@@ -29,6 +29,11 @@
     {% block profile %}
     {% endblock profile %}
   </div>
+  <script>
+    $(document).ready(function() {
+      {% block jquery %} {% endblock %}
+    })
+  </script>
 </div>
 
 {% endblock content %}

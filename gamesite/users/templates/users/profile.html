@@ -6,6 +6,73 @@
 </div>
 {% endblock button %}
 
+<script>
+  {% block jquery %}
+  var endpoint = 'api/chart/'
+  var defaultData = []
+  var labels = []
+
+  $.ajax({
+    method: "GET",
+    url: endpoint,
+    success: function(data) {
+      labels = data.labels
+      defaultData = data.scores
+      setChart()
+    },
+    error: function(error_data) {
+      console.log("error")
+      console.log(error_data)
+    }
+  })
+
+  function setChart() {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Entry 1',
+          data: defaultData,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+          pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 8,
+          fill: false,
+          lineTension: 0.1
+        }, {
+          label: 'Entry 2',
+          data: [200, 200, 290, 420],
+          borderColor: 'rgba(54, 162, 235, 1)',
+          pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+          pointHoverBackgroundColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 8,
+          fill: false,
+          lineTension: 0.1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+  {% endblock jquery %}
+</script>
+
 {% block profile %}
+
+<canvas id="myChart" width="400" height="400"></canvas>
 
 {% endblock profile %}

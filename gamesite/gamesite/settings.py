@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',  # 'users',
     'crispy_forms',
     'polymorphic',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
