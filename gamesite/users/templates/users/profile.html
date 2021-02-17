@@ -8,33 +8,104 @@
 
 <script>
   {% block jquery %}
-  var endpoint = 'api/chart/'
-  var defaultData = []
-  var labels = []
+
+  var endpoint = $( "#chart_container" ).attr( "url-endpoint" )
+  var defaultScoreData = []
+  var defaultPositionData = []
+  var defaultLabels = []
 
   $.ajax({
     method: "GET",
     url: endpoint,
     success: function(data) {
-      labels = data.labels
-      defaultData = data.scores
+      let scores = []
+      let positions = []
+      let labels = []
+      for (let entry of data.entries) {
+        entryScores = []
+        for (let score_log of entry.score_logs) {
+          entryScores.push(score_log.score)
+        }
+        scores.push(entryScores)
+
+        entryPostions = []
+        for (let position_log of entry.position_logs) {
+          entryPostions.push(position_log.position)
+        }
+        positions.push(entryPostions)
+      }
+      defaultLabels = ["1","2","3","4","5","6"]
+      defaultScoreData = scores
+      defaultPositionData = positions
+      console.log(defaultScoreData[0])
+      console.log(positions)
+      console.log(labels)
       setChart()
     },
     error: function(error_data) {
-      console.log("error")
       console.log(error_data)
     }
   })
 
   function setChart() {
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    var ctx = document.getElementById('scoreChart').getContext('2d');
+    var ctx2 = document.getElementById('positionChart').getContext('2d');
+
+    console.log(defaultLabels)
+
+    lineChartData = {}
+    lineChartData.labels = defaultLabels
+    lineChartData.datasets = [] //add 'datasets' array element to object
+
+    entryTags = ["A", "B", "C"]
+    colourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+    i = 0
+    for (let scores of defaultScoreData) {
+      lineChartData.datasets.push(
+        {
+          label: 'Entry ' + entryTags[i],
+          data: scores,
+          borderColor: colourSet[i],
+          pointBackgroundColor: colourSet[i],
+          pointHoverBackgroundColor: colourSet[i],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 8,
+          fill: false,
+          lineTension: 0
+        }
+      )
+      i++
+    }
+
+    // Score Chart
+    var scoreChart = new Chart(ctx, {
+      type: 'line',
+      data: lineChartData,
+      options: {
+        responsive: true,
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            scaleLabel: {
+            display: true,
+            labelString: 'Score'
+          }
+          }]
+        }
+      }
+    });
+
+    // Position Chart
+    var positionChart = new Chart(ctx2, {
       type: 'line',
       data: {
-        labels: labels,
+        labels: defaultLabels,
         datasets: [{
           label: 'Entry 1',
-          data: defaultData,
+          data: defaultPositionData[0],
           borderColor: 'rgba(255, 99, 132, 1)',
           pointBackgroundColor: 'rgba(255, 99, 132, 1)',
           pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
@@ -42,10 +113,10 @@
           pointRadius: 4,
           pointHoverRadius: 8,
           fill: false,
-          lineTension: 0.1
+          lineTension: 0
         }, {
           label: 'Entry 2',
-          data: [200, 200, 290, 420],
+          data: defaultPositionData[1],
           borderColor: 'rgba(54, 162, 235, 1)',
           pointBackgroundColor: 'rgba(54, 162, 235, 1)',
           pointHoverBackgroundColor: 'rgba(54, 162, 235, 1)',
@@ -53,15 +124,33 @@
           pointRadius: 4,
           pointHoverRadius: 8,
           fill: false,
-          lineTension: 0.1
+          lineTension: 0
+        }, {
+          label: 'Entry 3',
+          data: defaultPositionData[2],
+          borderColor: 'rgba(255, 206, 86, 1)',
+          pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+          pointHoverBackgroundColor: 'rgba(255, 206, 86, 1)',
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 8,
+          fill: false,
+          lineTension: 0
         }]
       },
       options: {
+        responsive: true,
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
-            }
+              beginAtZero: false,
+              stepSize: 1,
+              reverse: true,
+            },
+            scaleLabel: {
+            display: true,
+            labelString: 'Position'
+          }
           }]
         }
       }
@@ -73,6 +162,15 @@
 
 {% block profile %}
 
-<canvas id="myChart" width="400" height="400"></canvas>
+<div id="chart_container" url-endpoint="{% url 'profile_api' username=user.username %}">
+  <div class="row">
+  <div class="col-sm-6">
+    <canvas id="scoreChart" width="400" height="400"></canvas>
+  </div>
+  <div class="col-sm-6">
+    <canvas id="positionChart" width="400" height="400"></canvas>
+  </div>
+  </div>
+</div>
 
 {% endblock profile %}

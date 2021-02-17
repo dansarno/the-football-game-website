@@ -78,16 +78,16 @@
               </div>
               <hr />
               <h5 class="mb-2 mt-3">Score</h5>
-              {% for entry in request.user.profile.entry_set.all %}
-              <div class="circle">{{ entry.score|intcomma }}</div>
+              {% for entry in request.user.profile.entries.all %}
+              <div class="circle">{{ entry.current_score|intcomma }}</div>
               {% empty %}
               You have no entries
               {% endfor %}
               <hr />
               <h5 class="mb-2 mt-3">Position</h5>
-              {% for entry in request.user.profile.entry_set.all %}
-              {% if entry.position %}
-              <div class="circle">{{ entry.position|ordinal }}</div>
+              {% for entry in request.user.profile.entries.all %}
+              {% if entry.current_position %}
+              <div class="circle">{{ entry.current_position|ordinal }}</div>
               {% else %}
               <div class="circle">--</div>
               {% endif %}
@@ -97,7 +97,7 @@
               <hr />
               <h5 class="mb-1 mt-3">Form</h5>
               <small class="text-muted mb-2">Last 5 results</small>
-              {% for entry in request.user.profile.entry_set.all %}
+              {% for entry in request.user.profile.entries.all %}
               <div class="mt-1">
                 {% for bet in entry.bet_set.all|slice:":5" %}
                 {% if bet.success is True %}

@@ -8,8 +8,8 @@ class Outcome(PolymorphicModel):
     choice_group = models.ForeignKey('ChoiceGroup', on_delete=models.CASCADE, null=True)
     winning_amount = models.IntegerField()
 
-    # def __str__(self):
-    #     return f"{self}"
+    def __str__(self):
+        return f"{self}"
 
 
 class Entry(models.Model):
@@ -23,7 +23,7 @@ class Entry(models.Model):
     has_paid = models.BooleanField(default=False)
     has_submitted = models.BooleanField(default=False)
     current_position = models.IntegerField(blank=True, null=True)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='entries')
     current_score = models.IntegerField(default=0)
     bets = models.ManyToManyField(Outcome, through='Bet')
 
@@ -32,13 +32,13 @@ class Entry(models.Model):
 
 
 class ScoreLog(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name='score_logs')
     called_bet = models.ForeignKey('CalledBet', on_delete=models.CASCADE)
     score = models.IntegerField()
 
 
 class PositionLog(models.Model):
-    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE, related_name='position_logs')
     called_bet = models.ForeignKey('CalledBet', on_delete=models.CASCADE)
     position = models.IntegerField()
 

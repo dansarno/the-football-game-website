@@ -2,11 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import User
-from enter import models
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from rest_framework.views import APIView
-from rest_framework.response import Response
 
 
 def register(request):
@@ -32,35 +29,6 @@ def profile(request, username):
         'title': user.username,
         'user': user
     })
-
-
-def get_data(request):
-    data = {
-        'sales': 100,
-        'customers': 10,
-    }
-    return JsonResponse(data)
-
-
-class ChartData(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        entry = models.Entry.objects.all()[2]  # filter(profile=request.user.profile)
-        scorelog_qs = [scorelog['score'] for scorelog in entry.scorelog_set.values('score')]
-        positionlog_qs = [positionlog['position'] for positionlog in entry.positionlog_set.values('position')]
-        labels = [scorelog['called_bet__date'] for scorelog in entry.scorelog_set.values('called_bet__date')]
-
-        data = {
-            'id': entry.id,
-            'current score': entry.current_score,
-            'current position': entry.current_position,
-            'scores': scorelog_qs,
-            'positions': positionlog_qs,
-            'labels': labels,
-        }
-        return Response(data)
 
 
 @login_required
