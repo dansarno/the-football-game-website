@@ -53,15 +53,15 @@
 
     console.log(defaultLabels)
 
-    lineChartData = {}
-    lineChartData.labels = defaultLabels
-    lineChartData.datasets = [] //add 'datasets' array element to object
+    scoreChartData = {}
+    scoreChartData.labels = defaultLabels
+    scoreChartData.datasets = []
 
     entryTags = ["A", "B", "C"]
     colourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     i = 0
     for (let scores of defaultScoreData) {
-      lineChartData.datasets.push(
+      scoreChartData.datasets.push(
         {
           label: 'Entry ' + entryTags[i],
           data: scores,
@@ -78,10 +78,33 @@
       i++
     }
 
+    postionChartData = {}
+    postionChartData.labels = defaultLabels
+    postionChartData.datasets = []
+
+    i = 0
+    for (let positions of defaultPositionData) {
+      postionChartData.datasets.push(
+        {
+          label: 'Entry ' + entryTags[i],
+          data: positions,
+          borderColor: colourSet[i],
+          pointBackgroundColor: colourSet[i],
+          pointHoverBackgroundColor: colourSet[i],
+          borderWidth: 3,
+          pointRadius: 4,
+          pointHoverRadius: 8,
+          fill: false,
+          lineTension: 0
+        }
+      )
+      i++
+    }
+
     // Score Chart
     var scoreChart = new Chart(ctx, {
       type: 'line',
-      data: lineChartData,
+      data: scoreChartData,
       options: {
         responsive: true,
         scales: {
@@ -101,50 +124,14 @@
     // Position Chart
     var positionChart = new Chart(ctx2, {
       type: 'line',
-      data: {
-        labels: defaultLabels,
-        datasets: [{
-          label: 'Entry 1',
-          data: defaultPositionData[0],
-          borderColor: 'rgba(255, 99, 132, 1)',
-          pointBackgroundColor: 'rgba(255, 99, 132, 1)',
-          pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 8,
-          fill: false,
-          lineTension: 0
-        }, {
-          label: 'Entry 2',
-          data: defaultPositionData[1],
-          borderColor: 'rgba(54, 162, 235, 1)',
-          pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-          pointHoverBackgroundColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 8,
-          fill: false,
-          lineTension: 0
-        }, {
-          label: 'Entry 3',
-          data: defaultPositionData[2],
-          borderColor: 'rgba(255, 206, 86, 1)',
-          pointBackgroundColor: 'rgba(255, 206, 86, 1)',
-          pointHoverBackgroundColor: 'rgba(255, 206, 86, 1)',
-          borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 8,
-          fill: false,
-          lineTension: 0
-        }]
-      },
+      data: postionChartData,
       options: {
         responsive: true,
         scales: {
           yAxes: [{
             ticks: {
               beginAtZero: false,
-              stepSize: 1,
+              precision: 0,
               reverse: true,
             },
             scaleLabel: {
