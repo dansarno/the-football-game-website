@@ -21,11 +21,11 @@
     success: function(data) {
       let scores = []
       let positions = []
-      let labels = []
+      let labels = [1,2,3,4,5,6]
 
-      for (let score_log of data.entries[0].score_logs) {
-        labels.push(score_log.called_bet.date)
-      }
+      // for (let score_log of data.entries[0].score_logs) {
+      //   labels.push(score_log.called_bet.date)
+      // }
 
       for (let entry of data.entries) {
         entryScores = []
@@ -59,20 +59,22 @@
     scoreChartData.datasets = []
 
     entryTags = ["A", "B", "C"]
-    colourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+    lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+    areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
     i = 0
     for (let scores of defaultScoreData) {
       scoreChartData.datasets.push(
         {
           label: 'Entry ' + entryTags[i],
           data: scores,
-          borderColor: colourSet[i],
-          pointBackgroundColor: colourSet[i],
-          pointHoverBackgroundColor: colourSet[i],
+          backgroundColor: areaColourSet[i],
+          borderColor: lineColourSet[i],
+          pointBackgroundColor: lineColourSet[i],
+          pointHoverBackgroundColor: lineColourSet[i],
           borderWidth: 3,
           pointRadius: 4,
           pointHoverRadius: 8,
-          fill: false,
+          fill: false, //'origin',
           lineTension: 0
         }
       )
@@ -89,9 +91,10 @@
         {
           label: 'Entry ' + entryTags[i],
           data: positions,
-          borderColor: colourSet[i],
-          pointBackgroundColor: colourSet[i],
-          pointHoverBackgroundColor: colourSet[i],
+          backgroundColor: areaColourSet[i],
+          borderColor: lineColourSet[i],
+          pointBackgroundColor: lineColourSet[i],
+          pointHoverBackgroundColor: lineColourSet[i],
           borderWidth: 3,
           pointRadius: 4,
           pointHoverRadius: 8,
