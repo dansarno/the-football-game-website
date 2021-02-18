@@ -46,7 +46,6 @@
           <div class="navbar-nav">
             {% if user.is_authenticated %}
             <img class="rounded-circle account-img-sm" src="{{ request.user.profile.profile_picture.url }}">
-            <a class="nav-item nav-link" href="{% url 'feed:create' %}">New Post</a>
             <a class="nav-item nav-link" href="{% url 'profile' username=request.user.username %}">Profile</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
@@ -61,71 +60,12 @@
   </header>
 
   <div class="page container mt-lg">
+    {% if messages %}
+    {% include 'feed/messages.html' %}
+    {% endif %}
     <div class="row">
-      <div class="col-3">
-        <div class="sticky-top sticky-offset">
-          <div class="card border-light shadow-sm" id="account-profile">
-            <div class="card-body text-center">
-              <a href="{% url 'profile' username=request.user.username %}">
-                <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
-              </a>
-              <div class="mt-2">
-                {% if request.user.first_name and user.last_name %}
-                <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
-                {% else %}
-                <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.username }}</a>
-                {% endif %}
-              </div>
-              <hr />
-              <h5 class="mb-2 mt-3">Score</h5>
-              {% for entry in request.user.profile.entries.all %}
-              <div class="circle">{{ entry.current_score|intcomma }}</div>
-              {% empty %}
-              You have no entries
-              {% endfor %}
-              <hr />
-              <h5 class="mb-2 mt-3">Position</h5>
-              {% for entry in request.user.profile.entries.all %}
-              {% if entry.current_position %}
-              <div class="circle">{{ entry.current_position|ordinal }}</div>
-              {% else %}
-              <div class="circle">--</div>
-              {% endif %}
-              {% empty %}
-              You have no entries
-              {% endfor %}
-              <hr />
-              <h5 class="mb-1 mt-3">Form</h5>
-              <small class="text-muted mb-2">Last 5 results</small>
-              {% for entry in request.user.profile.entries.all %}
-              <div class="mt-1">
-                {% for bet in entry.bet_set.all|slice:":5" %}
-                {% if bet.success is True %}
-                <span class="correct-dot"></span>
-                {% elif bet.success is False %}
-                <span class="incorrect-dot"></span>
-                {% endif %}
-                {% empty %}
-                No bets have been called
-                {% endfor %}
-              </div>
-              {% empty %}
-              You have no entries
-              {% endfor %}
-            </div>
-            <!--            <div class="card-footer">-->
-            <!--            </div>-->
-          </div>
-        </div>
-      </div>
-      <div class="col-9 mt-4">
-        {% if messages %}
-        {% include 'feed/messages.html' %}
-        {% endif %}
-
-        {% block content %}
-        {% endblock content %}
-      </div>
+      {% block content %}
+      {% endblock content %}
     </div>
   </div>
 

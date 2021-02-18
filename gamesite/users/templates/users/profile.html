@@ -1,4 +1,5 @@
 {% extends "users/profile_base.html" %}
+{% load humanize %}
 
 {% block button %}
 <div>
@@ -21,6 +22,11 @@
       let scores = []
       let positions = []
       let labels = []
+
+      for (let score_log of data.entries[0].score_logs) {
+        labels.push(score_log.called_bet.date)
+      }
+
       for (let entry of data.entries) {
         entryScores = []
         for (let score_log of entry.score_logs) {
@@ -34,12 +40,9 @@
         }
         positions.push(entryPostions)
       }
-      defaultLabels = ["1","2","3","4","5","6"]
+      defaultLabels = labels
       defaultScoreData = scores
       defaultPositionData = positions
-      console.log(defaultScoreData[0])
-      console.log(positions)
-      console.log(labels)
       setChart()
     },
     error: function(error_data) {
@@ -50,8 +53,6 @@
   function setChart() {
     var ctx = document.getElementById('scoreChart').getContext('2d');
     var ctx2 = document.getElementById('positionChart').getContext('2d');
-
-    console.log(defaultLabels)
 
     scoreChartData = {}
     scoreChartData.labels = defaultLabels
@@ -107,15 +108,44 @@
       data: scoreChartData,
       options: {
         responsive: true,
+        layout: {
+            padding: {
+                left: 0,
+                right: 20,
+                top: 20,
+                bottom: 0
+            }
+          },
+        tooltips: {
+           mode: 'nearest',
+           label: 'mylabel',
+           callbacks: {
+               label: function(tooltipItem, data) {
+                   return data.datasets[tooltipItem.datasetIndex].label + ': '
+                   + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                   },
+                },
+        },
+        legend: {
+            position: 'bottom'
+        },
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: true,
+              callback: function(value, index, values) {
+                if (Math.max(...values) > 1500) {
+                  return value / 1000 + 'k';
+                }
+                else {
+                  return value;
+                }
+              }
             },
             scaleLabel: {
             display: true,
             labelString: 'Score'
-          }
+            },
           }]
         }
       }
@@ -127,6 +157,18 @@
       data: postionChartData,
       options: {
         responsive: true,
+        layout: {
+            padding: {
+                left: 0,
+                right: 20,
+                top: 20,
+                bottom: 0
+            }
+          },
+        legend: {
+            position: 'bottom',
+            padding: 25
+        },
         scales: {
           yAxes: [{
             ticks: {
@@ -150,12 +192,50 @@
 {% block profile %}
 
 <div id="chart_container" url-endpoint="{% url 'profile_api' username=user.username %}">
+  <div class="mb-4">
+    <h4>Summary</h4>
+  <hr />
+
+  <h5 class="mb-2 mt-3">Position</h5>
   <div class="row">
+  {% for entry in user.profile.entries.all %}
+  {% if entry.current_position %}
+  <div class="col">
+  <div class="circle">{{ entry.current_position|ordinal }}</div>
+  </div>
+  {% else %}
+  <div class="col">
+  <div class="circle">--</div>
+  </div>
+  {% endif %}
+  {% empty %}
+  You have no entries
+  {% endfor %}
+  </div>
+  </div>
+
+  <h5 class="mb-2 mt-3">Score</h5>
+  <div class="row">
+  {% for entry in user.profile.entries.all %}
+  <div class="col">
+  <div class="circle">{{ entry.current_score|intcomma }}</div>
+  </div>
+  {% empty %}
+  You have no entries
+  {% endfor %}
+  </div>
+
+  <div>
+    <h4>History</h4>
+  <hr />
+
+  <div class="row mt-3">
+  <div class="col-sm-6">
+    <canvas id="positionChart" width="400" height="400"></canvas>
+  </div>
   <div class="col-sm-6">
     <canvas id="scoreChart" width="400" height="400"></canvas>
   </div>
-  <div class="col-sm-6">
-    <canvas id="positionChart" width="400" height="400"></canvas>
   </div>
   </div>
 </div>

@@ -2,6 +2,10 @@
 {% load humanize %}
 
 {% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-9 mt-4">
 <h1>Your Entries</h1>
 <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.</div>
 
@@ -36,6 +40,7 @@
   </div>
   {% endif %}
 
+</div>
 </div>
 
 {% endblock content %}

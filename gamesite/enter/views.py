@@ -11,7 +11,7 @@ from random import choice
 
 @login_required
 def index(request):
-    existing_entries = request.user.profile.entry_set.all()
+    existing_entries = request.user.profile.entries.all()
     return render(request, "enter/index.html", {
         "title": "Entry Manager",
         "entries": existing_entries

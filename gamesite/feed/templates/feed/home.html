@@ -2,6 +2,10 @@
 {% load humanize %}
 
 {% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-12 col-lg-9 mt-4">
 <h2>Feed</h2>
 {% for post in posts %}
 <div class="card border-light shadow-sm mb-4">
@@ -35,4 +39,6 @@
   </div>
 </div>
 {% endfor %}
+</div>
+
 {% endblock content %}
