@@ -1,0 +1,76 @@
+{% extends "feed/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-9 mt-4">
+<h2>Leader Boards</h2>
+
+<div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
+    <div id="table_container" url-endpoint="{% url 'enter:all_entries_api' %}">
+      <h3>Overall Leader Board</h3>
+        <hr />
+      <table id="example" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Entry ID</th>
+                    <th>Score</th>
+                    <th>Position</th>
+                    <th>Team</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var tableDataEndpoint = $( "#table_container" ).attr( "url-endpoint" )
+
+    $.ajax({
+            method: "GET",
+            url: tableDataEndpoint,
+            success: function(entries) {
+              console.log(entries);
+              data = entries;
+              let dataset = []
+              for (let entry of entries) {
+                row = []
+                row.push(`${entry.profile.user.first_name} ${entry.profile.user.last_name}`)
+                row.push(entry.profile.user.username)
+                row.push(entry.id)
+                row.push(entry.current_score)
+                row.push(entry.current_position)
+                row.push(entry.team)
+                dataset.push(row)
+              }
+              console.log(dataset)
+              var dataSet = [[ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ]]
+              $('#example').DataTable( {
+                  data: dataset,
+                  columns: [
+                      { title: "Name" },
+                      { title: "Username" },
+                      { title: "Entry ID" },
+                      { title: "Score" },
+                      { title: "Position" },
+                      { title: "Team" },
+                  ],
+                  "columnDefs": [{
+                      "targets": '_all',
+                      "defaultContent": "-"
+                  }],
+              } );
+            }
+          })
+  } );
+</script>
+
+{% endblock content %}

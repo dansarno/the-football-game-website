@@ -7,190 +7,188 @@
 </div>
 {% endblock button %}
 
-<script>
-  {% block jquery %}
+{% block jquery %}
 
-  var endpoint = $( "#chart_container" ).attr( "url-endpoint" )
-  var defaultScoreData = []
-  var defaultPositionData = []
-  var defaultLabels = []
+var chartDataEndpoint = $( "#chart_container" ).attr( "url-endpoint" )
+var defaultScoreData = []
+var defaultPositionData = []
+var defaultLabels = []
 
-  $.ajax({
-    method: "GET",
-    url: endpoint,
-    success: function(data) {
-      let scores = []
-      let positions = []
-      let labels = [1,2,3,4,5,6]
+$.ajax({
+  method: "GET",
+  url: chartDataEndpoint,
+  success: function(data) {
+    let scores = []
+    let positions = []
+    let labels = [1,2,3,4,5,6]
 
-      // for (let score_log of data.entries[0].score_logs) {
-      //   labels.push(score_log.called_bet.date)
-      // }
+    // for (let score_log of data.entries[0].score_logs) {
+    //   labels.push(score_log.called_bet.date)
+    // }
 
-      for (let entry of data.entries) {
-        entryScores = []
-        for (let score_log of entry.score_logs) {
-          entryScores.push(score_log.score)
-        }
-        scores.push(entryScores)
-
-        entryPostions = []
-        for (let position_log of entry.position_logs) {
-          entryPostions.push(position_log.position)
-        }
-        positions.push(entryPostions)
+    for (let entry of data.entries) {
+      entryScores = []
+      for (let score_log of entry.score_logs) {
+        entryScores.push(score_log.score)
       }
-      defaultLabels = labels
-      defaultScoreData = scores
-      defaultPositionData = positions
-      setChart()
-    },
-    error: function(error_data) {
-      console.log(error_data)
-    }
-  })
+      scores.push(entryScores)
 
-  function setChart() {
-    var ctx = document.getElementById('scoreChart').getContext('2d');
-    var ctx2 = document.getElementById('positionChart').getContext('2d');
-
-    scoreChartData = {}
-    scoreChartData.labels = defaultLabels
-    scoreChartData.datasets = []
-
-    entryTags = ["A", "B", "C"]
-    lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
-    areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
-    i = 0
-    for (let scores of defaultScoreData) {
-      scoreChartData.datasets.push(
-        {
-          label: 'Entry ' + entryTags[i],
-          data: scores,
-          backgroundColor: areaColourSet[i],
-          borderColor: lineColourSet[i],
-          pointBackgroundColor: lineColourSet[i],
-          pointHoverBackgroundColor: lineColourSet[i],
-          borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 8,
-          fill: false, //'origin',
-          lineTension: 0
-        }
-      )
-      i++
-    }
-
-    postionChartData = {}
-    postionChartData.labels = defaultLabels
-    postionChartData.datasets = []
-
-    i = 0
-    for (let positions of defaultPositionData) {
-      postionChartData.datasets.push(
-        {
-          label: 'Entry ' + entryTags[i],
-          data: positions,
-          backgroundColor: areaColourSet[i],
-          borderColor: lineColourSet[i],
-          pointBackgroundColor: lineColourSet[i],
-          pointHoverBackgroundColor: lineColourSet[i],
-          borderWidth: 3,
-          pointRadius: 4,
-          pointHoverRadius: 8,
-          fill: false,
-          lineTension: 0
-        }
-      )
-      i++
-    }
-
-    // Score Chart
-    var scoreChart = new Chart(ctx, {
-      type: 'line',
-      data: scoreChartData,
-      options: {
-        responsive: true,
-        layout: {
-            padding: {
-                left: 0,
-                right: 20,
-                top: 20,
-                bottom: 0
-            }
-          },
-        tooltips: {
-           mode: 'nearest',
-           label: 'mylabel',
-           callbacks: {
-               label: function(tooltipItem, data) {
-                   return data.datasets[tooltipItem.datasetIndex].label + ': '
-                   + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                   },
-                },
-        },
-        legend: {
-            position: 'bottom'
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              callback: function(value, index, values) {
-                if (Math.max(...values) > 1500) {
-                  return value / 1000 + 'k';
-                }
-                else {
-                  return value;
-                }
-              }
-            },
-            scaleLabel: {
-            display: true,
-            labelString: 'Score'
-            },
-          }]
-        }
+      entryPostions = []
+      for (let position_log of entry.position_logs) {
+        entryPostions.push(position_log.position)
       }
-    });
+      positions.push(entryPostions)
+    }
+    defaultLabels = labels
+    defaultScoreData = scores
+    defaultPositionData = positions
+    setChart()
+  },
+  error: function(error_data) {
+    console.log(error_data)
+  }
+})
 
-    // Position Chart
-    var positionChart = new Chart(ctx2, {
-      type: 'line',
-      data: postionChartData,
-      options: {
-        responsive: true,
-        layout: {
-            padding: {
-                left: 0,
-                right: 20,
-                top: 20,
-                bottom: 0
-            }
-          },
-        legend: {
-            position: 'bottom',
-            padding: 25
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false,
-              precision: 0,
-              reverse: true,
-            },
-            scaleLabel: {
-            display: true,
-            labelString: 'Position'
-          }
-          }]
-        }
+function setChart() {
+  var ctx = document.getElementById('scoreChart').getContext('2d');
+  var ctx2 = document.getElementById('positionChart').getContext('2d');
+
+  scoreChartData = {}
+  scoreChartData.labels = defaultLabels
+  scoreChartData.datasets = []
+
+  entryTags = ["A", "B", "C"]
+  lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
+  areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+  i = 0
+  for (let scores of defaultScoreData) {
+    scoreChartData.datasets.push(
+      {
+        label: 'Entry ' + entryTags[i],
+        data: scores,
+        backgroundColor: areaColourSet[i],
+        borderColor: lineColourSet[i],
+        pointBackgroundColor: lineColourSet[i],
+        pointHoverBackgroundColor: lineColourSet[i],
+        borderWidth: 3,
+        pointRadius: 4,
+        pointHoverRadius: 8,
+        fill: false, //'origin',
+        lineTension: 0
       }
-    });
+    )
+    i++
   }
 
-  {% endblock jquery %}
-</script>
+  postionChartData = {}
+  postionChartData.labels = defaultLabels
+  postionChartData.datasets = []
+
+  i = 0
+  for (let positions of defaultPositionData) {
+    postionChartData.datasets.push(
+      {
+        label: 'Entry ' + entryTags[i],
+        data: positions,
+        backgroundColor: areaColourSet[i],
+        borderColor: lineColourSet[i],
+        pointBackgroundColor: lineColourSet[i],
+        pointHoverBackgroundColor: lineColourSet[i],
+        borderWidth: 3,
+        pointRadius: 4,
+        pointHoverRadius: 8,
+        fill: false,
+        lineTension: 0
+      }
+    )
+    i++
+  }
+
+  // Score Chart
+  var scoreChart = new Chart(ctx, {
+    type: 'line',
+    data: scoreChartData,
+    options: {
+      responsive: true,
+      layout: {
+          padding: {
+              left: 0,
+              right: 20,
+              top: 20,
+              bottom: 0
+          }
+        },
+      tooltips: {
+         mode: 'nearest',
+         label: 'mylabel',
+         callbacks: {
+             label: function(tooltipItem, data) {
+                 return data.datasets[tooltipItem.datasetIndex].label + ': '
+                 + tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                 },
+              },
+      },
+      legend: {
+          position: 'bottom'
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            callback: function(value, index, values) {
+              if (Math.max(...values) > 1500) {
+                return value / 1000 + 'k';
+              }
+              else {
+                return value;
+              }
+            }
+          },
+          scaleLabel: {
+          display: true,
+          labelString: 'Score'
+          },
+        }]
+      }
+    }
+  });
+
+  // Position Chart
+  var positionChart = new Chart(ctx2, {
+    type: 'line',
+    data: postionChartData,
+    options: {
+      responsive: true,
+      layout: {
+          padding: {
+              left: 0,
+              right: 20,
+              top: 20,
+              bottom: 0
+          }
+        },
+      legend: {
+          position: 'bottom',
+          padding: 25
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false,
+            precision: 0,
+            reverse: true,
+          },
+          scaleLabel: {
+          display: true,
+          labelString: 'Position'
+        }
+        }]
+      }
+    }
+  });
+}
+
+{% endblock jquery %}
 
 {% block profile %}
 

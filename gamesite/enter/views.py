@@ -19,6 +19,13 @@ def index(request):
 
 
 @login_required
+def leaderboard(request):
+    return render(request, "enter/leader_board.html", {
+        "title": "Leader Board"
+    })
+
+
+@login_required
 def create_entry(request, template_name="enter/entry.html", success_url="enter:index"):
     # if request.method == "POST":
         # group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
