@@ -13,7 +13,7 @@
     <div id="table_container" url-endpoint="{% url 'enter:all_entries_api' %}">
       <h3>Overall Leader Board</h3>
         <hr />
-      <table id="example" class="display" style="width:100%">
+      <table id="overall_leader_board" class="display" style="width:100%">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -39,29 +39,19 @@
             url: tableDataEndpoint,
             success: function(entries) {
               console.log(entries);
-              data = entries;
-              let dataset = []
-              for (let entry of entries) {
-                row = []
-                row.push(`${entry.profile.user.first_name} ${entry.profile.user.last_name}`)
-                row.push(entry.profile.user.username)
-                row.push(entry.id)
-                row.push(entry.current_score)
-                row.push(entry.current_position)
-                row.push(entry.team)
-                dataset.push(row)
-              }
-              console.log(dataset)
-              var dataSet = [[ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ]]
-              $('#example').DataTable( {
-                  data: dataset,
+              $('#overall_leader_board').DataTable( {
+                  data: entries,
                   columns: [
-                      { title: "Name" },
-                      { title: "Username" },
-                      { title: "Entry ID" },
-                      { title: "Score" },
-                      { title: "Position" },
-                      { title: "Team" },
+                      { data: "profile",
+                        render: function ( data, type, row ) {
+                            return `${data.user.first_name} ${data.user.last_name}`;
+                            }
+                      },
+                      { data: "profile.user.username" },
+                      { data: "id" },
+                      { data: "current_score" },
+                      { data: "current_position" },
+                      { data: "team" },
                   ],
                   "columnDefs": [{
                       "targets": '_all',
