@@ -42,79 +42,84 @@
 
 <script>
   $(document).ready(function() {
-    var tableDataEndpoint = $( "#table_container" ).attr( "url-endpoint" )
+    var tableDataEndpoint = $( "#table_container" ).attr( "url-endpoint" );
+    createTable();
 
-    $.ajax({
-            method: "GET",
-            url: tableDataEndpoint,
-            success: function(entries) {
-              // console.log(entries);
-              $('#overall_leader_board').DataTable( {
-                  data: entries,
-                  columns: [
-                      { data: "profile.profile_picture",
-                        render: function ( data, type, row ) {
-                            return '<img class="rounded-circle account-img-sm" src="' + data+ '" />';
-                            }
-                        },
-                      { data: "profile",
-                        render: function ( data, type, row ) {
-                            return `${data.user.first_name} ${data.user.last_name}`;
-                            }
-                        },
-                      { data: "profile.user.username",
-                        render: function ( data, type, row, meta ) {
-                          return `<a href="/profile/${data}" class="text-dark">${data}</a>`;
-                          }
-                        },
-                      { data: "id" },
-                      { data: "current_score",
-                        render: $.fn.dataTable.render.number( ',' )},
-                      { data: "current_position",
-                        render: function ( data, type, row, meta ) {
-                          if (row.position_logs[row.position_logs.length - 1].position > row.position_logs[row.position_logs.length - 2].position) {
-                            return `${data} 🔻`;
-                          } else if (row.position_logs[row.position_logs.length - 1].position < row.position_logs[row.position_logs.length - 2].position) {
-                            return `${data} 🔺`;
-                          } else {
-                            return data;
-                          }
-                        }
-                        },
-                  ],
-                  columnDefs: [
-                  {
-                    targets: '_all',
-                    defaultContent: "-"
-                  },{
-                    targets: [0, 3],
-                    orderable: false
-                  }, // {
-                  //  targets: 5,
-                  //  render: function(data, type, full, meta) {
-                  //    if (type === 'display' && data == 1) {
-                  //      console.log(meta);
-                  //      var rowIndex = meta.row+1;
-                   //     $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#ffffe6");
-                   //     return data;
-                   //   } else if (type === 'display' && data == 2) {
-                   //   console.log(meta);
-                   //     var rowIndex = meta.row+1;
-                    //    $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#fffff5");
-                   //     return data;
-                    //  }
-                    //  else {
-                    //    return data;
-                    //  }
-                    //}
-                  //}
-                  ],
-                  processing: true,
-                  orderClasses: false,
-                  order: [[ 5, "asc" ]],
-              } );
-            }
-          })
+    function createTable() {
+      $('#overall_leader_board').DataTable( {
+          ajax: {
+            "url": tableDataEndpoint,
+            "dataSrc": ""
+          },
+          // processing: true,
+          orderClasses: false,
+          order: [[ 5, "asc" ]],
+          columns: [
+              { data: "profile.profile_picture",
+                render: function ( data, type, row ) {
+                    return '<img class="rounded-circle account-img-sm" src="' + data+ '" />';
+                    }
+                },
+              { data: "profile",
+                render: function ( data, type, row ) {
+                    return `${data.user.first_name} ${data.user.last_name}`;
+                    }
+                },
+              { data: "profile.user.username",
+                render: function ( data, type, row, meta ) {
+                  return `<a href="/profile/${data}" class="text-dark">${data}</a>`;
+                  }
+                },
+              { data: "id" },
+              { data: "current_score",
+                render: $.fn.dataTable.render.number( ',' )},
+              { data: "current_position",
+                render: function ( data, type, row, meta ) {
+                  let latestPositionLog = row.position_logs[row.position_logs.length - 1];
+                  let previousPositionLog = row.position_logs[row.position_logs.length - 2];
+                  if (previousPositionLog) {
+                    if (latestPositionLog.position > previousPositionLog.position) {
+                      return `${data} 🔻`;
+                    } else if (latestPositionLog.position < previousPositionLog.position) {
+                      return `${data} 🔺`;
+                    } else {
+                      return data;
+                    }
+                  } else {
+                    return data;
+                  }
+                }
+                },
+          ],
+          columnDefs: [
+          {
+            targets: '_all',
+            defaultContent: "-"
+          },{
+            targets: [0, 3],
+            orderable: false
+          }, // {
+          //  targets: 5,
+          //  render: function(data, type, full, meta) {
+          //    if (type === 'display' && data == 1) {
+          //      console.log(meta);
+          //      var rowIndex = meta.row+1;
+           //     $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#ffffe6");
+           //     return data;
+           //   } else if (type === 'display' && data == 2) {
+           //   console.log(meta);
+           //     var rowIndex = meta.row+1;
+            //    $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#fffff5");
+           //     return data;
+            //  }
+            //  else {
+            //    return data;
+            //  }
+            //}
+          //}
+          ],
+      } );
+    }
   } );
 </script>
 
