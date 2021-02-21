@@ -6,32 +6,31 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-9 mt-4">
-<h2>Leader Boards</h2>
+<h2>Leaderboards</h2>
 
 <div class="card border-light shadow-sm mb-4">
   <div class="card-body">
     <div id="table_container" url-endpoint="{% url 'enter:all_entries_api' %}">
-      <h3>Overall Leader Board</h3>
+      <h3>Overall Leaderboard</h3>
         <hr />
-      <table id="overall_leader_board" class="display" style="width:100%">
+      <table id="overall_leaderboard" class="display" style="width:100%">
             <thead>
                 <tr>
+                    <th>Pos</th>
                     <th></th>
-                    <th>Name</th>
                     <th>Username</th>
-                    <th>Entry</th>
+                    <th>Name</th>
                     <th>Score</th>
-                    <th>Position</th>
+
                 </tr>
             </thead>
             <tfoot>
                 <tr>
+                    <th>Pos</th>
                     <th></th>
-                    <th>Name</th>
                     <th>Username</th>
-                    <th>Entry</th>
+                    <th>Name</th>
                     <th>Score</th>
-                    <th>Position</th>
                 </tr>
             </tfoot>
         </table>
@@ -46,23 +45,37 @@
     createTable();
 
     function createTable() {
-      $('#overall_leader_board').DataTable( {
+      $('#overall_leaderboard').DataTable( {
           ajax: {
             "url": tableDataEndpoint,
             "dataSrc": ""
           },
           // processing: true,
           orderClasses: false,
-          order: [[ 5, "asc" ]],
+          order: [[ 0, "asc" ]],
           columns: [
-              { data: "profile.profile_picture",
-                render: function ( data, type, row ) {
-                    return '<img class="rounded-circle account-img-sm" src="' + data+ '" />';
+              { data: "current_position",
+                render: function ( data, type, row, meta ) {
+                  if ( type === 'display' || type === 'filter' ) {
+                  let latestPositionLog = row.position_logs[row.position_logs.length - 1];
+                  let previousPositionLog = row.position_logs[row.position_logs.length - 2];
+                  if (previousPositionLog) {
+                    if (latestPositionLog.position > previousPositionLog.position) {
+                      return `<div>${data}</div> <div class="arrow-down"></div>`;
+                    } else if (latestPositionLog.position < previousPositionLog.position) {
+                      return `<div class="arrow-up"></div> <div>${data}</div>`;
+                    } else {
+                      return data;
                     }
+                    } else {
+                      return data;
+                    } }
+                  return data;
+                  }
                 },
               { data: "profile",
                 render: function ( data, type, row ) {
-                    return `${data.user.first_name} ${data.user.last_name}`;
+                    return `<img class="rounded-circle account-img-sm" src="${data.profile_picture}" />${row.label ? row.label : ''}`;
                     }
                 },
               { data: "profile.user.username",
@@ -70,46 +83,37 @@
                   return `<a href="/profile/${data}" class="text-dark">${data}</a>`;
                   }
                 },
-              { data: "label" },
+              { data: "profile",
+                render: function ( data, type, row ) {
+                    return `${data.user.first_name} ${data.user.last_name}`;
+                    }
+                },
               { data: "current_score",
                 render: $.fn.dataTable.render.number( ',' )},
-              { data: "current_position",
-                render: function ( data, type, row, meta ) {
-                  let latestPositionLog = row.position_logs[row.position_logs.length - 1];
-                  let previousPositionLog = row.position_logs[row.position_logs.length - 2];
-                  if (previousPositionLog) {
-                    if (latestPositionLog.position > previousPositionLog.position) {
-                      return `${data} 🔻`;
-                    } else if (latestPositionLog.position < previousPositionLog.position) {
-                      return `${data} 🔺`;
-                    } else {
-                      return data;
-                    }
-                  } else {
-                    return data;
-                  }
-                }
-                },
           ],
           columnDefs: [
           {
             targets: '_all',
             defaultContent: "-"
           },{
-            targets: [0, 3],
+            targets: 1,
             orderable: false
-          }, // {
+          }, {
+            targets: 0,
+            className: 'column-bolded'
+          },
+          // {
           //  targets: 5,
           //  render: function(data, type, full, meta) {
           //    if (type === 'display' && data == 1) {
           //      console.log(meta);
           //      var rowIndex = meta.row+1;
-           //     $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#ffffe6");
+           //     $('#overall_leaderboard tbody tr:nth-child('+rowIndex+')').css("background-color", "#ffffe6");
            //     return data;
            //   } else if (type === 'display' && data == 2) {
            //   console.log(meta);
            //     var rowIndex = meta.row+1;
-            //    $('#overall_leader_board tbody tr:nth-child('+rowIndex+')').css("background-color", "#fffff5");
+            //    $('#overall_leaderboard tbody tr:nth-child('+rowIndex+')').css("background-color", "#fffff5");
            //     return data;
             //  }
             //  else {
