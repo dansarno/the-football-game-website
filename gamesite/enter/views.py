@@ -11,7 +11,7 @@ from random import choice
 
 @login_required
 def index(request):
-    existing_entries = request.user.profile.entries.all()
+    existing_entries = request.user.profile.entries.order_by('id')
     return render(request, "enter/index.html", {
         "title": "Entry Manager",
         "entries": existing_entries
@@ -205,8 +205,18 @@ def delete_entry(request, entry_id, success_url="enter:index"):
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
 
+    deleted_entry_label = requested_entry.label
     requested_entry.delete()
-    messages.add_message(request, messages.SUCCESS, 'Entry deleted.')
+
+    if deleted_entry_label:
+        msg = f"You have deleted Entry {deleted_entry_label}. "
+    else:
+        msg = f"You have deleted your entry"
+    if deleted_entry_label == "A":
+        msg += "Entry B has now been labeled Entry A and Entry C has now been labeled Entry B."
+    elif deleted_entry_label == "B":
+        msg += "Entry C has now been labeled Entry B."
+    messages.add_message(request, messages.SUCCESS, msg)
 
     return HttpResponseRedirect(reverse(success_url))
 

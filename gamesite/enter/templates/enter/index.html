@@ -6,16 +6,22 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-9 mt-4">
-<h1>Your Entries</h1>
+<h1>Entry Manager</h1>
 <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.</div>
 
 <div class="row">
   {% for entry in entries %}
   <div class="col-md-6 col-lg-4">
     <div class="card border-dark mb-4">
+      {% if entry.label %}
       <div class="card-header">
-        <h3>Entry {{ forloop.counter }}</h3>
+        <h3>Entry {{ entry.label }}</h3>
       </div>
+      {% else %}
+      <div class="card-header">
+        <h3>Your Entry</h3>
+      </div>
+      {% endif %}
       <div class="card-body">
         <p class="card-text">Completed: 75%</p>
         <p class="card-text">Submitted: {{ entry.has_submitted|yesno:"Yes,No" }}</p>

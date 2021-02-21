@@ -137,3 +137,35 @@ def removed_from_called_bets(sender, instance, **kwargs):
 
     # Finally clear the success statuses
     models.Bet.objects.filter(outcome__choice_group=instance.outcome.choice_group).update(success=None)
+
+
+@receiver(post_save, sender=models.Entry)
+def label_entries(sender, instance, created, **kwargs):
+    all_entries = instance.profile.entries.order_by('id')
+    print(all_entries)
+    labels = ["A", "B", "C"]
+    if created:
+        if len(all_entries) == 1:
+            entry = all_entries.first()
+            entry.label = None
+            entry.save()
+
+        else:
+            for entry, label in zip(all_entries, labels):
+                entry.label = label
+                entry.save()
+
+
+@receiver(post_delete, sender=models.Entry)
+def relabel_entries(sender, instance, **kwargs):
+    all_entries = instance.profile.entries.order_by('id')
+    labels = ["A", "B", "C"]
+    if len(all_entries) == 1:
+        entry = all_entries.first()
+        entry.label = None
+        entry.save()
+
+    else:
+        for entry, label in zip(all_entries, labels):
+            entry.label = label
+            entry.save()
