@@ -9,7 +9,7 @@
 
 {% block jquery %}
 
-var chartDataEndpoint = $( "#chart_container" ).attr( "url-endpoint" )
+var chartDataEndpoint = $( "#chart_container" ).attr( "data-url-endpoint" )
 var defaultScoreData = []
 var defaultPositionData = []
 var defaultLabels = []
@@ -207,7 +207,7 @@ function setChart(entryLabels) {
 
 {% block profile %}
 
-<div id="chart_container" url-endpoint="{% url 'profile_api' username=user.username %}">
+<div id="chart_container" data-url-endpoint="{% url 'profile_api' username=user.username %}">
   <div class="mb-4">
     <h4>Summary</h4>
   <hr />

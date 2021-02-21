@@ -215,3 +215,7 @@ filter: drop-shadow(3px 3px 0 white)
 
   border-top: 5px solid tomato;
 }
+
+.pic-link {
+  text-decoration: none !important;
+}

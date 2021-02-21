@@ -10,15 +10,15 @@
 
 <div class="card border-light shadow-sm mb-4">
   <div class="card-body">
-    <div id="table_container" url-endpoint="{% url 'enter:all_entries_api' %}">
+    <div id="table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}">
       <h3>Overall Leaderboard</h3>
         <hr />
       <table id="overall_leaderboard" class="display" style="width:100%">
             <thead>
                 <tr>
                     <th>Pos</th>
-                    <th></th>
-                    <th>Username</th>
+                    <th class="all"></th>
+                    <th>User</th>
                     <th>Name</th>
                     <th>Score</th>
 
@@ -27,8 +27,8 @@
             <tfoot>
                 <tr>
                     <th>Pos</th>
-                    <th></th>
-                    <th>Username</th>
+                    <th class="all"></th>
+                    <th>User</th>
                     <th>Name</th>
                     <th>Score</th>
                 </tr>
@@ -41,7 +41,7 @@
 
 <script>
   $(document).ready(function() {
-    var tableDataEndpoint = $( "#table_container" ).attr( "url-endpoint" );
+    var tableDataEndpoint = $( "#table_container" ).attr( "data-url-endpoint" );
     createTable();
 
     function createTable() {
@@ -52,6 +52,7 @@
           },
           // processing: true,
           orderClasses: false,
+          responsive: true,
           order: [[ 0, "asc" ]],
           columns: [
               { data: "current_position",
@@ -75,12 +76,18 @@
                 },
               { data: "profile",
                 render: function ( data, type, row ) {
-                    return `<img class="rounded-circle account-img-sm" src="${data.profile_picture}" />${row.label ? row.label : ''}`;
+                    return `<a href="/profile/${data.user.username}" class="pic-link">
+                              <img class="rounded-circle account-img-sm" src="${data.profile_picture}" />
+                            </a>
+                            ${row.label ? row.label : ''}`;
                     }
                 },
               { data: "profile.user.username",
                 render: function ( data, type, row, meta ) {
+                  if ( type === 'display' || type === 'filter' ) {
                   return `<a href="/profile/${data}" class="text-dark">${data}</a>`;
+                    }
+                  return data;
                   }
                 },
               { data: "profile",
@@ -101,7 +108,16 @@
           }, {
             targets: 0,
             className: 'column-bolded'
-          },
+          }, {
+            targets: 0,
+            responsivePriority: 1
+           },  {
+            targets: 2,
+            responsivePriority: 3
+           }, {
+            targets: -1,
+            responsivePriority: 2
+           },
           // {
           //  targets: 5,
           //  render: function(data, type, full, meta) {
