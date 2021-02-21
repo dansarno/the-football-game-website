@@ -33,7 +33,7 @@ class EntrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'current_score', 'current_position', 'score_logs', 'position_logs']
+        fields = ['id', 'label', 'current_score', 'current_position', 'score_logs', 'position_logs']
 
 
 class ProfileSerializer(serializers.ModelSerializer):

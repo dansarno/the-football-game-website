@@ -21,12 +21,15 @@ $.ajax({
     let scores = []
     let positions = []
     let labels = [1,2,3,4,5,6]
+    let entryLabels = []
 
     // for (let score_log of data.entries[0].score_logs) {
     //   labels.push(score_log.called_bet.date)
     // }
 
     for (let entry of data.entries) {
+      entryLabels.push(entry.label)
+
       entryScores = []
       for (let score_log of entry.score_logs) {
         entryScores.push(score_log.score)
@@ -39,17 +42,18 @@ $.ajax({
       }
       positions.push(entryPostions)
     }
+
     defaultLabels = labels
     defaultScoreData = scores
     defaultPositionData = positions
-    setChart()
+    setChart(entryLabels)
   },
   error: function(error_data) {
     console.log(error_data)
   }
 })
 
-function setChart() {
+function setChart(entryLabels) {
   var ctx = document.getElementById('scoreChart').getContext('2d');
   var ctx2 = document.getElementById('positionChart').getContext('2d');
 
@@ -57,14 +61,19 @@ function setChart() {
   scoreChartData.labels = defaultLabels
   scoreChartData.datasets = []
 
-  entryTags = ["A", "B", "C"]
   lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
   areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
   i = 0
   for (let scores of defaultScoreData) {
+    label = ""
+        if (! entryLabels[i]) {
+          label = "Entry";
+        } else {
+          label = 'Entry ' + entryLabels[i]
+        }
     scoreChartData.datasets.push(
       {
-        label: 'Entry ' + entryTags[i],
+        label: label,
         data: scores,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
@@ -86,9 +95,15 @@ function setChart() {
 
   i = 0
   for (let positions of defaultPositionData) {
+    label = ""
+    if (! entryLabels[i]) {
+      label = "Entry";
+    } else {
+      label = 'Entry ' + entryLabels[i]
+    }
     postionChartData.datasets.push(
       {
-        label: 'Entry ' + entryTags[i],
+        label: label,
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
