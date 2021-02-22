@@ -51,6 +51,7 @@ class Bet(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     success = models.BooleanField(blank=True, null=True)
+    called_bet = models.ForeignKey('CalledBet', on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f"{self.outcome} by {self.entry}"
