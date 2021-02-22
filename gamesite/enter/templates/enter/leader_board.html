@@ -20,8 +20,9 @@
                     <th class="all"></th>
                     <th>User</th>
                     <th>Name</th>
+                    <th>Form</th>
+                    <th>Upcoming</th>
                     <th>Score</th>
-
                 </tr>
             </thead>
             <tfoot>
@@ -30,6 +31,8 @@
                     <th class="all"></th>
                     <th>User</th>
                     <th>Name</th>
+                    <th>Form</th>
+                    <th>Upcoming</th>
                     <th>Score</th>
                 </tr>
             </tfoot>
@@ -89,6 +92,16 @@
                     }
                   return data;
                   }
+                },
+              { data: "profile",
+                render: function ( data, type, row ) {
+                    return `${data.user.first_name} ${data.user.last_name}`;
+                    }
+                },
+              { data: "profile",
+                render: function ( data, type, row ) {
+                    return `${data.user.first_name} ${data.user.last_name}`;
+                    }
                 },
               { data: "profile",
                 render: function ( data, type, row ) {

@@ -47,7 +47,19 @@ class EntrySerializer(serializers.ModelSerializer):
     score_logs = ScoreLogSerializer(many=True, read_only=True)
     position_logs = PositionLogSerializer(many=True, read_only=True)
     profile = ProfileSerializer(read_only=True)
+    score_logs = serializers.SerializerMethodField('get_last_five_score_logs')
+    position_logs = serializers.SerializerMethodField('get_last_five_position_logs')
 
     class Meta:
         model = models.Entry
         fields = ['id', 'label', 'profile', 'current_score', 'current_position', 'score_logs', 'position_logs']
+
+    def get_last_five_score_logs(self, obj):
+        score_logs = models.ScoreLog.objects.filter(entry=obj).order_by('-called_bet__date')[:5]
+        serializer = ScoreLogSerializer(instance=reversed(score_logs), many=True)
+        return serializer.data
+
+    def get_last_five_position_logs(self, obj):
+        position_logs = models.PositionLog.objects.filter(entry=obj).order_by('-called_bet__date')[:5]
+        serializer = PositionLogSerializer(instance=reversed(position_logs), many=True)
+        return serializer.data
