@@ -204,7 +204,7 @@ filter: drop-shadow(3px 3px 0 white)
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 
-  border-bottom: 5px solid MediumSpringGreen;
+  border-bottom: 5px solid green;
 }
 
 .arrow-down {
@@ -218,4 +218,12 @@ filter: drop-shadow(3px 3px 0 white)
 
 .pic-link {
   text-decoration: none !important;
+}
+
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
 }
