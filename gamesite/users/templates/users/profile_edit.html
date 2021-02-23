@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block button %}
-<div>
+<div class="col-1">
   <a href="{% url 'profile' username=request.user.username %}" class="btn btn-light btn-sm">Back</a>
 </div>
 {% endblock button %}
@@ -20,3 +20,7 @@
   </div>
 </form>
 {% endblock profile %}
+
+{% block jquery %}
+
+{% endblock jquery %}

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.validators import RegexValidator
 from .models import Profile, AccessCode
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class UserRegisterForm(UserCreationForm):
@@ -36,7 +38,11 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.fields['bio'].widget.attrs.update(rows='2', id="bio-text")
 
     class Meta:
         model = Profile
-        fields = ['profile_picture', 'team']
+        fields = ['profile_picture', 'team', 'location', 'bio']

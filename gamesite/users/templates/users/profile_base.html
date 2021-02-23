@@ -8,19 +8,50 @@
       <div class="col-2">
         <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}">
       </div>
-      <div class="col-10">
+      <div class="col-9">
         <div class="media-body">
           {% if user.first_name and user.last_name %}
-          <h2 class="account-heading">{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</h2>
+          <h2 class="account-heading"><b>{{ user.first_name }} {{ user.last_name }}</b></h2>
           {% else %}
-          <h2 class="account-heading">{{ user.username }}</h2>
+          <h2 class="account-heading"><b>{{ user.username }}</b></h2>
           {% endif %}
-          {% if request.user == user %}
-          {% block button %}
-          {% endblock button %}
+
+          <h3 class="text-muted">@{{ user.username }}</h3>
+
+          {% if user.profile.bio %}
+          <p class="text-muted">{{ user.profile.bio }}</p>
+          {% else %}
+          <p class="text-muted"></p>
           {% endif %}
+
+          <span class="mr-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+              <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+            </svg>
+            {% if user.profile.location %}
+            <small class="text-muted">{{ user.profile.location }}</small>
+            {% else %}
+            <small class="text-muted">---</small>
+            {% endif %}
+          </span>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+              <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+              <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+              <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+            </svg>
+            {% if user.profile.team %}
+            <small class="text-muted">{{ user.profile.team }}</small>
+            {% else %}
+            <small class="text-muted">---</small>
+            {% endif %}
+          </span>
         </div>
       </div>
+      {% if request.user == user %}
+      {% block button %}
+      {% endblock button %}
+      {% endif %}
     </div>
   </div>
 </div>
