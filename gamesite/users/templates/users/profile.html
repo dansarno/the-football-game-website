@@ -189,6 +189,7 @@ function setChart(entryLabels) {
       scales: {
         yAxes: [{
           ticks: {
+            suggestedMin: 1,
             beginAtZero: false,
             precision: 0,
             reverse: true,
@@ -207,52 +208,140 @@ function setChart(entryLabels) {
 
 {% block profile %}
 
-<div id="chart_container" data-url-endpoint="{% url 'profile_api' username=user.username %}">
-  <div class="mb-4">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
     <h4>Summary</h4>
   <hr />
 
-  <h5 class="mb-2 mt-3">Position</h5>
+ <h5 class="mb-2 mt-3">Overall Game Progress</h5>
+  <div class="progress mb-3 mt-3">
+    <div class="progress-bar" role="progressbar" style="width: {{ progress }}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
+  </div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      {% for entry in user.profile.entries.all %}
+        <th scope="col">{{ entry.label }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Current Position</th>
+      {% for entry in user.profile.entries.all %}
+        <td scope="col">{{ entry.current_position|ordinal }}</td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <th scope="row">Current Score</th>
+      {% for entry in user.profile.entries.all %}
+        <td scope="col">{{ entry.current_score|intcomma }}</td>
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>
+        </div>
+  </div>
+
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
+  <h4>Performance</h4>
+  <hr />
   <div class="row">
-  {% for entry in user.profile.entries.all %}
-  {% if entry.current_position %}
-  <div class="col">
-  <div class="circle">{{ entry.current_position|ordinal }}</div>
+    <div class="col">
+      <h5>Group Matches</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 70%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">70%</div>
+      </div>
+      <h5>Group Winners</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 15%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">15%</div>
+      </div>
+      <h5>Top Teams</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 35%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">35%</div>
+      </div>
+      <h5>Tournament Totals</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">0%</div>
+      </div>
+      <h5>50/50s</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">10%</div>
+      </div>
+      <h5>The Final</h5>
+      <div class="progress mb-3 mt-3">
+        <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">20%</div>
+      </div>
+    </div>
+    <div class="col">
+      <div id="wrapper">
+        <div>
+          <canvas id="myChart" width="400" height="400" class="grayout"></canvas>
+        </div>
+        <div id="middle-element">
+          <h3 class="text-muted">COMING SOON</h3>
+        </div>
+      </div>
+    </div>
   </div>
-  {% else %}
-  <div class="col">
-  <div class="circle">--</div>
-  </div>
-  {% endif %}
-  {% empty %}
-  You have no entries
-  {% endfor %}
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+        labels: ['Group Winners', 'Top Teams', 'Tournament Totals', 'The Final', '50/50s', 'Group Matches'],
+        datasets: [{
+            label: 'Entry A',
+            data: [45, 19, 60, 33, 12, 20],
+            borderWidth: 1
+        }, {
+            label: 'Entry B',
+            data: [53, 49, 20, 53, 32, 40],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scale: {
+            ticks: {
+                suggestedMin: 0,
+                beginAtZero: true,
+                min: 0,
+                max: 100,
+                stepSize: 25
+            }
+        },
+        animation: {
+            duration: 0
+        },
+        tooltips: {
+           enabled: false
+        }
+    }
+});
+</script>
   </div>
   </div>
 
-  <h5 class="mb-2 mt-3">Score</h5>
-  <div class="row">
-  {% for entry in user.profile.entries.all %}
-  <div class="col">
-  <div class="circle">{{ entry.current_score|intcomma }}</div>
-  </div>
-  {% empty %}
-  You have no entries
-  {% endfor %}
-  </div>
+<div class="card border-light shadow-sm mb-4">
+  <div class="card-body">
 
-  <div>
     <h4>History</h4>
   <hr />
 
-  <div class="row mt-3">
-  <div class="col-sm-6">
-    <canvas id="positionChart" width="400" height="400"></canvas>
-  </div>
-  <div class="col-sm-6">
-    <canvas id="scoreChart" width="400" height="400"></canvas>
-  </div>
-  </div>
+  <div id="chart_container" data-url-endpoint="{% url 'profile_api' username=user.username %}">
+    <div class="row mt-3">
+    <div class="col-sm-6">
+      <canvas id="positionChart" width="400" height="400"></canvas>
+    </div>
+    <div class="col-sm-6">
+      <canvas id="scoreChart" width="400" height="400"></canvas>
+    </div>
+    </div>
+    </div>
+
   </div>
 </div>
 

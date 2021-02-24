@@ -56,16 +56,16 @@
   </div>
 </div>
 
-<div class="card border-light shadow-sm mb-4">
-  <div class="card-body">
-    {% block profile %}
-    {% endblock profile %}
-  </div>
-  <script>
-    $(document).ready(function() {
-      {% block jquery %} {% endblock %}
-    })
-  </script>
-</div>
+
+{% block profile %}
+{% endblock profile %}
+
+
+<script>
+  $(document).ready(function() {
+    {% block jquery %} {% endblock %}
+  })
+</script>
+
 </div>
 {% endblock content %}

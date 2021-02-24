@@ -8,6 +8,9 @@
 {% endblock button %}
 
 {% block profile %}
+
+<div class="card border-light shadow-sm mb-4">
+<div class="card-body">
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <fieldset class="form-group">
@@ -19,6 +22,8 @@
     <button class="btn btn-outline-info" type="submit">Update</button>
   </div>
 </form>
+</div>
+</div>
 {% endblock profile %}
 
 {% block jquery %}

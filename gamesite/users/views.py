@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import User
+from enter import models
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
@@ -25,9 +26,11 @@ def register(request):
 @login_required
 def profile(request, username):
     user = get_object_or_404(User, username=username)
+    game_progress_percentage = int((models.CalledBet.objects.all().count() / models.ChoiceGroup.objects.all().count()) * 100)
     return render(request, 'users/profile.html', {
         'title': user.username,
-        'user': user
+        'user': user,
+        'progress': game_progress_percentage
     })
 
 

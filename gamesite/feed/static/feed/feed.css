@@ -226,3 +226,16 @@ filter: drop-shadow(3px 3px 0 white)
 .incorrect {
     color: red;
 }
+
+.grayout {
+    opacity: 0.5; /* Real browsers */
+    filter: alpha(opacity = 60); /* MSIE */
+}
+
+#middle-element {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
