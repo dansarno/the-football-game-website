@@ -38,6 +38,23 @@ class Team(models.Model):
         return f"{self.name}"
 
 
+class Prize(models.Model):
+    TOP = "T"
+    MIDDLE = "M"
+    BOTTOM = "B"
+    BAND_CHOICES = [
+        (TOP, "Top"),
+        (MIDDLE, "Middle"),
+        (BOTTOM, "Bottom")
+    ]
+    winning_amount = models.DecimalField(max_digits=6, decimal_places=2)
+    position = models.IntegerField()
+    band = models.CharField(max_length=1, choices=BAND_CHOICES)
+
+    def __str__(self):
+        return f"{self.get_band_display()} Prize ({self.position}): £{self.winning_amount}"
+
+
 class AccessCode(models.Model):
     code = models.CharField(max_length=10, default=generate_random_code)
     remaining = models.PositiveSmallIntegerField(default=5)

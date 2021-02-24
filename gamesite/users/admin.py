@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, AccessCode, Team
+from .models import Profile, AccessCode, Team, Prize
 
 
 @admin.register(Profile)
@@ -15,3 +15,9 @@ class AccessCodeAdmin(admin.ModelAdmin):
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Prize)
+class PrizeAdmin(admin.ModelAdmin):
+    pass
+
