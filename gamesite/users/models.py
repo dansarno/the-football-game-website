@@ -52,7 +52,7 @@ class Prize(models.Model):
     band = models.CharField(max_length=1, choices=BAND_CHOICES)
 
     def __str__(self):
-        return f"{self.get_band_display()} Prize ({self.position}): £{self.winning_amount}"
+        return f"{self.position} ({self.get_band_display()} Prize) : £{self.winning_amount}"
 
 
 class AccessCode(models.Model):
