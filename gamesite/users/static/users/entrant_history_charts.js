@@ -243,7 +243,7 @@ $(document).ready(function() {
     chart.options.scales.xAxes[0].distribution = attr
   }
 
-  $("#toggle").click(function() {
+  $("#xaxis-toggle").click(function() {
     toggleDistribution(scoreChart)
     scoreChart.update()
 
