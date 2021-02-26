@@ -17,7 +17,7 @@ $(document).ready(function() {
 
       i = 1
       for (let score_log of data.entries[0].score_logs) {
-        labels.push(i)
+        labels.push(score_log.called_bet.date)
         verboseLabels.push(score_log.called_bet.outcome)
         dateLabels.push(score_log.called_bet.date)
         i++
@@ -28,13 +28,19 @@ $(document).ready(function() {
 
         entryScores = []
         for (let score_log of entry.score_logs) {
-          entryScores.push(score_log.score)
+          entryScores.push({
+            y: score_log.score,
+            t: score_log.called_bet.date
+          })
         }
         scores.push(entryScores)
 
         entryPostions = []
         for (let position_log of entry.position_logs) {
-          entryPostions.push(position_log.position)
+          entryPostions.push({
+            y: position_log.position,
+            t: position_log.called_bet.date
+          })
         }
         positions.push(entryPostions)
       }
@@ -52,11 +58,11 @@ $(document).ready(function() {
   })
 
   function setChart(entryLabels) {
-    var ctx = document.getElementById('scoreChart').getContext('2d');
-    var ctx2 = document.getElementById('positionChart').getContext('2d');
+    var ctx = document.getElementById('scoreChartCanvas').getContext('2d');
+    var ctx2 = document.getElementById('positionChartCanvas').getContext('2d');
 
     scoreChartData = {}
-    scoreChartData.labels = defaultLabels
+    // scoreChartData.labels = defaultLabels
     scoreChartData.verboseLabels = defaultVerboseLabels
     scoreChartData.dateLabels = defaultDateLabels
     scoreChartData.datasets = []
@@ -65,14 +71,14 @@ $(document).ready(function() {
     areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
     i = 0
     for (let scores of defaultScoreData) {
-      label = ""
+      datasetLabel = ""
       if (!entryLabels[i]) {
-        label = "Entry";
+        datasetLabel = "Entry";
       } else {
-        label = 'Entry ' + entryLabels[i]
+        datasetLabel = 'Entry ' + entryLabels[i]
       }
       scoreChartData.datasets.push({
-        label: label,
+        label: datasetLabel,
         data: scores,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
@@ -88,7 +94,7 @@ $(document).ready(function() {
     }
 
     positionChartData = {}
-    positionChartData.labels = defaultLabels
+    // positionChartData.labels = defaultLabels
     positionChartData.verboseLabels = defaultVerboseLabels
     positionChartData.dateLabels = defaultDateLabels
     positionChartData.datasets = []
@@ -118,7 +124,7 @@ $(document).ready(function() {
     }
 
     // Score Chart
-    var scoreChart = new Chart(ctx, {
+    scoreChart = new Chart(ctx, {
       type: 'line',
       data: scoreChartData,
       options: {
@@ -162,13 +168,20 @@ $(document).ready(function() {
               display: true,
               labelString: 'Score'
             },
+          }],
+          xAxes: [{
+            type: 'time',
+            distribution: 'linear', // 'series',
+            ticks: {
+              source: 'data',
+            }
           }]
         }
       }
     });
 
     // Position Chart
-    var positionChart = new Chart(ctx2, {
+    positionChart = new Chart(ctx2, {
       type: 'line',
       data: positionChartData,
       options: {
@@ -209,9 +222,33 @@ $(document).ready(function() {
               display: true,
               labelString: 'Position'
             }
+          }],
+          xAxes: [{
+            type: 'time',
+            distribution: 'linear', // 'series',
+            ticks: {
+              source: 'data',
+            }
           }]
-        }
+        },
       }
-    });
+    })
+
+    return positionChart, scoreChart
   }
+
+  function toggleDistribution(chart) {
+    attr = chart.options.scales.xAxes[0].distribution
+    attr = (attr == 'linear') ? 'series' : 'linear'
+    chart.options.scales.xAxes[0].distribution = attr
+  }
+
+  $("#toggle").click(function() {
+    toggleDistribution(scoreChart)
+    scoreChart.update()
+
+    toggleDistribution(positionChart)
+    positionChart.update()
+  })
+
 })

@@ -5,6 +5,7 @@ from users.models import Profile
 
 class CalledBetSerializer(serializers.ModelSerializer):
     outcome = serializers.StringRelatedField(read_only=True)
+    date = serializers.DateTimeField()
 
     class Meta:
         model = models.CalledBet

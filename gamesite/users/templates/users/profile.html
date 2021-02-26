@@ -101,13 +101,14 @@
     <h4>History</h4>
   <hr />
 
+  <button type="button" class="btn btn-outline-dark btn-sm" id="toggle">Toggle Distribution</button>
   <div id="chart_container" data-url-endpoint="{% url 'profile_api' username=user.username %}">
     <div class="row mt-3">
     <div class="col-sm-6">
-      <canvas id="positionChart" width="400" height="400"></canvas>
+      <canvas id="positionChartCanvas" width="400" height="400"></canvas>
     </div>
     <div class="col-sm-6">
-      <canvas id="scoreChart" width="400" height="400"></canvas>
+      <canvas id="scoreChartCanvas" width="400" height="400"></canvas>
     </div>
     </div>
     </div>
