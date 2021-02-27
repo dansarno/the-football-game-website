@@ -287,7 +287,13 @@ $(document).ready(function() {
               precision: 0,
               reverse: true,
               callback: function(value, index, values) {
-                if (prizePositions.includes(value)) {
+                if (value === 1) {
+                  return '🥇 ' + value;
+                } else if (value === 2) {
+                  return '🥈 ' + value;
+                } else if (value === 3) {
+                  return '🥉 ' + value;
+                } else if (prizePositions.includes(value)) {
                   return '💰 ' + value;
                 } else {
                   return value;
