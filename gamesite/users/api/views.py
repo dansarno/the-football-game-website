@@ -6,8 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from enter import models
-from users.models import Profile
-from .serializers import ProfileSerializer
+from users.models import Profile, Prize
+from .serializers import ProfileSerializer, PrizeSerializer
 
 
 @api_view(['GET'])
@@ -19,4 +19,13 @@ def profile_detail(request, username):
 
     if request.method == 'GET':
         serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def winning_positions(request):
+    positions = Prize.objects.all()
+
+    if request.method == 'GET':
+        serializer = PrizeSerializer(positions, many=True)
         return Response(serializer.data)

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from enter import models
-from users.models import Profile
+from users.models import Profile, Prize
 
 
 class CalledBetSerializer(serializers.ModelSerializer):
@@ -43,3 +43,9 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['entries']
+
+
+class PrizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prize
+        fields = ['position', 'winning_amount', 'band']

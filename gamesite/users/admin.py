@@ -19,5 +19,5 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(Prize)
 class PrizeAdmin(admin.ModelAdmin):
-    pass
-
+    list_display = ('__str__', 'position', 'winning_amount', 'band')
+    ordering = ['position']
