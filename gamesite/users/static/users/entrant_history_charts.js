@@ -231,7 +231,6 @@ $(document).ready(function() {
             bounds: 'ticks',
             time: {
               minUnit: 'hour',
-              stepSize: 1,
               displayFormats: {
                 hour: 'ddd HH'
               }
@@ -241,7 +240,7 @@ $(document).ready(function() {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Time'
+              labelString: 'Time (linear)'
             }
           }]
         }
@@ -311,7 +310,6 @@ $(document).ready(function() {
             bounds: 'ticks',
             time: {
               minUnit: 'hour',
-              stepSize: 1,
               displayFormats: {
                 hour: 'ddd HH'
               }
@@ -321,7 +319,7 @@ $(document).ready(function() {
             },
             scaleLabel: {
               display: true,
-              labelString: 'Time'
+              labelString: 'Time (linear)'
             }
           }]
         },
@@ -342,8 +340,14 @@ $(document).ready(function() {
 
   function toggleXLabel(chart) {
     attr = chart.options.scales.xAxes[0].scaleLabel.labelString
-    attr = (attr == 'Time') ? 'Bet' : 'Time'
+    attr = (attr == 'Time (linear)') ? 'Time (series)' : 'Time (linear)'
     chart.options.scales.xAxes[0].scaleLabel.labelString = attr
+  }
+
+  function toggleXTickSource(chart) {
+    attr = chart.options.scales.xAxes[0].ticks.source
+    attr = (attr == 'label') ? 'auto' : 'label'
+    chart.options.scales.xAxes[0].ticks.source = attr
   }
 
   $("#xaxis-toggle").click(function() {

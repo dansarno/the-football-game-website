@@ -210,6 +210,11 @@ class ChoiceGroupAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(models.GameCategory)
+class GameCategoryAdmin(admin.ModelAdmin):
+    pass
+
+
 # @admin.register(models.GroupWinnerBetGroup)
 # class GroupWinnerBetGroupAdmin(admin.ModelAdmin):
 #     pass

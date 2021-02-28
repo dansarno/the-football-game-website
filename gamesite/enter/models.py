@@ -8,8 +8,8 @@ class Outcome(PolymorphicModel):
     choice_group = models.ForeignKey('ChoiceGroup', on_delete=models.CASCADE, null=True)
     winning_amount = models.IntegerField()
 
-    def __str__(self):
-        return f"{self}"
+    # def __str__(self):
+    #     return f"{self}"
 
 
 class Entry(models.Model):
@@ -57,7 +57,15 @@ class Bet(models.Model):
         return f"{self.outcome} by {self.entry}"
 
 
+class GameCategory(models.Model):
+    title = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.title
+
+
 class ChoiceGroup(models.Model):
+    game_category = models.ForeignKey(GameCategory, on_delete=models.CASCADE, blank=True, null=True)
     order = models.IntegerField()
     when_called = models.DateTimeField()
 

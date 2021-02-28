@@ -26,7 +26,7 @@ def register(request):
 @login_required
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    game_progress_percentage = int((models.CalledBet.objects.all().count() / models.ChoiceGroup.objects.all().count()) * 100)
+    game_progress_percentage = int((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100)
     return render(request, 'users/profile.html', {
         'title': user.username,
         'user': user,
