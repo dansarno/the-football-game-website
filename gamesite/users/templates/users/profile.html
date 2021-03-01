@@ -83,11 +83,10 @@
     </div>
     <div class="col">
       <div id="wrapper">
-        <div>
-          <canvas id="myChart" width="400" height="400" class="grayout"></canvas>
+        <div id="performance-chart_container" data-entries-url-endpoint="{% url 'profile_api' username=user.username %}">
+          <canvas id="performanceChart" width="400" height="400"></canvas>
         </div>
         <div id="middle-element">
-          <h3 class="text-muted">COMING SOON</h3>
         </div>
       </div>
     </div>
@@ -101,7 +100,7 @@
     <h4>History</h4>
   <hr />
 
-  <div id="chart_container" data-positions-url-endpoint="{% url 'profile_api' username=user.username %}" data-prize-url-endpoint="{% url 'prize_api' %}">
+  <div id="history-charts_container" data-entries-url-endpoint="{% url 'profile_api' username=user.username %}" data-prize-url-endpoint="{% url 'prize_api' %}">
     <div class="row mt-3">
     <div class="col-sm-6">
       <canvas id="positionChartCanvas" width="400" height="400"></canvas>

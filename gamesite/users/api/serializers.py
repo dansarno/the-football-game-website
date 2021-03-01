@@ -28,32 +28,10 @@ class PositionLogSerializer(serializers.ModelSerializer):
         fields = ['position', 'called_bet']
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    # title = serializers.CharField(read_only=True)
-    percentage_wins = serializers.SerializerMethodField(source='get_percentage_wins')
-
-    class Meta:
-        model = models.GameCategory
-        fields = ['title', 'percentage_wins']
-
-    def get_percentage_wins(self, obj):
-        choice_groups = models.ChoiceGroup.objects.filter(game_category=obj)
-        total_bets = choice_groups.count()
-        # print(self)
-        if not total_bets:
-            return -1
-        winning_bets = 0
-        for choice_group in choice_groups:
-            if models.Bet.objects.filter(entry=models.Entry.objects.first(), outcome__choice_group=choice_group)[0].success:
-                winning_bets += 1
-        percentage_wins = (winning_bets / total_bets) * 100
-        return percentage_wins
-
-
 class EntrySerializer(serializers.ModelSerializer):
     score_logs = ScoreLogSerializer(many=True, read_only=True)
     position_logs = PositionLogSerializer(many=True, read_only=True)
-    percentage_success = serializers.SerializerMethodField()
+    performance = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
@@ -62,15 +40,33 @@ class EntrySerializer(serializers.ModelSerializer):
             'label',
             'current_score',
             'current_position',
-            'percentage_success',
+            'performance',
             'score_logs',
             'position_logs'
         ]
 
-    def get_percentage_success(self, obj):
-        serializer = CategorySerializer(models.GameCategory.objects.all(), many=True)
-        print(obj.id)
-        return serializer.data
+    def get_performance(self, obj):
+        performance = []
+        for category in models.GameCategory.objects.all():
+            choice_groups = models.ChoiceGroup.objects.filter(game_category=category)
+            total_bets = choice_groups.count()
+            if not total_bets:
+                continue
+            percentage_success = dict()
+            percentage_success['game_category'] = category.title
+            winning_bets = 0
+            any_called = False
+            for choice_group in choice_groups:
+                bet_in_same_group = models.Bet.objects.filter(entry=obj, outcome__choice_group=choice_group).first()
+                if bet_in_same_group.success is not None:
+                    any_called = True
+                if bet_in_same_group.success:
+                    winning_bets += 1
+            percentage_wins = (winning_bets / total_bets) * 100
+            percentage_success['percentage_wins'] = percentage_wins
+            if any_called:
+                performance.append(percentage_success)
+        return performance
 
 
 class ProfileSerializer(serializers.ModelSerializer):

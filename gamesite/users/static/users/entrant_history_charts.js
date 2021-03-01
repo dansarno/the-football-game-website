@@ -1,6 +1,6 @@
 $(document).ready(function() {
-  var chartDataEndpoint = $("#chart_container").attr("data-positions-url-endpoint")
-  var prizeDataEndpoint = $("#chart_container").attr("data-prize-url-endpoint")
+  var chartDataEndpoint = $("#history-charts_container").attr("data-entries-url-endpoint")
+  var prizeDataEndpoint = $("#history-charts_container").attr("data-prize-url-endpoint")
   var defaultScoreData = []
   var defaultPositionData = []
   var defaultLabels = []
@@ -100,12 +100,12 @@ $(document).ready(function() {
 
     lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
-    prizeColourSet = ['rgb(218, 165, 32, 0.2)', 'rgb(192, 192, 192, 0.2)', 'rgb(205, 127, 50, 0.2)']
+    prizeColourSet = ['rgba(218, 165, 32, 0.2)', 'rgba(192, 192, 192, 0.2)', 'rgba(205, 127, 50, 0.2)']
     i = 0
     for (let scores of defaultScoreData) {
       datasetLabel = ""
       if (!entryLabels[i]) {
-        datasetLabel = "Entry";
+        datasetLabel = "Your Entry";
       } else {
         datasetLabel = 'Entry ' + entryLabels[i]
       }
@@ -159,7 +159,7 @@ $(document).ready(function() {
     for (let positions of defaultPositionData) {
       label = ""
       if (!entryLabels[i]) {
-        label = "Entry";
+        label = "Your Entry";
       } else {
         label = 'Entry ' + entryLabels[i]
       }
