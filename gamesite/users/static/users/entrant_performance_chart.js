@@ -13,7 +13,7 @@ $(document).ready(function() {
             beginAtZero: true,
             min: 0,
             max: 100,
-            stepSize: 25,
+            stepSize: 20,
             callback: function(value, index, values) {
               return value + '%';
             },
@@ -21,7 +21,10 @@ $(document).ready(function() {
           gridLines: {
             circular: false
           }
-        }
+        },
+        legend: {
+          position: 'bottom'
+        },
       }
 
       lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
@@ -87,9 +90,18 @@ $(document).ready(function() {
           labels: chartLabels,
           datasets: chartDataset
         }
+        chartOptions.tooltips = {
+          mode: 'nearest',
+          callbacks: {
+            title: function(tooltipItem, data) {
+              return data.labels[tooltipItem[0].index]
+            },
+            label: function(tooltipItem, data) {
+              return `${data['datasets'][tooltipItem['datasetIndex']]['label']}: ${tooltipItem['value']}%`
+            }
+          }
+        }
       }
-
-      console.log(chartData)
 
       var performanceRadar = new Chart(ctx, {
         type: 'radar',

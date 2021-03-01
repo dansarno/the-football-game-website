@@ -7,18 +7,30 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from enter import models
 from users.models import Profile, Prize
-from .serializers import ProfileSerializer, PrizeSerializer
+from .serializers import ProfileHistorySerializer, ProfilePerformanceSerializer, PrizeSerializer
 
 
 @api_view(['GET'])
-def profile_detail(request, username):
+def profile_history(request, username):
     try:
         profile = Profile.objects.get(user__username=username)
     except Profile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = ProfileSerializer(profile)
+        serializer = ProfileHistorySerializer(profile)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def profile_performance(request, username):
+    try:
+        profile = Profile.objects.get(user__username=username)
+    except Profile.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ProfilePerformanceSerializer(profile)
         return Response(serializer.data)
 
 

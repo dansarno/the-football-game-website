@@ -28,10 +28,9 @@ class PositionLogSerializer(serializers.ModelSerializer):
         fields = ['position', 'called_bet']
 
 
-class EntrySerializer(serializers.ModelSerializer):
+class EntryHistorySerializer(serializers.ModelSerializer):
     score_logs = ScoreLogSerializer(many=True, read_only=True)
     position_logs = PositionLogSerializer(many=True, read_only=True)
-    performance = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
@@ -40,9 +39,20 @@ class EntrySerializer(serializers.ModelSerializer):
             'label',
             'current_score',
             'current_position',
-            'performance',
             'score_logs',
             'position_logs'
+        ]
+
+
+class EntryPerformanceSerializer(serializers.ModelSerializer):
+    performance = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Entry
+        fields = [
+            'id',
+            'label',
+            'performance',
         ]
 
     def get_performance(self, obj):
@@ -69,8 +79,16 @@ class EntrySerializer(serializers.ModelSerializer):
         return performance
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    entries = EntrySerializer(many=True, read_only=True)
+class ProfileHistorySerializer(serializers.ModelSerializer):
+    entries = EntryHistorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ['entries']
+
+
+class ProfilePerformanceSerializer(serializers.ModelSerializer):
+    entries = EntryPerformanceSerializer(many=True, read_only=True)
 
     class Meta:
         model = Profile
