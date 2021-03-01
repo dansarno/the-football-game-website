@@ -59,6 +59,10 @@ class Bet(models.Model):
 
 class GameCategory(models.Model):
     title = models.CharField(max_length=20)
+    order = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = "game categories"
 
     def __str__(self):
         return self.title

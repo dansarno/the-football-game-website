@@ -27,10 +27,26 @@ def register(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     game_progress_percentage = int((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100)
+
+    game_section_progress = []
+    for category in models.GameCategory.objects.all().order_by('order'):
+        game_section = dict()
+        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category).count()
+        denominator = models.ChoiceGroup.objects.filter(game_category=category).count()
+        if denominator == 0:
+            complete = 0
+        else:
+            complete = (numerator / denominator) * 100
+        game_section['title'] = category.title
+        game_section['percentage'] = complete
+        game_section_progress.append(game_section)
+    print(game_section_progress)
+
     return render(request, 'users/profile.html', {
         'title': user.username,
         'user': user,
-        'progress': game_progress_percentage
+        'game_progress': game_progress_percentage,
+        'section_progress': game_section_progress
     })
 
 

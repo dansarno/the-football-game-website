@@ -212,7 +212,8 @@ class ChoiceGroupAdmin(admin.ModelAdmin):
 
 @admin.register(models.GameCategory)
 class GameCategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'order')
+    ordering = ['order']
 
 
 # @admin.register(models.GroupWinnerBetGroup)
