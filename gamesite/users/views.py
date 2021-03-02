@@ -39,8 +39,9 @@ def profile(request, username):
             complete = (numerator / denominator) * 100
         game_section['title'] = category.title
         game_section['percentage'] = complete
+        game_section['number_completed'] = numerator
+        game_section['total_number'] = denominator
         game_section_progress.append(game_section)
-    print(game_section_progress)
 
     return render(request, 'users/profile.html', {
         'title': user.username,

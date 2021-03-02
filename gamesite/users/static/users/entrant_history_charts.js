@@ -268,8 +268,8 @@ $(document).ready(function() {
               return data['verboseLabels'][tooltipItem[0]['index']];
             },
             label: function(tooltipItem, data) {
-              return data.datasets[tooltipItem.datasetIndex].label + ': ' +
-                tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              positionNumber = tooltipItem.yLabel
+              return data.datasets[tooltipItem.datasetIndex].label + ': ' + ordinal_suffix_of(positionNumber)
             },
           },
         },
@@ -348,6 +348,22 @@ $(document).ready(function() {
     attr = chart.options.scales.xAxes[0].ticks.source
     attr = (attr == 'label') ? 'auto' : 'label'
     chart.options.scales.xAxes[0].ticks.source = attr
+  }
+
+  function ordinal_suffix_of(i) {
+    var j = i % 10
+    var k = i % 100
+
+    if (j == 1 && k != 11) {
+      return i + "st"
+    }
+    if (j == 2 && k != 12) {
+      return i + "nd"
+    }
+    if (j == 3 && k != 13) {
+      return i + "rd"
+    }
+    return i + "th"
   }
 
   $("#xaxis-toggle").click(function() {

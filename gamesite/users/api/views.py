@@ -7,7 +7,19 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from enter import models
 from users.models import Profile, Prize
-from .serializers import ProfileHistorySerializer, ProfilePerformanceSerializer, PrizeSerializer
+from .serializers import ProfileHistorySerializer, ProfilePerformanceSerializer,  PrizeSerializer, EntryHistorySerializer
+
+
+@api_view(['GET'])
+def all_entries_history(request):
+    try:
+        entries = models.Entry.objects.all()
+    except models.Entry.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EntryHistorySerializer(entries, many=True)
+        return Response(serializer.data)
 
 
 @api_view(['GET'])
