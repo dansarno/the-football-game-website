@@ -201,6 +201,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 @login_required
 def delete_entry(request, entry_id, success_url="enter:index"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
+    num_of_user_entries = len(request.user.profile.entries.order_by('id'))
 
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
@@ -212,9 +213,9 @@ def delete_entry(request, entry_id, success_url="enter:index"):
         msg = f"You have deleted Entry {deleted_entry_label}. "
     else:
         msg = f"You have deleted your entry"
-    if deleted_entry_label == "A":
+    if deleted_entry_label == "A" and num_of_user_entries == 3:
         msg += "Entry B has now been labeled Entry A and Entry C has now been labeled Entry B."
-    elif deleted_entry_label == "B":
+    elif deleted_entry_label == "B" and num_of_user_entries == 3:
         msg += "Entry C has now been labeled Entry B."
     messages.add_message(request, messages.SUCCESS, msg)
 

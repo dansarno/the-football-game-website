@@ -230,7 +230,7 @@ $(document).ready(function() {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              minUnit: 'hour',
+              minUnit: 'minute',
               displayFormats: {
                 hour: 'ddd HH'
               }
@@ -309,7 +309,7 @@ $(document).ready(function() {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              minUnit: 'hour',
+              minUnit: 'minute',
               displayFormats: {
                 hour: 'ddd HH'
               }

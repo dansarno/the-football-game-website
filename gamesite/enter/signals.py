@@ -142,7 +142,6 @@ def removed_from_called_bets(sender, instance, **kwargs):
 @receiver(post_save, sender=models.Entry)
 def label_entries(sender, instance, created, **kwargs):
     all_entries = instance.profile.entries.order_by('id')
-    print(all_entries)
     labels = ["A", "B", "C"]
     if created:
         if len(all_entries) == 1:
