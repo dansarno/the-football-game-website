@@ -6,8 +6,9 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'current_position', 'current_score')
+    list_display = ('__str__', 'has_submitted', 'has_paid', 'current_position', 'current_score')
     exclude = ('label',)
+    list_filter = ('has_paid', 'has_submitted')
 
 
 @admin.register(models.Team)

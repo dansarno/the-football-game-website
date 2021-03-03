@@ -223,6 +223,26 @@ def delete_entry(request, entry_id, success_url="enter:index"):
 
 
 @login_required
+def submit_entry(request, entry_id, success_url="enter:index"):
+    requested_entry = get_object_or_404(models.Entry, id=entry_id)
+
+    if request.user != requested_entry.profile.user:
+        raise PermissionDenied
+
+    submitted_entry_label = requested_entry.label
+    requested_entry.has_submitted = True
+    requested_entry.save()
+
+    if submitted_entry_label:
+        msg = f"You have successfully submitted Entry {submitted_entry_label}. Good luck ☘"
+    else:
+        msg = f"You have successfully submitted your entry. Good luck ☘"
+    messages.add_message(request, messages.SUCCESS, msg)
+
+    return HttpResponseRedirect(reverse(success_url))
+
+
+@login_required
 def confirm(request):
     return render(request, "enter/confirm.html", {
         "title": "Review and Confirm"
