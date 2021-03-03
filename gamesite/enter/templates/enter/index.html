@@ -23,12 +23,16 @@
       </div>
       {% endif %}
       <div class="card-body">
-        <div class="card-text">Completed:</div>
-        <div class="progress mb-1">
-          <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">75%</div>
+        <div class="card-text">Completed: 75%</div>
+        <div class="progress mb-1" style="height: 5px;">
+          <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <div class="card-text">Submitted: {{ entry.has_submitted|yesno:"Yes,No" }}</div>
         <div class="card-text mb-3">Paid: {{ entry.has_paid|yesno:"Yes,No" }}</div>
+        {% if entry.has_submitted %}
+        <a href="#" class="btn btn-outline-secondary btn-sm mr-1">View</a>
+        <a href="#" class="btn btn-outline-secondary btn-sm mr-1">Print</a>
+        {% else %}
         <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#submitModalForEntry{{ entry.id }}">
           Submit
         </button>
@@ -36,6 +40,7 @@
         <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteModalForEntry{{ entry.id }}">
           Delete
         </button>
+        {% endif %}
       </div>
       <div class="card-footer">
         <small class="text-muted">Last updated: {{ entry.date_updated|naturaltime }}</small>

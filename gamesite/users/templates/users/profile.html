@@ -27,7 +27,7 @@
       <th scope="col"></th>
       {% for entry in user.profile.entries.all %}
         {% if entry.label %}
-        <th scope="col">{{ entry.label }}</th>
+        <th scope="col">Entry {{ entry.label }}</th>
         {% else %}
         <th scope="col">Your Entry</th>
         {% endif %}
