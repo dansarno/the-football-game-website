@@ -26,6 +26,32 @@ def leaderboard(request):
 
 
 @login_required
+def results(request):
+    game_progress_percentage = int((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100)
+
+    game_section_progress = []
+    for category in models.GameCategory.objects.all().order_by('order'):
+        game_section = dict()
+        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category).count()
+        denominator = models.ChoiceGroup.objects.filter(game_category=category).count()
+        if denominator == 0:
+            complete = 0
+        else:
+            complete = (numerator / denominator) * 100
+        game_section['title'] = category.title
+        game_section['percentage'] = complete
+        game_section['number_completed'] = numerator
+        game_section['total_number'] = denominator
+        game_section_progress.append(game_section)
+
+    return render(request, "enter/results.html", {
+        "title": "Results",
+        'game_progress': game_progress_percentage,
+        'section_progress': game_section_progress
+    })
+
+
+@login_required
 def create_entry(request, template_name="enter/entry.html", success_url="enter:index"):
     # if request.method == "POST":
         # group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
