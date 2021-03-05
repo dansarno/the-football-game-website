@@ -7,6 +7,7 @@ urlpatterns = [
     path("entrymanager", views.index, name="index"),
     path("leaderboard", views.leaderboard, name="leaderboard"),
     path("results", views.results, name="results"),
+    path("explore", views.explore, name="explore"),
     path("entry/<int:entry_id>", views.edit_entry, name="entry"),
     path("entry/new", views.create_entry, name="create_entry"),
     path("entry/random", views.create_random_entry, name="create_random_entry"),

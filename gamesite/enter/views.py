@@ -26,6 +26,13 @@ def leaderboard(request):
 
 
 @login_required
+def explore(request):
+    return render(request, "enter/explore.html", {
+        "title": "Explore"
+    })
+
+
+@login_required
 def results(request):
     game_progress_percentage = int((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100)
 
