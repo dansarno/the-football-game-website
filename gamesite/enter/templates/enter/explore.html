@@ -10,10 +10,16 @@
 <h2>Explore</h2>
 
 <div class="card border-light shadow-sm mb-4">
-  <div class="card-body">
+  <div id="chart-card" class="card-body">
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-secondary mt-5" role="status" id="loading">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
     <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}">
       <canvas id="allHistoryChart" width="400" height="400"></canvas>
     </div>
+    <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle X Axis</button>
   </div>
 </div>
 </div>

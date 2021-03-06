@@ -44,6 +44,18 @@ class EntryHistorySerializer(serializers.ModelSerializer):
         ]
 
 
+class EntryPositionHistorySerializer(serializers.ModelSerializer):
+    position_logs = PositionLogSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = models.Entry
+        fields = [
+            'id',
+            'label',
+            'position_logs'
+        ]
+
+
 class EntryPerformanceSerializer(serializers.ModelSerializer):
     performance = serializers.SerializerMethodField()
 
@@ -85,6 +97,15 @@ class ProfileHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['entries']
+
+
+class ProfilePositionHistorySerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(read_only=True)
+    entries = EntryPositionHistorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ['user', 'profile_picture', 'entries']
 
 
 class ProfilePerformanceSerializer(serializers.ModelSerializer):

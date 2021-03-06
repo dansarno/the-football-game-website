@@ -42,31 +42,36 @@ $(document).ready(function() {
     maxPosition = 1
 
     i = 1
-    for (let position_log of data[0].position_logs) {
+    for (let position_log of data[0].entries[0].position_logs) {
       labels.push(position_log.called_bet.date)
       verboseLabels.push(position_log.called_bet.outcome)
       dateLabels.push(position_log.called_bet.date)
       i++
     }
 
-    for (let entry of data) {
-      entryLabels.push(entry.label)
-
-      entryPostions = []
-      for (let position_log of entry.position_logs) {
-        if (position_log.position > maxPosition) {
-          maxPosition = position_log.position
+    for (let profile of data) {
+      for (let entry of profile.entries) {
+        if (entry.label) {
+          entryLabels.push(`${profile.user} (${entry.label})`)
+        } else {
+          entryLabels.push(`${profile.user}`)
         }
-        if (position_log.position < minPosition) {
-          minPosition = position_log.position
-        }
+        entryPostions = []
+        for (let position_log of entry.position_logs) {
+          if (position_log.position > maxPosition) {
+            maxPosition = position_log.position
+          }
+          if (position_log.position < minPosition) {
+            minPosition = position_log.position
+          }
 
-        entryPostions.push({
-          y: position_log.position,
-          t: position_log.called_bet.date
-        })
+          entryPostions.push({
+            y: position_log.position,
+            t: position_log.called_bet.date
+          })
+        }
+        positions.push(entryPostions)
       }
-      positions.push(entryPostions)
     }
 
     defaultLabels = labels
@@ -74,7 +79,10 @@ $(document).ready(function() {
     defaultDateLabels = dateLabels
     defaultPositionData = positions
 
+    $("#loading").hide()
+    // $('#chart-card').append('<button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle">Toggle X Axis</button>')
     setChart(entryLabels)
+    $('#xaxis-toggle').show()
   })
 
   function setChart(entryLabels) {
@@ -116,19 +124,13 @@ $(document).ready(function() {
 
     i = 0
     for (let positions of defaultPositionData) {
-      label = ""
-      if (!entryLabels[i]) {
-        label = "Your Entry";
-      } else {
-        label = 'Entry ' + entryLabels[i]
-      }
       positionChartData.datasets.push({
-        label: label,
+        label: entryLabels[i],
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColour,
         pointBackgroundColor: lineColour,
-        pointHoverBackgroundColor: lineColour,
+        pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 3,
         pointRadius: 0,
         pointHoverRadius: 2,
@@ -154,12 +156,15 @@ $(document).ready(function() {
             bottom: 0
           }
         },
+        animation: {
+          onComplete: function(animation) {}
+        },
         tooltips: {
           mode: 'nearest',
           intersect: true,
           callbacks: {
             title: function(tooltipItem, data) {
-              return data['verboseLabels'][tooltipItem[0]['index']];
+              return data['verboseLabels'][tooltipItem[0]['index']]
             },
             label: function(tooltipItem, data) {
               positionNumber = tooltipItem.yLabel
@@ -206,7 +211,7 @@ $(document).ready(function() {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              minUnit: 'minute',
+              // minUnit: 'minute',
               displayFormats: {
                 hour: 'ddd HH'
               }
