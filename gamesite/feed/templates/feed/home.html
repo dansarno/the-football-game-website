@@ -8,7 +8,11 @@
 <div class="col-12 col-lg-9 mt-4">
 <h2>Feed</h2>
 {% for post in posts %}
+{% if post.post_type == "B" %}
+<div class="card border-primary shadow-sm mb-4">
+{% else %}
 <div class="card border-light shadow-sm mb-4">
+{% endif %}
   <div class="card-body">
     <div class="row">
       <div class="col-1">
