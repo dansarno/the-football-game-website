@@ -14,6 +14,7 @@ class EntryAdmin(admin.ModelAdmin):
 @admin.register(models.Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = ('country', 'show_country_flag', 'show_country_code', 'show_logo', 'group')
+    list_filter = ('group',)
 
     def show_logo(self, obj):
         return format_html('<img src="{}" width="30"/>'.format(obj.logo.url))
@@ -90,59 +91,59 @@ class TournamentAdmin(admin.ModelAdmin):
 #     pass
 #
 #
-# @admin.register(models.TournamentGoalsOutcome)
-# class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.TournamentRedCardsOutcome)
-# class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.TournamentOwnGoalsOutcome)
-# class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.TournamentHattricksOutcome)
-# class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
+@admin.register(models.TournamentGoalsOutcome)
+class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.TournamentRedCardsOutcome)
+class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.TournamentOwnGoalsOutcome)
+class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.TournamentHattricksOutcome)
+class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
 # @admin.register(models.GroupMatchBetGroup)
 # class GroupMatchBetGroupAdmin(admin.ModelAdmin):
 #     pass
-#
-#
+
+
 # @admin.register(models.FinalBetGroup)
 # class FinalBetGroupAdmin(admin.ModelAdmin):
 #     pass
 #
 #
-# @admin.register(models.FinalFirstGoalOutcome)
-# class FinalFirstGoalOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FinalYellowCardsOutcome)
-# class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FinalOwnGoalOutcome)
-# class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FinalRefContinentOutcome)
-# class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
-#     pass
-#
-#
-# @admin.register(models.FinalGoalsOutcome)
-# class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
-#     pass
+@admin.register(models.FinalFirstGoalOutcome)
+class FinalFirstGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FinalYellowCardsOutcome)
+class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FinalOwnGoalOutcome)
+class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FinalRefContinentOutcome)
+class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.FinalGoalsOutcome)
+class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
+    pass
 #
 #
 # @admin.register(models.BestTeamsSuccessBetGroup)
