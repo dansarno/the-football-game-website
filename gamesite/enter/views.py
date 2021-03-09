@@ -217,11 +217,13 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 }
         group_winners_form = forms.GroupWinnerOutcomeForm(initial=data)
         # fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(instance=requested_entry.fiftyfiftybetgroup)
-        most_goals_bets = models.Bet.objects\
-            .filter(outcome__choice_group__game_category__title='Most Goals', entry=requested_entry)
-        data = {'group_choice': most_goals_bets[0].outcome}
+        tsg_choice = models.Outcome.objects.instance_of(models.TopGoalScoringGroupOutcome).\
+            filter(bet__entry=requested_entry).first()
+        tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome).\
+            filter(bet__entry=requested_entry).first()
+        data = {'group_choice': tsg_choice}
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(initial=data)
-        data = {'choice': most_goals_bets[1].outcome}
+        data = {'choice': tsp_choice}
         top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(initial=data)
 
     return render(request, template_name, {
