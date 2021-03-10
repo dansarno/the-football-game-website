@@ -1,8 +1,8 @@
 from django import forms
 from . import models
 
-group_matches = models.GroupMatch.objects.all().order_by('ko_time')
-fifty_fifty_questions = models.FiftyFiftyQuestion.objects.all()
+group_matches = models.GroupMatch.objects.order_by('ko_time')
+fifty_fifty_questions = models.FiftyFiftyQuestion.objects.order_by('order')
 
 
 class NameModelChoiceField(forms.ModelChoiceField):

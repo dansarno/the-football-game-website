@@ -240,7 +240,7 @@ class FiftyFiftyOutcomeAdmin(admin.ModelAdmin):
 
 @admin.register(models.FiftyFiftyQuestion)
 class FiftyFiftyQuestionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('question', 'order')
 
 
 # @admin.register(models.TopGoalscoringGroupBet)
