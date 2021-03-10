@@ -205,6 +205,16 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         # final_bets_form = forms.FinalBetGroupForm(instance=requested_entry.finalbetgroup)
         # best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
         #     instance=requested_entry.bestteamssuccessbetgroup)
+        group_match_bets = models.Bet.objects\
+            .filter(outcome__choice_group__game_category__title='Group Matches', entry=requested_entry)\
+            .order_by('outcome__groupmatchoutcome__match__ko_time')
+        data = {'match1_bet': group_match_bets[0].outcome,
+                'match2_bet': group_match_bets[1].outcome,
+                'match3_bet': group_match_bets[2].outcome,
+                'match4_bet': group_match_bets[3].outcome,
+                'match5_bet': group_match_bets[4].outcome
+                }
+        group_matches_form = forms.GroupMatchOutcomeForm(initial=data)
         fifty_fifty_bets = models.Bet.objects\
             .filter(outcome__choice_group__game_category__title='50/50s', entry=requested_entry)\
             .order_by('outcome__fiftyfiftyoutcome__fifty_fifty__order')
@@ -241,7 +251,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 
     return render(request, template_name, {
         "title": "Enter",
-        # "group_matches_form": group_matches_form,
+        "group_matches_form": group_matches_form,
         # "tournament_bets_form": tournament_bets_form,
         # "final_bets_form": final_bets_form,
         # "best_teams_success_bets_form": best_teams_success_bets_form,
