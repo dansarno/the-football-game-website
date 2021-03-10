@@ -205,6 +205,20 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         # final_bets_form = forms.FinalBetGroupForm(instance=requested_entry.finalbetgroup)
         # best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
         #     instance=requested_entry.bestteamssuccessbetgroup)
+        fifty_fifty_bets = models.Bet.objects\
+            .filter(outcome__choice_group__game_category__title='50/50s', entry=requested_entry)\
+            .order_by('outcome__fiftyfiftyoutcome__fifty_fifty__order')
+        data = {'question1_bet': fifty_fifty_bets[0].outcome,
+                'question2_bet': fifty_fifty_bets[1].outcome,
+                'question3_bet': fifty_fifty_bets[2].outcome,
+                'question4_bet': fifty_fifty_bets[3].outcome,
+                'question5_bet': fifty_fifty_bets[4].outcome,
+                'question6_bet': fifty_fifty_bets[5].outcome,
+                'question7_bet': fifty_fifty_bets[6].outcome,
+                'question8_bet': fifty_fifty_bets[7].outcome,
+                'question9_bet': fifty_fifty_bets[8].outcome
+                }
+        fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(initial=data)
         group_winner_bets = models.Bet.objects\
             .filter(outcome__choice_group__game_category__title='Group Winners', entry=requested_entry)\
             .order_by('outcome__groupwinneroutcome__group__name')
@@ -216,7 +230,6 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 'group_f_winner_bet': group_winner_bets[5].outcome
                 }
         group_winners_form = forms.GroupWinnerOutcomeForm(initial=data)
-        # fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(instance=requested_entry.fiftyfiftybetgroup)
         tsg_choice = models.Outcome.objects.instance_of(models.TopGoalScoringGroupOutcome).\
             filter(bet__entry=requested_entry).first()
         tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome).\
@@ -233,7 +246,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         # "final_bets_form": final_bets_form,
         # "best_teams_success_bets_form": best_teams_success_bets_form,
         "group_winner_bets_form": group_winners_form,
-        # "fifty_fifty_bets_form": fifty_fifty_bets_form,
+        "fifty_fifty_bets_form": fifty_fifty_bets_form,
         "top_goal_group_bets_form": top_goal_group_bets_form,
         "top_goal_player_bets_form": top_goal_player_bets_form
     })
