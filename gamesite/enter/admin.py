@@ -13,8 +13,8 @@ class EntryAdmin(admin.ModelAdmin):
 
 @admin.register(models.Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('country', 'show_country_flag', 'show_country_code', 'show_logo', 'group')
-    list_filter = ('group',)
+    list_display = ('country', 'show_country_flag', 'show_country_code', 'show_logo', 'group', 'is_top_team')
+    list_filter = ('group', 'is_top_team')
 
     def show_logo(self, obj):
         return format_html('<img src="{}" width="30"/>'.format(obj.logo.url))
