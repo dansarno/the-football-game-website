@@ -240,67 +240,115 @@ class FiftyFiftyOutcome(Outcome):
 
 
 class TournamentGoalsOutcome(Outcome):
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"Total goals: {self.min_value} - {self.max_value}" \
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"Total goals: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Total goals: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Total goals: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
+        else:
+            return f"Total goals: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class TournamentRedCardsOutcome(Outcome):
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"Total red cards: {self.min_value} - {self.max_value}" \
-               f" = {self.winning_amount}"
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"Total red cards: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Total red cards: {self.min_value} - {self.max_value}" \
+                   f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Total red cards: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
+        else:
+            return f"Total red cards: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class TournamentOwnGoalsOutcome(Outcome):
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"Total own goals: {self.min_value} - {self.max_value}" \
-               f" = {self.winning_amount}"
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"Total own goals: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Total own goals: {self.min_value} - {self.max_value}" \
+                   f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Total own goals: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
+        else:
+            return f"Total own goals: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class TournamentHattricksOutcome(Outcome):
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"Total hattricks: {self.min_value} - {self.max_value}" \
-               f" = {self.winning_amount}"
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"Total hattricks: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Total hattricks: {self.min_value} - {self.max_value}" \
+                   f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Total hattricks: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
+        else:
+            return f"Total hattricks: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class Venue(models.Model):
