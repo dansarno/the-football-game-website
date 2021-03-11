@@ -62,7 +62,7 @@ def results(request):
 def create_entry(request, template_name="enter/entry.html", success_url="enter:index"):
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
-        # tournament_bets_form = forms.TournamentBetGroupForm(request.POST)
+        tournament_bets_form = forms.TournamentTotalsForm(request.POST)
         # final_bets_form = forms.FinalBetGroupForm(request.POST)
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(request.POST)
         group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
@@ -75,7 +75,8 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
                 fifty_fifty_bets_form.is_valid() and
                 group_matches_form.is_valid() and
                 group_winners_form.is_valid() and
-                best_teams_success_bets_form.is_valid()):
+                best_teams_success_bets_form.is_valid() and
+                tournament_bets_form.is_valid()):
             new_entry = models.Entry.objects.create(profile=request.user.profile)
 
             # for field_name, field_value in group_winners_form.cleaned_data.items():
@@ -115,10 +116,13 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
             for field_name, field_value in best_teams_success_bets_form.cleaned_data.items():
                 models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
+            for field_name, field_value in tournament_bets_form.cleaned_data.items():
+                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+
             return HttpResponseRedirect(reverse(success_url))
     else:
         group_matches_form = forms.GroupMatchOutcomeForm()
-        # tournament_bets_form = forms.TournamentBetGroupForm()
+        tournament_bets_form = forms.TournamentTotalsForm()
         # final_bets_form = forms.FinalBetGroupForm()
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm()
         group_winners_form = forms.GroupWinnerOutcomeForm()
@@ -129,7 +133,7 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": group_matches_form,
-        # "tournament_bets_form": tournament_bets_form,
+        "tournament_bets_form": tournament_bets_form,
         # "final_bets_form": final_bets_form,
         "best_teams_success_bets_form": best_teams_success_bets_form,
         "group_winner_bets_form": group_winners_form,
@@ -158,7 +162,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
-        # tournament_bets_form = forms.TournamentBetGroupForm(request.POST)
+        tournament_bets_form = forms.TournamentTotalsForm(request.POST)
         # final_bets_form = forms.FinalBetGroupForm(request.POST)
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(request.POST)
         group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
@@ -201,11 +205,22 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 
             return HttpResponseRedirect(reverse(success_url))
     else:
-        # group_matches_form = forms.GroupMatchOutcomeForm(instance=requested_entry.groupmatchbetgroup)
-        # tournament_bets_form = forms.TournamentBetGroupForm(instance=requested_entry.tournamentbetgroup)
         # final_bets_form = forms.FinalBetGroupForm(instance=requested_entry.finalbetgroup)
-        # best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
-        #     instance=requested_entry.bestteamssuccessbetgroup)
+
+        total_goals_choice = models.Outcome.objects.instance_of(models.TournamentGoalsOutcome). \
+            filter(bet__entry=requested_entry).first()
+        total_reds_choice = models.Outcome.objects.instance_of(models.TournamentRedCardsOutcome). \
+            filter(bet__entry=requested_entry).first()
+        total_own_goals_choice = models.Outcome.objects.instance_of(models.TournamentOwnGoalsOutcome). \
+            filter(bet__entry=requested_entry).first()
+        total_hattricks_choice = models.Outcome.objects.instance_of(models.TournamentHattricksOutcome). \
+            filter(bet__entry=requested_entry).first()
+        data = {'total_goals_bet': total_goals_choice,
+                'total_red_cards_bet': total_reds_choice,
+                'total_own_goals_bet': total_own_goals_choice,
+                'total_hattricks_bet': total_hattricks_choice
+                }
+        tournament_bets_form = forms.TournamentTotalsForm(initial=data)
 
         to_reach_semi_choice = models.Outcome.objects.instance_of(models.ToReachSemiFinalOutcome). \
             filter(bet__entry=requested_entry).first()
@@ -278,7 +293,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
     return render(request, template_name, {
         "title": "Enter",
         "group_matches_form": group_matches_form,
-        # "tournament_bets_form": tournament_bets_form,
+        "tournament_bets_form": tournament_bets_form,
         # "final_bets_form": final_bets_form,
         "best_teams_success_bets_form": best_teams_success_bets_form,
         "group_winner_bets_form": group_winners_form,

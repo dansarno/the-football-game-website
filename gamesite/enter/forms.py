@@ -132,32 +132,28 @@ class GroupWinnerOutcomeForm(forms.Form):
     #     exclude = ('entry',)
 
 
-# class TournamentBetGroupForm(forms.ModelForm):
-#     total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('min_value'),
-#                                            required=True,
-#                                            widget=forms.RadioSelect,
-#                                            label="Total tournament goals (excluding penalty shootouts)")
-#     total_red_cards_bet = NameModelChoiceField(
-#         queryset=models.TournamentRedCardsOutcome.objects.all().order_by('min_value'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Total tournament red cards")
-#     total_own_goals_bet = NameModelChoiceField(
-#         queryset=models.TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Total tournament own goals")
-#     total_hattricks_bet = NameModelChoiceField(
-#         queryset=models.TournamentHattricksOutcome.objects.all().order_by('min_value'),
-#         required=True,
-#         widget=forms.RadioSelect,
-#         label="Total hattricks")
-#
-#     class Meta:
-#         model = models.TournamentBetGroup
-#         exclude = ('entry',)
-#
-#
+class TournamentTotalsForm(forms.Form):
+    total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('min_value'),
+                                           required=True,
+                                           widget=forms.RadioSelect,
+                                           label="Total tournament goals (excluding penalty shootouts)")
+    total_red_cards_bet = NameModelChoiceField(
+        queryset=models.TournamentRedCardsOutcome.objects.all().order_by('min_value'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Total tournament red cards")
+    total_own_goals_bet = NameModelChoiceField(
+        queryset=models.TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Total tournament own goals")
+    total_hattricks_bet = NameModelChoiceField(
+        queryset=models.TournamentHattricksOutcome.objects.all().order_by('min_value'),
+        required=True,
+        widget=forms.RadioSelect,
+        label="Total hattricks")
+
+
 # class FinalBetGroupForm(forms.ModelForm):
 #     final_first_goal_bet = NameModelChoiceField(queryset=models.FinalFirstGoalOutcome.objects.all(),
 #                                                 required=True,
