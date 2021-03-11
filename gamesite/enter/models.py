@@ -77,17 +77,6 @@ class ChoiceGroup(models.Model):
         return f"Choice Group ({self.order})"
 
 
-class Tournament(models.Model):
-    name = models.CharField(max_length=20)
-    goals_scored = models.IntegerField(default=0)
-    red_cards = models.IntegerField(default=0)
-    own_goals = models.IntegerField(default=0)
-    hatricks = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name
-
-
 class Country(models.Model):
 
     class Meta:
@@ -251,13 +240,12 @@ class FiftyFiftyOutcome(Outcome):
 
 
 class TournamentGoalsOutcome(Outcome):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.tournament.name} goals: {self.min_value} - {self.max_value}" \
+        return f"Total goals: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
     def verbose_outcome(self):
@@ -268,13 +256,12 @@ class TournamentGoalsOutcome(Outcome):
 
 
 class TournamentRedCardsOutcome(Outcome):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.tournament.name} red cards: {self.min_value} - {self.max_value}" \
+        return f"Total red cards: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
     def verbose_outcome(self):
@@ -285,13 +272,12 @@ class TournamentRedCardsOutcome(Outcome):
 
 
 class TournamentOwnGoalsOutcome(Outcome):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.tournament.name} own goals: {self.min_value} - {self.max_value}" \
+        return f"Total own goals: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
     def verbose_outcome(self):
@@ -302,13 +288,12 @@ class TournamentOwnGoalsOutcome(Outcome):
 
 
 class TournamentHattricksOutcome(Outcome):
-    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE)
     min_value = models.IntegerField()
     max_value = models.IntegerField()
     is_highest_value = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.tournament.name} hattricks: {self.min_value} - {self.max_value}" \
+        return f"Total hattricks: {self.min_value} - {self.max_value}" \
                f" = {self.winning_amount}"
 
     def verbose_outcome(self):

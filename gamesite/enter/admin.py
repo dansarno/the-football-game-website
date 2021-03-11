@@ -81,11 +81,6 @@ class VenueAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.Tournament)
-class TournamentAdmin(admin.ModelAdmin):
-    pass
-
-
 # @admin.register(models.TournamentBetGroup)
 # class TournamentBetGroupAdmin(admin.ModelAdmin):
 #     pass
