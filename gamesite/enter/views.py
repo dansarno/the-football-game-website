@@ -34,7 +34,7 @@ def explore(request):
 
 @login_required
 def results(request):
-    game_progress_percentage = int((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100)
+    game_progress_percentage = round((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100, 1)
 
     game_section_progress = []
     for category in models.GameCategory.objects.all().order_by('order'):
@@ -44,7 +44,7 @@ def results(request):
         if denominator == 0:
             complete = 0
         else:
-            complete = (numerator / denominator) * 100
+            complete = round((numerator / denominator) * 100, 1)
         game_section['title'] = category.title
         game_section['percentage'] = complete
         game_section['number_completed'] = numerator
