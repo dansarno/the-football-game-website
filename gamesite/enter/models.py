@@ -490,25 +490,31 @@ class FinalOwnGoalOutcome(Outcome):
 
 class FinalYellowCardsOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        if self.is_highest_value:
-            return f"Final yellows: {self.min_value} or more = {self.winning_amount}"
-        elif self.max_value == self.min_value:
+        if self.min_value == self.max_value and self.min_value is not None:
             return f"Final yellows: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Final yellows: {self.min_value} - {self.max_value}" \
+                   f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Final yellows: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
         else:
-            return f"Final yellows: {self.min_value} to {self.max_value} = {self.winning_amount}"
+            return f"Final yellows: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        elif self.max_value == self.min_value:
-            return self.min_value
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class FinalRefContinentOutcome(Outcome):
@@ -524,25 +530,31 @@ class FinalRefContinentOutcome(Outcome):
 
 class FinalGoalsOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
-    min_value = models.IntegerField()
-    max_value = models.IntegerField()
-    is_highest_value = models.BooleanField(default=False)
+    min_value = models.IntegerField(blank=True, null=True)
+    max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        if self.is_highest_value:
-            return f"Final goals: {self.min_value} or more = {self.winning_amount}"
-        elif self.max_value == self.min_value:
+        if self.min_value == self.max_value and self.min_value is not None:
             return f"Final goals: {self.min_value} = {self.winning_amount}"
+        elif self.min_value and self.max_value:
+            return f"Final goals: {self.min_value} - {self.max_value}" \
+                   f" = {self.winning_amount}"
+        elif self.max_value:
+            return f"Final goals: {self.max_value} or fewer" \
+                   f" = {self.winning_amount}"
         else:
-            return f"Final goals: {self.min_value} to {self.max_value} = {self.winning_amount}"
+            return f"Final goals: {self.min_value} or more" \
+                   f" = {self.winning_amount}"
 
     def verbose_outcome(self):
-        if self.is_highest_value:
-            return f"{self.min_value} or more"
-        elif self.max_value == self.min_value:
-            return self.min_value
-        else:
+        if self.min_value == self.max_value and self.min_value is not None:
+            return f"{self.min_value}"
+        elif self.min_value and self.max_value:
             return f"{self.min_value} to {self.max_value}"
+        elif self.max_value:
+            return f"{self.max_value} or fewer"
+        else:
+            return f"{self.min_value} or more"
 
 
 class CalledBet(models.Model):

@@ -127,10 +127,6 @@ class GroupWinnerOutcomeForm(forms.Form):
                                               widget=forms.RadioSelect,
                                               label="Group F")
 
-    # class Meta:
-    #     model = models.GroupWinnerBetGroup
-    #     exclude = ('entry',)
-
 
 class TournamentTotalsForm(forms.Form):
     total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('min_value'),
@@ -154,31 +150,27 @@ class TournamentTotalsForm(forms.Form):
         label="Total hattricks")
 
 
-# class FinalBetGroupForm(forms.ModelForm):
-#     final_first_goal_bet = NameModelChoiceField(queryset=models.FinalFirstGoalOutcome.objects.all(),
-#                                                 required=True,
-#                                                 widget=forms.RadioSelect,
-#                                                 label="First goal to be scored in the final")
-#     final_own_goals_bet = NameModelChoiceField(queryset=models.FinalOwnGoalOutcome.objects.all(),
-#                                                required=True,
-#                                                widget=forms.RadioSelect,
-#                                                label="There will be an own goal")
-#     final_yellow_cards_bet = NameModelChoiceField(queryset=models.FinalYellowCardsOutcome.objects.all(),
-#                                                   required=True,
-#                                                   widget=forms.RadioSelect,
-#                                                   label="Number of yellow cards")
-#     final_ref_continent_bet = NameModelChoiceField(queryset=models.FinalRefContinentOutcome.objects.all(),
-#                                                    required=True,
-#                                                    widget=forms.RadioSelect,
-#                                                    label="Continent of the ref in the final")
-#     final_goals_bet = NameModelChoiceField(queryset=models.FinalGoalsOutcome.objects.all(),
-#                                            required=True,
-#                                            widget=forms.RadioSelect,
-#                                            label="Total goals in the final (excluding a penalty shootout)")
-#
-#     class Meta:
-#         model = models.FinalBetGroup
-#         exclude = ('entry',)
+class DuringTheFinalForm(forms.Form):
+    final_first_goal_bet = NameModelChoiceField(queryset=models.FinalFirstGoalOutcome.objects.all(),
+                                                required=True,
+                                                widget=forms.RadioSelect,
+                                                label="First goal to be scored in the final")
+    final_own_goals_bet = NameModelChoiceField(queryset=models.FinalOwnGoalOutcome.objects.all(),
+                                               required=True,
+                                               widget=forms.RadioSelect,
+                                               label="There will be an own goal")
+    final_yellow_cards_bet = NameModelChoiceField(queryset=models.FinalYellowCardsOutcome.objects.all(),
+                                                  required=True,
+                                                  widget=forms.RadioSelect,
+                                                  label="Number of yellow cards")
+    final_ref_continent_bet = NameModelChoiceField(queryset=models.FinalRefContinentOutcome.objects.all(),
+                                                   required=True,
+                                                   widget=forms.RadioSelect,
+                                                   label="Continent of the ref in the final")
+    final_goals_bet = NameModelChoiceField(queryset=models.FinalGoalsOutcome.objects.all(),
+                                           required=True,
+                                           widget=forms.RadioSelect,
+                                           label="Total goals in the final (excluding a penalty shootout)")
 
 
 class BestTeamsSuccessBetGroupForm(forms.Form):
