@@ -34,12 +34,13 @@ def explore(request):
 
 @login_required
 def results(request):
-    game_progress_percentage = round((models.CalledBet.objects.count() / models.ChoiceGroup.objects.count()) * 100, 1)
-
+    game_progress_percentage = round((models.CalledBet.objects.values('outcome__choice_group').distinct().count()
+                                      / models.ChoiceGroup.objects.count()) * 100, 1)
     game_section_progress = []
     for category in models.GameCategory.objects.all().order_by('order'):
         game_section = dict()
-        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category).count()
+        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category)\
+            .values('outcome__choice_group').distinct().count()
         denominator = models.ChoiceGroup.objects.filter(game_category=category).count()
         if denominator == 0:
             complete = 0
