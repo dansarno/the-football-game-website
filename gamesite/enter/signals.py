@@ -96,10 +96,14 @@ def recalculate_from_instance(instance, created):
                 entry.current_score += called_bet.outcome.winning_amount
                 entry.save()
                 bet_in_same_group.success = True
+                bet_in_same_group.called_bet = called_bet
+                bet_in_same_group.save()
+            elif bet_in_same_group.success:
+                pass
             else:
                 bet_in_same_group.success = False
-            bet_in_same_group.called_bet = called_bet
-            bet_in_same_group.save()
+                bet_in_same_group.called_bet = called_bet
+                bet_in_same_group.save()
 
             if created and called_bet == instance:
                 models.ScoreLog.objects.create(score=entry.current_score, entry=entry, called_bet=instance)
