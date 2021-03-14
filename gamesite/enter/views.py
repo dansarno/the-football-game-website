@@ -161,34 +161,51 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 top_goal_player_bets_form.is_valid() and
                 fifty_fifty_bets_form.is_valid() and
                 group_matches_form.is_valid() and
-                group_winners_form.is_valid()):
+                group_winners_form.is_valid() and
+                best_teams_success_bets_form.is_valid() and
+                tournament_bets_form.is_valid() and
+                final_bets_form.is_valid()):
 
-            match_bets = group_matches_form.save(commit=False)
-            match_bets.entry = requested_entry
-            match_bets.save()
-            group_winners_bets = group_winners_form.save(commit=False)
-            group_winners_bets.entry = requested_entry
-            group_winners_bets.save()
-            # tournament_bets = tournament_bets_form.save(commit=False)
-            # tournament_bets.entry = requested_entry
-            # tournament_bets.save()
-            # final_bets = final_bets_form.save(commit=False)
-            # final_bets.entry = requested_entry
-            # final_bets.save()
-            # best_teams_success_bets = best_teams_success_bets_form.save(commit=False)
-            # best_teams_success_bets.entry = requested_entry
-            # best_teams_success_bets.save()
-            top_goal_group_bet = top_goal_group_bets_form.save(commit=False)
-            top_goal_group_bet.entry = requested_entry
-            top_goal_group_bet.save()
-            top_goal_player_bet = top_goal_player_bets_form.save(commit=False)
-            top_goal_player_bet.entry = requested_entry
-            top_goal_player_bet.save()
-            fifty_fifty_bets = fifty_fifty_bets_form.save(commit=False)
-            fifty_fifty_bets.entry = requested_entry
-            fifty_fifty_bets.save()
+            group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
+            models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=group_choice.choice_group). \
+                update(outcome=group_choice)
+
+            choice = top_goal_player_bets_form.cleaned_data['choice']
+            models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=choice.choice_group). \
+                update(outcome=choice)
+
+            for field_name, field_value in group_matches_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group).\
+                    update(outcome=field_value)
+
+            for field_name, field_value in group_winners_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
+                    update(outcome=field_value)
+
+            for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
+                    update(outcome=field_value)
+
+            for field_name, field_value in best_teams_success_bets_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
+                    update(outcome=field_value)
+
+            for field_name, field_value in tournament_bets_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
+                    update(outcome=field_value)
+
+            for field_name, field_value in final_bets_form.cleaned_data.items():
+                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
+                    update(outcome=field_value)
 
             requested_entry.save()
+
+            msg = f"You have successfully edited "
+            if requested_entry.label:
+                msg += f"Entry {requested_entry.label}"
+            else:
+                msg += f"your entry"
+            messages.add_message(request, messages.SUCCESS, msg)
 
             return HttpResponseRedirect(reverse(success_url))
     else:
