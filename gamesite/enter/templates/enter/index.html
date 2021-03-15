@@ -10,12 +10,12 @@
 <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.</div>
 
 <div class="row">
-  {% for entry in entries %}
+  {% for entry_and_progress in entries_and_progress %}
   <div class="col-md-4">
     <div class="card border-dark mb-4">
-      {% if entry.label %}
+      {% if entry_and_progress.entry.label %}
       <div class="card-header">
-        <h3>Entry {{ entry.label }}</h3>
+        <h3>Entry {{ entry_and_progress.entry.label }}</h3>
       </div>
       {% else %}
       <div class="card-header">
@@ -23,33 +23,39 @@
       </div>
       {% endif %}
       <div class="card-body">
-        <div class="card-text">Completed: 75%</div>
+        <div class="card-text">Completed: {{ entry_and_progress.progress }}%</div>
         <div class="progress mb-1" style="height: 5px;">
-          <div class="progress-bar bg-primary" role="progressbar" style="width: 75%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          <div class="progress-bar bg-primary" role="progressbar" style="width: {{ entry_and_progress.progress }}%" aria-valuenow="{{ entry_and_progress.progress }}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <div class="card-text">Submitted: {{ entry.has_submitted|yesno:"Yes,No" }}</div>
-        <div class="card-text mb-3">Paid: {{ entry.has_paid|yesno:"Yes,No" }}</div>
-        {% if entry.has_submitted %}
+        <div class="card-text">Submitted: {{ entry_and_progress.entry.has_submitted|yesno:"Yes,No" }}</div>
+        <div class="card-text mb-3">Paid: {{ entry_and_progress.entry.has_paid|yesno:"Yes,No" }}</div>
+        {% if entry_and_progress.entry.has_submitted %}
         <a href="#" class="btn btn-outline-secondary btn-sm mr-1">View</a>
         <a href="#" class="btn btn-outline-secondary btn-sm mr-1">Print</a>
         {% else %}
-        <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#submitModalForEntry{{ entry.id }}">
+        {% if entry_and_progress.progress == 100 %}
+        <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#submitModalForEntry{{ entry_and_progress.entry.id }}">
           Submit
         </button>
-        <a href="{% url 'enter:entry' entry.id %}" class="btn btn-outline-secondary btn-sm mr-1">Edit</a>
-        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteModalForEntry{{ entry.id }}">
+        {% else %}
+        <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#submitModalForEntry{{ entry_and_progress.entry.id }}" disabled>
+          Submit
+        </button>
+        {% endif %}
+        <a href="{% url 'enter:entry' entry_and_progress.entry.id %}" class="btn btn-outline-secondary btn-sm mr-1">Edit</a>
+        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteModalForEntry{{ entry_and_progress.entry.id }}">
           Delete
         </button>
         {% endif %}
       </div>
       <div class="card-footer">
-        <small class="text-muted">Last updated: {{ entry.date_updated|naturaltime }}</small>
+        <small class="text-muted">Last updated: {{ entry_and_progress.entry.date_updated|naturaltime }}</small>
       </div>
     </div>
   </div>
 
   <!-- Submit Entry Modal -->
-  <div class="modal fade" id="submitModalForEntry{{ entry.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="submitModalForEntry{{ entry_and_progress.entry.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -63,14 +69,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No, Take Me Back</button>
-          <a href="{% url 'enter:submit_entry' entry.id %}" class="btn btn-primary">Confirm Submission</a>
+          <a href="{% url 'enter:submit_entry' entry_and_progress.entry.id %}" class="btn btn-primary">Confirm Submission</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Delete Entry Modal -->
-  <div class="modal fade" id="deleteModalForEntry{{ entry.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+  <div class="modal fade" id="deleteModalForEntry{{ entry_and_progress.entry.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -84,14 +90,14 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No, Take Me Back</button>
-          <a href="{% url 'enter:delete_entry' entry.id %}" class="btn btn-danger">Confirm Delete</a>
+          <a href="{% url 'enter:delete_entry' entry_and_progress.entry.id %}" class="btn btn-danger">Confirm Delete</a>
         </div>
       </div>
     </div>
   </div>
   {% endfor %}
 
-  {% if entries.count < 3 %}
+  {% if num_of_entries < 3 %}
   <div class="col-md-6 col-lg-4">
     <div class="new_entry_section">
       <h3>+</h3>

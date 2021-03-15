@@ -12,9 +12,18 @@ from random import choice
 @login_required
 def index(request):
     existing_entries = request.user.profile.entries.order_by('id')
+    entries_and_progress = []
+    for entry in existing_entries:
+        num_bets = models.Bet.objects.filter(entry=entry).count()
+        total_bets = models.ChoiceGroup.objects.count()
+        entries_and_progress.append({
+            'entry': entry,
+            'progress': int((num_bets / total_bets) * 100),
+        })
     return render(request, "enter/index.html", {
         "title": "Entry Manager",
-        "entries": existing_entries
+        "entries_and_progress": entries_and_progress,
+        "num_of_entries": len(entries_and_progress)
     })
 
 
@@ -39,7 +48,7 @@ def results(request):
     game_section_progress = []
     for category in models.GameCategory.objects.all().order_by('order'):
         game_section = dict()
-        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category)\
+        numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category) \
             .values('outcome__choice_group').distinct().count()
         denominator = models.ChoiceGroup.objects.filter(game_category=category).count()
         if denominator == 0:
@@ -83,28 +92,36 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
             new_entry = models.Entry.objects.create(profile=request.user.profile)
 
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
-            models.Bet.objects.create(outcome=group_choice, entry=new_entry)
+            if group_choice:
+                models.Bet.objects.create(outcome=group_choice, entry=new_entry)
 
             choice = top_goal_player_bets_form.cleaned_data['choice']
-            models.Bet.objects.create(outcome=choice, entry=new_entry)
+            if choice:
+                models.Bet.objects.create(outcome=choice, entry=new_entry)
 
-            for field_name, field_value in group_matches_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+            for form_field_label, field_value in group_matches_form.cleaned_data.items():
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             for field_name, field_value in group_winners_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             for field_name, field_value in best_teams_success_bets_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             for field_name, field_value in tournament_bets_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             for field_name, field_value in final_bets_form.cleaned_data.items():
-                models.Bet.objects.create(outcome=field_value, entry=new_entry)
+                if field_value:
+                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
 
             return HttpResponseRedirect(reverse(success_url))
     else:
@@ -167,36 +184,28 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 final_bets_form.is_valid()):
 
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
-            models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=group_choice.choice_group). \
-                update(outcome=group_choice)
+            if group_choice:
+                if group_choice:
+                    bet = models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=group_choice.choice_group)
+                    if bet:
+                        bet.update(outcome=group_choice)
+                    else:
+                        models.Bet.objects.create(outcome=group_choice, entry=requested_entry)
 
             choice = top_goal_player_bets_form.cleaned_data['choice']
-            models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=choice.choice_group). \
-                update(outcome=choice)
+            if choice:
+                bet = models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=choice.choice_group)
+                if bet:
+                    bet.update(outcome=choice)
+                else:
+                    models.Bet.objects.create(outcome=choice, entry=requested_entry)
 
-            for field_name, field_value in group_matches_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group).\
-                    update(outcome=field_value)
-
-            for field_name, field_value in group_winners_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
-                    update(outcome=field_value)
-
-            for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
-                    update(outcome=field_value)
-
-            for field_name, field_value in best_teams_success_bets_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
-                    update(outcome=field_value)
-
-            for field_name, field_value in tournament_bets_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
-                    update(outcome=field_value)
-
-            for field_name, field_value in final_bets_form.cleaned_data.items():
-                models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=field_value.choice_group). \
-                    update(outcome=field_value)
+            create_or_update_bets_in_form(group_matches_form, requested_entry)
+            create_or_update_bets_in_form(group_winners_form, requested_entry)
+            create_or_update_bets_in_form(fifty_fifty_bets_form, requested_entry)
+            create_or_update_bets_in_form(best_teams_success_bets_form, requested_entry)
+            create_or_update_bets_in_form(tournament_bets_form, requested_entry)
+            create_or_update_bets_in_form(final_bets_form, requested_entry)
 
             requested_entry.save()
 
@@ -266,44 +275,40 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 }
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(initial=data)
 
-        group_match_bets = models.Bet.objects\
-            .filter(outcome__choice_group__game_category__title='Group Matches', entry=requested_entry)\
-            .order_by('outcome__groupmatchoutcome__match__ko_time')
-        data = {'match1_bet': group_match_bets[0].outcome,
-                'match2_bet': group_match_bets[1].outcome,
-                'match3_bet': group_match_bets[2].outcome,
-                'match4_bet': group_match_bets[3].outcome,
-                'match5_bet': group_match_bets[4].outcome
-                }
+        data = {}
+        for i, match in enumerate(models.GroupMatch.objects.order_by('ko_time')):
+            match_bet = models.Bet.objects.filter(outcome__groupmatchoutcome__match=match,
+                                                  entry=requested_entry).first()
+            match_choice = None
+            if match_bet:
+                match_choice = match_bet.outcome
+            data[f"match{i + 1}_bet"] = match_choice
         group_matches_form = forms.GroupMatchOutcomeForm(initial=data)
-        fifty_fifty_bets = models.Bet.objects\
-            .filter(outcome__choice_group__game_category__title='50/50s', entry=requested_entry)\
-            .order_by('outcome__fiftyfiftyoutcome__fifty_fifty__order')
-        data = {'question1_bet': fifty_fifty_bets[0].outcome,
-                'question2_bet': fifty_fifty_bets[1].outcome,
-                'question3_bet': fifty_fifty_bets[2].outcome,
-                'question4_bet': fifty_fifty_bets[3].outcome,
-                'question5_bet': fifty_fifty_bets[4].outcome,
-                'question6_bet': fifty_fifty_bets[5].outcome,
-                'question7_bet': fifty_fifty_bets[6].outcome,
-                'question8_bet': fifty_fifty_bets[7].outcome,
-                'question9_bet': fifty_fifty_bets[8].outcome
-                }
+
+        data = {}
+        for i, fiftyfifty in enumerate(models.FiftyFiftyQuestion.objects.order_by('order')):
+            fiftyfifty_bet = models.Bet.objects.filter(outcome__fiftyfiftyoutcome__fifty_fifty=fiftyfifty,
+                                                       entry=requested_entry).first()
+            fiftyfifty_choice = None
+            if fiftyfifty_bet:
+                fiftyfifty_choice = fiftyfifty_bet.outcome
+            data[f"question{i + 1}_bet"] = fiftyfifty_choice
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(initial=data)
-        group_winner_bets = models.Bet.objects\
-            .filter(outcome__choice_group__game_category__title='Group Winners', entry=requested_entry)\
-            .order_by('outcome__groupwinneroutcome__group__name')
-        data = {'group_a_winner_bet': group_winner_bets[0].outcome,
-                'group_b_winner_bet': group_winner_bets[1].outcome,
-                'group_c_winner_bet': group_winner_bets[2].outcome,
-                'group_d_winner_bet': group_winner_bets[3].outcome,
-                'group_e_winner_bet': group_winner_bets[4].outcome,
-                'group_f_winner_bet': group_winner_bets[5].outcome
-                }
+
+        data = {}
+        groups = ['a', 'b', 'c', 'd', 'e', 'f']
+        for i, group in enumerate(models.Group.objects.order_by('name')):
+            group_winner_bet = models.Bet.objects.filter(outcome__groupwinneroutcome__group=group,
+                                                       entry=requested_entry).first()
+            group_winner_choice = None
+            if group_winner_bet:
+                group_winner_choice = group_winner_bet.outcome
+            data[f"group_{groups[i]}_winner_bet"] = group_winner_choice
         group_winners_form = forms.GroupWinnerOutcomeForm(initial=data)
-        tsg_choice = models.Outcome.objects.instance_of(models.TopGoalScoringGroupOutcome).\
+
+        tsg_choice = models.Outcome.objects.instance_of(models.TopGoalScoringGroupOutcome). \
             filter(bet__entry=requested_entry).first()
-        tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome).\
+        tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome). \
             filter(bet__entry=requested_entry).first()
         data = {'group_choice': tsg_choice}
         top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(initial=data)
@@ -372,3 +377,13 @@ def confirm(request):
     return render(request, "enter/confirm.html", {
         "title": "Review and Confirm"
     })
+
+
+def create_or_update_bets_in_form(form, entry):
+    for field_name, field_value in form.cleaned_data.items():
+        if field_value:
+            bet = models.Bet.objects.filter(entry=entry, outcome__choice_group=field_value.choice_group)
+            if bet:
+                bet.update(outcome=field_value)
+            else:
+                models.Bet.objects.create(outcome=field_value, entry=entry)
