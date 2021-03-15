@@ -99,29 +99,12 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
             if choice:
                 models.Bet.objects.create(outcome=choice, entry=new_entry)
 
-            for form_field_label, field_value in group_matches_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
-
-            for field_name, field_value in group_winners_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
-
-            for field_name, field_value in fifty_fifty_bets_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
-
-            for field_name, field_value in best_teams_success_bets_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
-
-            for field_name, field_value in tournament_bets_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
-
-            for field_name, field_value in final_bets_form.cleaned_data.items():
-                if field_value:
-                    models.Bet.objects.create(outcome=field_value, entry=new_entry)
+            create_bets_in_form(group_matches_form, new_entry)
+            create_bets_in_form(group_winners_form, new_entry)
+            create_bets_in_form(fifty_fifty_bets_form, new_entry)
+            create_bets_in_form(best_teams_success_bets_form, new_entry)
+            create_bets_in_form(tournament_bets_form, new_entry)
+            create_bets_in_form(final_bets_form, new_entry)
 
             return HttpResponseRedirect(reverse(success_url))
     else:
@@ -387,3 +370,9 @@ def create_or_update_bets_in_form(form, entry):
                 bet.update(outcome=field_value)
             else:
                 models.Bet.objects.create(outcome=field_value, entry=entry)
+
+
+def create_bets_in_form(form, entry):
+    for form_field_label, field_value in form.cleaned_data.items():
+        if field_value:
+            models.Bet.objects.create(outcome=field_value, entry=entry)
