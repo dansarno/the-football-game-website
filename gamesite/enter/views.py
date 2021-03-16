@@ -147,6 +147,9 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
 
+    if requested_entry.has_submitted:
+        raise PermissionDenied
+
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentTotalsForm(request.POST)
@@ -319,6 +322,9 @@ def delete_entry(request, entry_id, success_url="enter:index"):
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
 
+    if requested_entry.has_submitted:
+        raise PermissionDenied
+
     deleted_entry_label = requested_entry.label
     requested_entry.delete()
 
@@ -342,6 +348,11 @@ def submit_entry(request, entry_id, success_url="enter:index"):
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
 
+    if requested_entry.bets.count() < models.ChoiceGroup.objects.count():
+        msg = "Submission failed. Entry does not have the complete number of bets."
+        messages.add_message(request, messages.ERROR, msg)
+        return HttpResponseRedirect(reverse(success_url))
+
     submitted_entry_label = requested_entry.label
     requested_entry.has_submitted = True
     requested_entry.save()
@@ -356,9 +367,122 @@ def submit_entry(request, entry_id, success_url="enter:index"):
 
 
 @login_required
-def confirm(request):
-    return render(request, "enter/confirm.html", {
-        "title": "Review and Confirm"
+def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
+    requested_entry = get_object_or_404(models.Entry, id=entry_id)
+
+    if request.user != requested_entry.profile.user:
+        raise PermissionDenied
+
+    if not requested_entry.has_submitted:
+        raise PermissionDenied
+
+    final_first_goal_choice = models.Outcome.objects.instance_of(models.FinalFirstGoalOutcome). \
+        filter(bet__entry=requested_entry).first()
+    final_own_goal_choice = models.Outcome.objects.instance_of(models.FinalOwnGoalOutcome). \
+        filter(bet__entry=requested_entry).first()
+    final_yellow_cards_choice = models.Outcome.objects.instance_of(models.FinalYellowCardsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    final_ref_continent_choice = models.Outcome.objects.instance_of(models.FinalRefContinentOutcome). \
+        filter(bet__entry=requested_entry).first()
+    final_total_goals_choice = models.Outcome.objects.instance_of(models.FinalGoalsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    data = {'final_first_goal_bet': final_first_goal_choice,
+            'final_own_goals_bet': final_own_goal_choice,
+            'final_yellow_cards_bet': final_yellow_cards_choice,
+            'final_ref_continent_bet': final_ref_continent_choice,
+            'final_goals_bet': final_total_goals_choice
+            }
+    final_bets_form = forms.DuringTheFinalForm(initial=data)
+
+    total_goals_choice = models.Outcome.objects.instance_of(models.TournamentGoalsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    total_reds_choice = models.Outcome.objects.instance_of(models.TournamentRedCardsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    total_own_goals_choice = models.Outcome.objects.instance_of(models.TournamentOwnGoalsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    total_hattricks_choice = models.Outcome.objects.instance_of(models.TournamentHattricksOutcome). \
+        filter(bet__entry=requested_entry).first()
+    data = {'total_goals_bet': total_goals_choice,
+            'total_red_cards_bet': total_reds_choice,
+            'total_own_goals_bet': total_own_goals_choice,
+            'total_hattricks_bet': total_hattricks_choice
+            }
+    tournament_bets_form = forms.TournamentTotalsForm(initial=data)
+
+    to_reach_semi_choice = models.Outcome.objects.instance_of(models.ToReachSemiFinalOutcome). \
+        filter(bet__entry=requested_entry).first()
+    to_reach_final_choice = models.Outcome.objects.instance_of(models.ToReachFinalOutcome). \
+        filter(bet__entry=requested_entry).first()
+    to_reach_win_choice = models.Outcome.objects.instance_of(models.ToWinOutcome). \
+        filter(bet__entry=requested_entry).first()
+    highest_scoring_team_choice = models.Outcome.objects.instance_of(models.HighestScoringTeamOutcome). \
+        filter(bet__entry=requested_entry).first()
+    most_yellow_cards_choice = models.Outcome.objects.instance_of(models.MostYellowCardsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    fastest_yellow_choice = models.Outcome.objects.instance_of(models.FastestYellowCardsOutcome). \
+        filter(bet__entry=requested_entry).first()
+    fastest_goal_choice = models.Outcome.objects.instance_of(models.FastestGoalOutcome). \
+        filter(bet__entry=requested_entry).first()
+    data = {'to_reach_semi_final_bet': to_reach_semi_choice,
+            'to_reach_final_bet': to_reach_final_choice,
+            'to_win_bet': to_reach_win_choice,
+            'highest_scoring_team_bet': highest_scoring_team_choice,
+            'most_yellow_cards_bet': most_yellow_cards_choice,
+            'fastest_yellow_card_bet': fastest_yellow_choice,
+            'fastest_tournament_goal_bet': fastest_goal_choice
+            }
+    best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(initial=data)
+
+    data = {}
+    for i, match in enumerate(models.GroupMatch.objects.order_by('ko_time')):
+        match_bet = models.Bet.objects.filter(outcome__groupmatchoutcome__match=match,
+                                              entry=requested_entry).first()
+        match_choice = None
+        if match_bet:
+            match_choice = match_bet.outcome
+        data[f"match{i + 1}_bet"] = match_choice
+    group_matches_form = forms.GroupMatchOutcomeForm(initial=data)
+
+    data = {}
+    for i, fiftyfifty in enumerate(models.FiftyFiftyQuestion.objects.order_by('order')):
+        fiftyfifty_bet = models.Bet.objects.filter(outcome__fiftyfiftyoutcome__fifty_fifty=fiftyfifty,
+                                                   entry=requested_entry).first()
+        fiftyfifty_choice = None
+        if fiftyfifty_bet:
+            fiftyfifty_choice = fiftyfifty_bet.outcome
+        data[f"question{i + 1}_bet"] = fiftyfifty_choice
+    fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(initial=data)
+
+    data = {}
+    groups = ['a', 'b', 'c', 'd', 'e', 'f']
+    for i, group in enumerate(models.Group.objects.order_by('name')):
+        group_winner_bet = models.Bet.objects.filter(outcome__groupwinneroutcome__group=group,
+                                                     entry=requested_entry).first()
+        group_winner_choice = None
+        if group_winner_bet:
+            group_winner_choice = group_winner_bet.outcome
+        data[f"group_{groups[i]}_winner_bet"] = group_winner_choice
+    group_winners_form = forms.GroupWinnerOutcomeForm(initial=data)
+
+    tsg_choice = models.Outcome.objects.instance_of(models.TopGoalScoringGroupOutcome). \
+        filter(bet__entry=requested_entry).first()
+    tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome). \
+        filter(bet__entry=requested_entry).first()
+    data = {'group_choice': tsg_choice}
+    top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(initial=data)
+    data = {'choice': tsp_choice}
+    top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(initial=data)
+
+    return render(request, template_name, {
+        "title": "Entry View",
+        "group_matches_form": group_matches_form,
+        "tournament_bets_form": tournament_bets_form,
+        "final_bets_form": final_bets_form,
+        "best_teams_success_bets_form": best_teams_success_bets_form,
+        "group_winner_bets_form": group_winners_form,
+        "fifty_fifty_bets_form": fifty_fifty_bets_form,
+        "top_goal_group_bets_form": top_goal_group_bets_form,
+        "top_goal_player_bets_form": top_goal_player_bets_form
     })
 
 

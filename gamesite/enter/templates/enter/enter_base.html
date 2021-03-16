@@ -24,8 +24,13 @@
 
 <body>
   <div class="container">
-    {% block content %}
-    {% endblock content %}
+    <h1 class="text-center">Submission Form</h1>
+    <form method="POST">
+      {% csrf_token %}
+
+      {% block content %}
+      {% endblock content %}
+    </form>
   </div>
 
   <!-- jQuery and Bootstrap Bundle (includes Popper) -->

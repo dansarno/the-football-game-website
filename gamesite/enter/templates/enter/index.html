@@ -30,8 +30,7 @@
         <div class="card-text">Submitted: {{ entry_and_progress.entry.has_submitted|yesno:"Yes,No" }}</div>
         <div class="card-text mb-3">Paid: {{ entry_and_progress.entry.has_paid|yesno:"Yes,No" }}</div>
         {% if entry_and_progress.entry.has_submitted %}
-        <a href="#" class="btn btn-outline-secondary btn-sm mr-1">View</a>
-        <a href="#" class="btn btn-outline-secondary btn-sm mr-1">Print</a>
+        <a href="{% url 'enter:view_entry' entry_and_progress.entry.id %}" class="btn btn-outline-secondary btn-sm mr-1">View</a>
         {% else %}
         {% if entry_and_progress.progress == 100 %}
         <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal" data-target="#submitModalForEntry{{ entry_and_progress.entry.id }}">
@@ -90,7 +89,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No, Take Me Back</button>
-          <a href="{% url 'enter:delete_entry' entry_and_progress.entry.id %}" class="btn btn-danger">Confirm Delete</a>
+          <a href="{% url 'enter:delete_entry' entry_and_progress.entry.id %}" class="btn btn-danger">Confirm Deletion</a>
         </div>
       </div>
     </div>

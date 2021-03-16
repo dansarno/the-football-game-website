@@ -37,3 +37,44 @@ table.outcomes-table {
   table-layout: fixed;
   width: 100%;
 }
+
+fieldset[disabled] input[type="radio"]:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -3px;
+    left: -1px;
+    position: relative;
+    background-color: #4488db;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
+}
+
+fieldset[disabled] input[type='radio']:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        top: -3px;
+        left: -1px;
+        position: relative;
+        background-color: #e6e6e6;
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        border: 1px solid white;
+    }
+
+* {
+    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+    color-adjust: exact !important;                 /*Firefox*/
+}
+
+@media print
+{
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
