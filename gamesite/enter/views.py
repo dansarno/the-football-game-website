@@ -370,9 +370,6 @@ def submit_entry(request, entry_id, success_url="enter:index"):
 def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
 
-    if request.user != requested_entry.profile.user:
-        raise PermissionDenied
-
     if not requested_entry.has_submitted:
         raise PermissionDenied
 
@@ -475,6 +472,7 @@ def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
 
     return render(request, template_name, {
         "title": "Entry View",
+        "entry": requested_entry,
         "group_matches_form": group_matches_form,
         "tournament_bets_form": tournament_bets_form,
         "final_bets_form": final_bets_form,

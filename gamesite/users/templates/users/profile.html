@@ -21,9 +21,17 @@
       <th scope="col"></th>
       {% for entry in user.profile.entries.all %}
         {% if entry.label %}
-        <th scope="col">Entry {{ entry.label }}</th>
+          {% if entry.has_submitted %}
+          <th scope="col"><a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a></th>
+          {% else %}
+          <th scope="col">Entry {{ entry.label }}</th>
+          {% endif %}
         {% else %}
-        <th scope="col">Your Entry</th>
+          {% if entry.has_submitted %}
+          <th scope="col"><a href="{% url 'enter:view_entry' entry.id %}">Your Entry</a></th>
+          {% else %}
+          <th scope="col">Your Entry</th>
+          {% endif %}
         {% endif %}
       {% endfor %}
     </tr>

@@ -1,9 +1,11 @@
 {% extends "enter/enter_base.html" %}
 
 {% block content %}
-
-  {% include 'enter/form.html' %}
-
-  <input type="submit" class="btn btn-primary btn-lg" value="Save">
+  <h1 class="text-center">Submission Form</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {% include 'enter/form.html' %}
+    <input type="submit" class="btn btn-primary btn-lg" value="Save">
+  </form>
 
 {% endblock content %}

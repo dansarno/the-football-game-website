@@ -239,3 +239,9 @@ filter: drop-shadow(3px 3px 0 white)
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.table a
+{
+    display:block;
+    text-decoration:none;
+}
