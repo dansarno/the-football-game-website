@@ -21,16 +21,30 @@
       <th scope="col"></th>
       {% for entry in user.profile.entries.all %}
         {% if entry.label %}
-          {% if entry.has_submitted %}
-          <th scope="col"><a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a></th>
-          {% else %}
-          <th scope="col">Entry {{ entry.label }}</th>
-          {% endif %}
+          <th scope="col">
+            {% if entry.has_submitted %}
+            <a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a>
+            {% else %}
+            <div>Entry {{ entry.label }}</div>
+            {% endif %}
+          </th>
         {% else %}
-          {% if entry.has_submitted %}
-          <th scope="col"><a href="{% url 'enter:view_entry' entry.id %}">Your Entry</a></th>
+          {% if request.user == user %}
+          <th scope="col">
+            {% if entry.has_submitted %}
+            <a href="{% url 'enter:view_entry' entry.id %}">My Entry</a>
+            {% else %}
+            <div>My Entry</div>
+            {% endif %}
+          </th>
           {% else %}
-          <th scope="col">Your Entry</th>
+          <th scope="col">
+            {% if entry.has_submitted %}
+            <a href="{% url 'enter:view_entry' entry.id %}">{{ user.username }}'s Entry</a>
+            {% else %}
+            <div>{{ user.username }}'s Entry</div>
+            {% endif %}
+          </th>
           {% endif %}
         {% endif %}
       {% endfor %}
