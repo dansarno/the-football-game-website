@@ -41,25 +41,42 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'feed:home' %}">Home</a>
-            <a class="nav-item nav-link" href="{% url 'enter:index' %}">Enter</a>
-            <a class="nav-item nav-link" href="{% url 'enter:leaderboard' %}">Leaderboard</a>
-            <a class="nav-item nav-link" href="{% url 'enter:results' %}">Results</a>
-            <a class="nav-item nav-link" href="{% url 'enter:explore' %}">Explore</a>
-          </div>
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-item nav-link" href="{% url 'feed:home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link" href="{% url 'enter:index' %}">Enter</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="exploreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Explore
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'enter:leaderboard' %}">Leaderboard</a>
+                <a class="dropdown-item" href="{% url 'enter:results' %}">Results</a>
+                <a class="dropdown-item" href="{% url 'enter:explore' %}">Chart</a>                
+              </div>
+            </li>
+          </ul>
           <!-- Navbar Right Side -->
-          <div class="navbar-nav">
+          <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            <img class="rounded-circle account-img-sm" src="{{ request.user.profile.profile_picture.url }}">
-            <a class="nav-item nav-link" href="{% url 'profile' username=request.user.username %}">Profile</a>
-            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img class="rounded-circle account-img-sm" src="{{ request.user.profile.profile_picture.url }}">
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"> 
+                <li><a class="dropdown-item" href="{% url 'profile' username=request.user.username %}">Profile</a></li>
+                <li><div class="dropdown-divider"></div></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+              </ul>
+            </li>
             {% else %}
             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
             {% endif %}
-
-          </div>
+          </ul>
         </div>
       </div>
     </nav>
