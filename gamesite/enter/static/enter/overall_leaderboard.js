@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  var tableDataEndpoint = $("#table_container").attr("data-url-endpoint");
+  var tableDataEndpoint = $("#overall_table_container").attr("data-url-endpoint");
   createTable();
 
   function createTable() {
