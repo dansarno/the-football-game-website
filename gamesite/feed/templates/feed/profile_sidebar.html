@@ -1,6 +1,8 @@
 {% load humanize %}
+{% load static %}
 
-<div class="col-sm-3 d-none d-lg-block">
+
+<div class="col-sm-3 d-none d-lg-block sidebar">
   <div class="sticky-top sticky-offset">
     <div class="card border-light shadow-sm" id="account-profile">
       <div class="card-body text-center">
@@ -8,50 +10,58 @@
           <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
         </a>
         <div class="mt-2">
-          {% if request.user.first_name and user.last_name %}
-          <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
-          {% else %}
-          <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.username }}</a>
-          {% endif %}
+          <a href="{% url 'profile' username=request.user.username %}"
+            class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
+        </div>
+        <div>
+          <a href="{% url 'profile' username=request.user.username %}"
+            class="account-username text-muted">@{{ request.user.username }}</a>
         </div>
         <hr />
         <h5 class="mb-2 mt-3">Score</h5>
-        <div class="row">
-        {% for entry in request.user.profile.entries.all %}
-        <div class="col">
-        <div class="circle">{{ entry.current_score|intcomma }}</div>
-        </div>
-        {% empty %}
-        You have no entries
-        {% endfor %}
+        <div id="scores-container" data-url-endpoint="{% url 'enter:my_entries_api' %}">
         </div>
         <hr />
         <h5 class="mb-2 mt-3">Position</h5>
         <div class="row">
-        {% for entry in request.user.profile.entries.all %}
-        {% if entry.current_position %}
-        <div class="col">
-        <div class="circle">{{ entry.current_position|ordinal }}</div>
-        </div>
-        {% else %}
-        <div class="col">
-        <div class="circle">--</div>
-        </div>
-        {% endif %}
-        {% empty %}
-        You have no entries
-        {% endfor %}
+          {% for entry in request.user.profile.entries.all %}
+          {% if entry.current_position %}
+          <div class="col">
+            <span>{{ entry.current_position|ordinal }}</span>
+          </div>
+          {% else %}
+          <div class="col">
+            <span>--</span>
+          </div>
+          {% endif %}
+          {% empty %}
+          You have no entries
+          {% endfor %}
         </div>
         <hr />
         <h5 class="mb-1 mt-3">Form</h5>
         <small class="text-muted mb-2">Last 5 results</small>
         {% for entry in request.user.profile.entries.all %}
         <div class="mt-1">
-          {% for bet in entry.bet_set.all|slice:":5" %}
+          {% for bet in entry.bet_set.all %}
           {% if bet.success is True %}
-          <span class="correct-dot"></span>
+          <span data-toggle="tooltip" data-placement="top" title="{{bet.outcome}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-check-circle correct" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z" />
+            </svg>
+          </span>
           {% elif bet.success is False %}
-          <span class="incorrect-dot"></span>
+          <span data-toggle="tooltip" data-placement="top" title="{{bet.outcome}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-x-circle incorrect" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path
+                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+            </svg>
+          </span>
           {% endif %}
           {% empty %}
           No bets have been called
@@ -64,3 +74,5 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" src="{% static 'feed/scoredials.js' %}"></script>

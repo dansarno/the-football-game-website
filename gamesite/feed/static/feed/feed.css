@@ -58,6 +58,11 @@ ul {
   text-decoration: none;
 }
 
+.account-username:hover {
+  color: #8c8b8b;
+  text-decoration: none;
+}
+
 .article-title {
   color: #444444;
 }
@@ -183,18 +188,6 @@ a.article-title:hover {
   /* Remove margins */
 }
 
-.circle {
-  width: 70px;
-  height: 70px;
-  line-height: 70px;
-  border-radius: 50%;
-  border-color: #000000;
-  font-size: 20px;
-  color: #000000;
-  text-align: center;
-  background: #dedede;
-}
-
 .column-bolded {
   font-weight: bold;
 }
@@ -247,4 +240,27 @@ a.article-title:hover {
 .table a {
   display: block;
   text-decoration: none;
+}
+
+.score-bar {
+  width: 100px;
+  margin: 6px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.score-bar canvas {
+  vertical-align: top;
+}
+
+.score-bar strong {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 20px;
 }

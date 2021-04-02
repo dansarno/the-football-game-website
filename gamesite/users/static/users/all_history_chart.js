@@ -80,7 +80,6 @@ $(document).ready(function() {
     defaultPositionData = positions
 
     $("#loading").hide()
-    // $('#chart-card').append('<button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle">Toggle X Axis</button>')
     setChart(entryLabels)
     $('#xaxis-toggle').show()
   })

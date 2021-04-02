@@ -2,6 +2,7 @@ from rest_framework import serializers
 from enter import models
 from users.models import Profile
 from django.contrib.auth.models import User
+from django.db.models import Max
 
 
 class CalledBetSerializer(serializers.ModelSerializer):
@@ -57,24 +58,51 @@ class EntrySerializer(serializers.ModelSerializer):
     # position_logs = PositionLogSerializer(many=True, read_only=True)
     profile = ProfileSerializer(read_only=True)
     # score_logs = serializers.SerializerMethodField('get_last_five_score_logs')
-    position_logs = serializers.SerializerMethodField('get_last_two_position_logs')
+    position_logs = serializers.SerializerMethodField(
+        'get_last_two_position_logs')
     form = serializers.SerializerMethodField('get_last_five_bets')
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'profile', 'current_score', 'current_position', 'position_logs', 'form']
+        fields = ['id', 'label', 'profile', 'current_score',
+                  'current_position', 'position_logs', 'form']
 
     def get_last_five_score_logs(self, obj):
-        score_logs = models.ScoreLog.objects.filter(entry=obj).order_by('-called_bet__date')[:5]
-        serializer = ScoreLogSerializer(instance=reversed(score_logs), many=True)
+        score_logs = models.ScoreLog.objects.filter(
+            entry=obj).order_by('-called_bet__date')[:5]
+        serializer = ScoreLogSerializer(
+            instance=reversed(score_logs), many=True)
         return serializer.data
 
     def get_last_two_position_logs(self, obj):
-        position_logs = models.PositionLog.objects.filter(entry=obj).order_by('-called_bet__date')[:2]
-        serializer = PositionLogSerializer(instance=reversed(position_logs), many=True)
+        position_logs = models.PositionLog.objects.filter(
+            entry=obj).order_by('-called_bet__date')[:2]
+        serializer = PositionLogSerializer(
+            instance=reversed(position_logs), many=True)
         return serializer.data
 
     def get_last_five_bets(self, obj):
-        recent_bets = models.Bet.objects.filter(entry=obj).exclude(success__isnull=True).order_by('-called_bet__date')[:5]
+        recent_bets = models.Bet.objects.filter(entry=obj).exclude(
+            success__isnull=True).order_by('-called_bet__date')[:5]
         serializer = BetSerializer(instance=reversed(recent_bets), many=True)
         return serializer.data
+
+
+class MyEntrySerializer(serializers.ModelSerializer):
+    top_score = serializers.SerializerMethodField()
+    form = serializers.SerializerMethodField('get_last_five_bets')
+
+    class Meta:
+        model = models.Entry
+        fields = ['id', 'label', 'top_score',
+                  'current_score', 'current_position', 'form']
+
+    def get_last_five_bets(self, obj):
+        recent_bets = models.Bet.objects.filter(entry=obj).exclude(
+            success__isnull=True).order_by('-called_bet__date')[:5]
+        serializer = BetSerializer(instance=reversed(recent_bets), many=True)
+        return serializer.data
+
+    def get_top_score(self, obj):
+        top_score = models.Entry.objects.all().aggregate(Max('current_score'))
+        return top_score['current_score__max']
