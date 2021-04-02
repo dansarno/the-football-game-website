@@ -4,7 +4,7 @@
 
 <div class="col-sm-3 d-none d-lg-block sidebar">
   <div class="sticky-top sticky-offset">
-    <div class="card border-light shadow-sm" id="account-profile">
+    <div class="card border-light shadow-sm" id="account-profile" data-url-endpoint="{% url 'enter:my_entries_api' %}">
       <div class="card-body text-center">
         <a href="{% url 'profile' username=request.user.username %}">
           <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
@@ -19,25 +19,10 @@
         </div>
         <hr />
         <h5 class="mb-2 mt-3">Score</h5>
-        <div id="scores-container" data-url-endpoint="{% url 'enter:my_entries_api' %}">
-        </div>
+        <div id="scores-container"></div>
         <hr />
         <h5 class="mb-2 mt-3">Position</h5>
-        <div class="row">
-          {% for entry in request.user.profile.entries.all %}
-          {% if entry.current_position %}
-          <div class="col">
-            <span>{{ entry.current_position|ordinal }}</span>
-          </div>
-          {% else %}
-          <div class="col">
-            <span>--</span>
-          </div>
-          {% endif %}
-          {% empty %}
-          You have no entries
-          {% endfor %}
-        </div>
+        <div id="positions-container"></div>
         <hr />
         <h5 class="mb-1 mt-3">Form</h5>
         <small class="text-muted mb-2">Last 5 results</small>
@@ -75,4 +60,4 @@
   </div>
 </div>
 
-<script type="text/javascript" src="{% static 'feed/scoredials.js' %}"></script>
+<script type="text/javascript" src="{% static 'feed/profile_sidebar_components.js' %}"></script>

@@ -90,11 +90,12 @@ class EntrySerializer(serializers.ModelSerializer):
 
 class MyEntrySerializer(serializers.ModelSerializer):
     top_score = serializers.SerializerMethodField()
+    last_place = serializers.SerializerMethodField()
     form = serializers.SerializerMethodField('get_last_five_bets')
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'top_score',
+        fields = ['id', 'label', 'top_score', 'last_place',
                   'current_score', 'current_position', 'form']
 
     def get_last_five_bets(self, obj):
@@ -106,3 +107,7 @@ class MyEntrySerializer(serializers.ModelSerializer):
     def get_top_score(self, obj):
         top_score = models.Entry.objects.all().aggregate(Max('current_score'))
         return top_score['current_score__max']
+
+    def get_last_place(self, obj):
+        last_place = models.Entry.objects.all().aggregate(Max('current_position'))
+        return last_place['current_position__max']
