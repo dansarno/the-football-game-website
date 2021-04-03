@@ -10,21 +10,17 @@
   {% for post in posts %}
   <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
-      <div class="row">
-        <div class="col-1">
-          <a class="mr-2" href="{% url 'profile' username=post.author.username %}">
-            <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
-          </a>
-        </div>
-        <div class="col-11">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{% url 'profile' username=post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
-            </div>
-            <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title }}</a></h3>
-            <p class="article-content">{{ post.content }}</p>
+      <div class="media">
+        <a class="mr-2" href="{% url 'profile' username=post.author.username %}">
+          <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
+        </a>
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'profile' username=post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
           </div>
+          <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title }}</a></h3>
+          <p class="article-content">{{ post.content }}</p>
         </div>
       </div>
     </div>
