@@ -20,7 +20,7 @@
             <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
           </div>
           <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title }}</a></h3>
-          <p class="article-content">{{ post.content }}</p>
+          <p class="article-content">{{ post.content|truncatewords_html:50 }}</p>
         </div>
       </div>
     </div>
