@@ -14,20 +14,12 @@ def landing(request):
     })
 
 
-@login_required
-def feed(request):
-    posts = Post.objects.order_by('-date_posted')
-    return render(request, 'feed/home.html', {
-        'title': "Home",
-        'posts': posts,
-    })
-
-
 class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'feed/home.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
+    paginate_by = 10
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):
