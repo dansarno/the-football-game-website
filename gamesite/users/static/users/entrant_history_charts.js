@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var chartDataEndpoint = $("#history-charts_container").attr("data-entries-url-endpoint")
   var prizeDataEndpoint = $("#history-charts_container").attr("data-prize-url-endpoint")
   var defaultScoreData = []
@@ -8,8 +8,8 @@ $(document).ready(function() {
   let ajaxChartData = $.ajax({
     method: "GET",
     url: chartDataEndpoint,
-    success: function(data) {},
-    error: function(error_data) {
+    success: function (data) {},
+    error: function (error_data) {
       console.log(error_data)
     }
   })
@@ -17,13 +17,13 @@ $(document).ready(function() {
   let ajaxPrizeData = $.ajax({
     method: "GET",
     url: prizeDataEndpoint,
-    success: function(data) {},
-    error: function(error_data) {
+    success: function (data) {},
+    error: function (error_data) {
       console.log(error_data)
     }
   })
 
-  $.when(ajaxChartData, ajaxPrizeData).done(function(a1, a2) {
+  $.when(ajaxChartData, ajaxPrizeData).done(function (a1, a2) {
     let data = a1[0]
     prizeData = a2[0]
 
@@ -39,8 +39,8 @@ $(document).ready(function() {
       prizePositions.push(prize.position)
     }
 
-    minPosition = 1000
-    maxPosition = 1
+    console.log(prizePositions)
+    console.log(prizeData)
 
     i = 1
     for (let score_log of data.entries[0].score_logs) {
@@ -57,23 +57,16 @@ $(document).ready(function() {
       for (let score_log of entry.score_logs) {
         entryScores.push({
           y: score_log.score,
-          t: score_log.called_bet.date
+          x: score_log.called_bet.date
         })
       }
       scores.push(entryScores)
 
       entryPostions = []
       for (let position_log of entry.position_logs) {
-        if (position_log.position > maxPosition) {
-          maxPosition = position_log.position
-        }
-        if (position_log.position < minPosition) {
-          minPosition = position_log.position
-        }
-
         entryPostions.push({
           y: position_log.position,
-          t: position_log.called_bet.date
+          x: position_log.called_bet.date
         })
       }
       positions.push(entryPostions)
@@ -100,7 +93,11 @@ $(document).ready(function() {
 
     lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
-    prizeColourSet = ['rgba(218, 165, 32, 0.2)', 'rgba(192, 192, 192, 0.2)', 'rgba(205, 127, 50, 0.2)']
+    prizeColours = {
+      T: 'rgba(218, 165, 32, 0.5)',
+      M: 'rgba(192, 192, 192, 0.5)',
+      B: 'rgba(205, 127, 50, 0.5)'
+    }
     i = 0
     for (let scores of defaultScoreData) {
       datasetLabel = ""
@@ -120,33 +117,10 @@ $(document).ready(function() {
         pointRadius: 2,
         pointHoverRadius: 8,
         fill: false, //'origin',
-        lineTension: 0
+        cubicInterpolationMode: 'monotone',
+        tension: 1.5
       })
       i++
-    }
-
-    let prizeHLines = []
-    for (let prize of prizeData) {
-      let lineColor = ''
-      if (prize.band === 'T') {
-        lineColor = prizeColourSet[0]
-      } else if (prize.band === 'M') {
-        lineColor = prizeColourSet[1]
-      } else if (prize.band === 'B') {
-        lineColor = prizeColourSet[2]
-      }
-
-      if (prize.position >= minPosition && prize.position <= maxPosition) {
-        prizeHLines.push({
-          drawTime: "beforeDatasetsDraw",
-          type: "line",
-          mode: "horizontal",
-          scaleID: "y-axis-0",
-          value: prize.position,
-          borderColor: lineColor,
-          borderWidth: 5
-        })
-      }
     }
 
     positionChartData = {}
@@ -193,26 +167,28 @@ $(document).ready(function() {
             bottom: 0
           }
         },
-        tooltips: {
-          mode: 'nearest',
-          callbacks: {
-            title: function(tooltipItem, data) {
-              return data['verboseLabels'][tooltipItem[0]['index']];
-            },
-            label: function(tooltipItem, data) {
-              return data.datasets[tooltipItem.datasetIndex].label + ': ' +
-                tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        plugin: {
+          tooltip: {
+            mode: 'nearest',
+            callbacks: {
+              title: function (tooltipItem, data) {
+                return data['verboseLabels'][tooltipItem[0]['index']];
+              },
+              label: function (tooltipItem, data) {
+                return data.datasets[tooltipItem.datasetIndex].label + ': ' +
+                  tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              },
             },
           },
-        },
-        legend: {
-          position: 'bottom'
+          legend: {
+            position: 'bottom'
+          },
         },
         scales: {
-          yAxes: [{
+          y: {
+            beginAtZero: true,
             ticks: {
-              beginAtZero: true,
-              callback: function(value, index, values) {
+              callback: function (value, index, values) {
                 if (Math.max(...values) > 1500) {
                   return value / 1000 + 'k';
                 } else {
@@ -220,12 +196,12 @@ $(document).ready(function() {
                 }
               }
             },
-            scaleLabel: {
+            title: {
               display: true,
-              labelString: 'Score'
+              text: 'Score'
             },
-          }],
-          xAxes: [{
+          },
+          x: {
             type: 'time',
             distribution: 'linear', // 'series',
             bounds: 'ticks',
@@ -238,11 +214,11 @@ $(document).ready(function() {
             ticks: {
               source: 'auto',
             },
-            scaleLabel: {
+            title: {
               display: true,
-              labelString: 'Time (linear)'
+              text: 'Time (linear)'
             }
-          }]
+          }
         }
       }
     });
@@ -261,31 +237,33 @@ $(document).ready(function() {
             bottom: 0
           }
         },
-        tooltips: {
-          mode: 'nearest',
-          callbacks: {
-            title: function(tooltipItem, data) {
-              return data['verboseLabels'][tooltipItem[0]['index']];
-            },
-            label: function(tooltipItem, data) {
-              positionNumber = tooltipItem.yLabel
-              return data.datasets[tooltipItem.datasetIndex].label + ': ' + ordinal_suffix_of(positionNumber)
+        plugin: {
+          tooltip: {
+            mode: 'nearest',
+            callbacks: {
+              title: function (tooltipItem, data) {
+                return data['verboseLabels'][tooltipItem[0]['index']];
+              },
+              label: function (tooltipItem, data) {
+                positionNumber = tooltipItem.yLabel
+                return data.datasets[tooltipItem.datasetIndex].label + ': ' + ordinal_suffix_of(positionNumber)
+              },
             },
           },
-        },
-        legend: {
-          position: 'bottom',
-          padding: 25
+          legend: {
+            position: 'bottom',
+            padding: 25
+          },
         },
         scales: {
-          yAxes: [{
+          y: {
             scaleID: "y-axis-0",
+            beginAtZero: false,
+            reverse: true,
             ticks: {
               stepSize: 1,
-              beginAtZero: false,
               precision: 0,
-              reverse: true,
-              callback: function(value, index, values) {
+              callback: function (value, index, values) {
                 if (value === 1) {
                   return '🥇 ' + value;
                 } else if (value === 2) {
@@ -299,12 +277,24 @@ $(document).ready(function() {
                 }
               }
             },
-            scaleLabel: {
+            title: {
               display: true,
-              labelString: 'Position'
+              text: 'Position'
             },
-          }],
-          xAxes: [{
+            grid: {
+              drawBorder: false,
+              color: function (context) {
+                console.log(context.tick.value)
+                for (let prize of prizeData) {
+                  if (context.tick.value === prize.position) {
+                    return prizeColours[prize.band]
+                  }
+                }
+                return 'rgba(0, 0, 0, 0.1)' // default grey
+              },
+            },
+          },
+          x: {
             type: 'time',
             distribution: 'linear', // 'series',
             bounds: 'ticks',
@@ -317,15 +307,15 @@ $(document).ready(function() {
             ticks: {
               source: 'auto',
             },
-            scaleLabel: {
+            title: {
               display: true,
-              labelString: 'Time (linear)'
+              text: 'Time (linear)'
             }
-          }]
+          }
         },
-        annotation: {
-          annotations: prizeHLines
-        }
+        // annotation: {
+        //   annotations: prizeHLines
+        // }
       }
     })
 
@@ -333,21 +323,21 @@ $(document).ready(function() {
   }
 
   function toggleDistribution(chart) {
-    attr = chart.options.scales.xAxes[0].distribution
-    attr = (attr == 'linear') ? 'series' : 'linear'
-    chart.options.scales.xAxes[0].distribution = attr
+    attr = chart.options.scales.x.type
+    attr = (attr == 'time') ? 'timeseries' : 'time'
+    chart.options.scales.x.type = attr
+  }
+
+  function toggleTickSource(chart) {
+    attr = chart.options.scales.x.ticks.source
+    attr = (attr == 'auto') ? 'data' : 'auto'
+    chart.options.scales.x.ticks.source = attr
   }
 
   function toggleXLabel(chart) {
-    attr = chart.options.scales.xAxes[0].scaleLabel.labelString
+    attr = chart.options.scales.x.title.text
     attr = (attr == 'Time (linear)') ? 'Time (series)' : 'Time (linear)'
-    chart.options.scales.xAxes[0].scaleLabel.labelString = attr
-  }
-
-  function toggleXTickSource(chart) {
-    attr = chart.options.scales.xAxes[0].ticks.source
-    attr = (attr == 'label') ? 'auto' : 'label'
-    chart.options.scales.xAxes[0].ticks.source = attr
+    chart.options.scales.x.title.text = attr
   }
 
   function ordinal_suffix_of(i) {
@@ -366,12 +356,14 @@ $(document).ready(function() {
     return i + "th"
   }
 
-  $("#xaxis-toggle").click(function() {
+  $("#xaxis-toggle").click(function () {
     toggleDistribution(scoreChart)
+    toggleTickSource(scoreChart)
     toggleXLabel(scoreChart)
     scoreChart.update()
 
     toggleDistribution(positionChart)
+    toggleTickSource(positionChart)
     toggleXLabel(positionChart)
     positionChart.update()
   })
