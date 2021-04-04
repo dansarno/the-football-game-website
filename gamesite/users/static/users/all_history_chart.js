@@ -38,9 +38,6 @@ $(document).ready(function() {
       prizePositions.push(prize.position)
     }
 
-    minPosition = 1000
-    maxPosition = 1
-
     i = 1
     for (let position_log of data[0].entries[0].position_logs) {
       labels.push(position_log.called_bet.date)
@@ -58,16 +55,9 @@ $(document).ready(function() {
         }
         entryPostions = []
         for (let position_log of entry.position_logs) {
-          if (position_log.position > maxPosition) {
-            maxPosition = position_log.position
-          }
-          if (position_log.position < minPosition) {
-            minPosition = position_log.position
-          }
-
           entryPostions.push({
             y: position_log.position,
-            t: position_log.called_bet.date
+            x: position_log.called_bet.date
           })
         }
         positions.push(entryPostions)
@@ -89,35 +79,14 @@ $(document).ready(function() {
 
     lineColour = 'rgba(199, 199, 199, 0.4)' // ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     areaColourSet = [] // ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
-    prizeColourSet = ['rgba(218, 165, 32, 0.2)', 'rgba(192, 192, 192, 0.2)', 'rgba(205, 127, 50, 0.2)']
-
-    let prizeHLines = []
-    for (let prize of prizeData) {
-      let lineColor = ''
-      if (prize.band === 'T') {
-        lineColor = prizeColourSet[0]
-      } else if (prize.band === 'M') {
-        lineColor = prizeColourSet[1]
-      } else if (prize.band === 'B') {
-        lineColor = prizeColourSet[2]
-      }
-
-      if (prize.position >= minPosition && prize.position <= maxPosition) {
-        prizeHLines.push({
-          drawTime: "beforeDatasetsDraw",
-          type: "line",
-          mode: "horizontal",
-          scaleID: "y-axis-0",
-          value: prize.position,
-          borderColor: lineColor,
-          borderWidth: 5
-        })
-      }
+    prizeColours = {
+      T: 'rgba(218, 165, 32, 0.5)',
+      M: 'rgba(192, 192, 192, 0.5)',
+      B: 'rgba(205, 127, 50, 0.5)'
     }
 
     positionChartData = {}
     // positionChartData.labels = defaultLabels
-    positionChartData.verboseLabels = defaultVerboseLabels
     positionChartData.dateLabels = defaultDateLabels
     positionChartData.datasets = []
 
@@ -125,6 +94,7 @@ $(document).ready(function() {
     for (let positions of defaultPositionData) {
       positionChartData.datasets.push({
         label: entryLabels[i],
+        verboseLabel: defaultVerboseLabels[i],
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColour,
@@ -155,37 +125,35 @@ $(document).ready(function() {
             bottom: 0
           }
         },
-        animation: {
-          onComplete: function(animation) {}
-        },
-        tooltips: {
-          mode: 'nearest',
-          intersect: true,
-          callbacks: {
-            title: function(tooltipItem, data) {
-              return data['verboseLabels'][tooltipItem[0]['index']]
-            },
-            label: function(tooltipItem, data) {
-              positionNumber = tooltipItem.yLabel
-              return data.datasets[tooltipItem.datasetIndex].label + ': ' + ordinal_suffix_of(positionNumber)
+        plugins: {
+          tooltip: {
+            mode: 'nearest',
+            intersect: true,
+            callbacks: {
+              title: function(tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel
+              },
+              label: function(tooltipItem) {
+                return tooltipItem.dataset.label + ': ' + ordinal_suffix_of(tooltipItem.parsed.y)
+              },
             },
           },
+          legend: {
+            display: false
+          }
         },
         hover: {
           mode: 'dataset',
           intersect: false,
         },
-        legend: {
-          display: false
-        },
         scales: {
-          yAxes: [{
+          y: {
             scaleID: "y-axis-0",
+            beginAtZero: false,
+            reverse: true,
             ticks: {
               stepSize: 1,
-              beginAtZero: false,
               precision: 0,
-              reverse: true,
               callback: function(value, index, values) {
                 if (value === 1) {
                   return '🥇 ' + value;
@@ -198,14 +166,25 @@ $(document).ready(function() {
                 } else {
                   return value;
                 }
-              }
+              },
             },
-            scaleLabel: {
+            grid: {
+              drawBorder: false,
+              color: function (context) {
+                for (let prize of prizeData) {
+                  if (context.tick.value === prize.position) {
+                    return prizeColours[prize.band]
+                  }
+                }
+                return 'rgba(0, 0, 0, 0.1)' // default grey
+              },
+            },
+            title: {
               display: true,
-              labelString: 'Position'
+              text: 'Position'
             },
-          }],
-          xAxes: [{
+          },
+          x: {
             type: 'time',
             distribution: 'linear', // 'series',
             bounds: 'ticks',
@@ -218,15 +197,12 @@ $(document).ready(function() {
             ticks: {
               source: 'auto',
             },
-            scaleLabel: {
+            title: {
               display: true,
               labelString: 'Time (linear)'
             }
-          }]
+          }
         },
-        annotation: {
-          annotations: prizeHLines
-        }
       }
     })
 
@@ -234,21 +210,21 @@ $(document).ready(function() {
   }
 
   function toggleDistribution(chart) {
-    attr = chart.options.scales.xAxes[0].distribution
-    attr = (attr == 'linear') ? 'series' : 'linear'
-    chart.options.scales.xAxes[0].distribution = attr
+    attr = chart.options.scales.x.type
+    attr = (attr == 'time') ? 'timeseries' : 'time'
+    chart.options.scales.x.type = attr
+  }
+
+  function toggleTickSource(chart) {
+    attr = chart.options.scales.x.ticks.source
+    attr = (attr == 'auto') ? 'data' : 'auto'
+    chart.options.scales.x.ticks.source = attr
   }
 
   function toggleXLabel(chart) {
-    attr = chart.options.scales.xAxes[0].scaleLabel.labelString
+    attr = chart.options.scales.x.title.text
     attr = (attr == 'Time (linear)') ? 'Time (series)' : 'Time (linear)'
-    chart.options.scales.xAxes[0].scaleLabel.labelString = attr
-  }
-
-  function toggleXTickSource(chart) {
-    attr = chart.options.scales.xAxes[0].ticks.source
-    attr = (attr == 'label') ? 'auto' : 'label'
-    chart.options.scales.xAxes[0].ticks.source = attr
+    chart.options.scales.x.title.text = attr
   }
 
   function ordinal_suffix_of(i) {
@@ -269,6 +245,7 @@ $(document).ready(function() {
 
   $("#xaxis-toggle").click(function() {
     toggleDistribution(positionChart)
+    toggleTickSource(positionChart)
     toggleXLabel(positionChart)
     positionChart.update()
   })

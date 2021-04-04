@@ -39,9 +39,6 @@ $(document).ready(function () {
       prizePositions.push(prize.position)
     }
 
-    console.log(prizePositions)
-    console.log(prizeData)
-
     i = 1
     for (let score_log of data.entries[0].score_logs) {
       labels.push(score_log.called_bet.date)
@@ -87,7 +84,6 @@ $(document).ready(function () {
 
     scoreChartData = {}
     // scoreChartData.labels = defaultLabels
-    scoreChartData.verboseLabels = defaultVerboseLabels
     scoreChartData.dateLabels = defaultDateLabels
     scoreChartData.datasets = []
 
@@ -108,6 +104,7 @@ $(document).ready(function () {
       }
       scoreChartData.datasets.push({
         label: datasetLabel,
+        verboseLabel: defaultVerboseLabels[i],
         data: scores,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
@@ -125,7 +122,6 @@ $(document).ready(function () {
 
     positionChartData = {}
     // positionChartData.labels = defaultLabels
-    positionChartData.verboseLabels = defaultVerboseLabels
     positionChartData.dateLabels = defaultDateLabels
     positionChartData.datasets = []
 
@@ -139,6 +135,7 @@ $(document).ready(function () {
       }
       positionChartData.datasets.push({
         label: label,
+        verboseLabel: defaultVerboseLabels[i],
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
@@ -167,16 +164,16 @@ $(document).ready(function () {
             bottom: 0
           }
         },
-        plugin: {
+        plugins: {
           tooltip: {
             mode: 'nearest',
             callbacks: {
-              title: function (tooltipItem, data) {
-                return data['verboseLabels'][tooltipItem[0]['index']];
+              title: function(tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel
               },
-              label: function (tooltipItem, data) {
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' +
-                  tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              label: function(tooltipItem) {
+                return tooltipItem.dataset.label + ': ' +
+                  tooltipItem.parsed.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               },
             },
           },
@@ -189,7 +186,7 @@ $(document).ready(function () {
             beginAtZero: true,
             ticks: {
               callback: function (value, index, values) {
-                if (Math.max(...values) > 1500) {
+                if (Math.max(...getValues(values)) > 1500) {
                   return value / 1000 + 'k';
                 } else {
                   return value;
@@ -237,16 +234,15 @@ $(document).ready(function () {
             bottom: 0
           }
         },
-        plugin: {
+        plugins: {
           tooltip: {
             mode: 'nearest',
             callbacks: {
-              title: function (tooltipItem, data) {
-                return data['verboseLabels'][tooltipItem[0]['index']];
+              title: function(tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel
               },
-              label: function (tooltipItem, data) {
-                positionNumber = tooltipItem.yLabel
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + ordinal_suffix_of(positionNumber)
+              label: function(tooltipItem) {
+                return tooltipItem.dataset.label + ': '+ ordinal_suffix_of(tooltipItem.parsed.y)
               },
             },
           },
@@ -284,7 +280,6 @@ $(document).ready(function () {
             grid: {
               drawBorder: false,
               color: function (context) {
-                console.log(context.tick.value)
                 for (let prize of prizeData) {
                   if (context.tick.value === prize.position) {
                     return prizeColours[prize.band]
@@ -313,13 +308,14 @@ $(document).ready(function () {
             }
           }
         },
-        // annotation: {
-        //   annotations: prizeHLines
-        // }
       }
     })
 
     return positionChart, scoreChart
+  }
+
+  function getValues(data){
+    return data.map(d => d.value);
   }
 
   function toggleDistribution(chart) {
