@@ -6,14 +6,16 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'has_submitted', 'has_paid', 'current_position', 'current_score')
+    list_display = ('__str__', 'has_submitted', 'has_paid',
+                    'current_position', 'current_score')
     exclude = ('label',)
     list_filter = ('has_paid', 'has_submitted')
 
 
 @admin.register(models.Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('country', 'show_country_flag', 'show_country_code', 'show_logo', 'group', 'is_top_team')
+    list_display = ('country', 'show_country_flag',
+                    'show_country_code', 'show_logo', 'group', 'is_top_team')
     list_filter = ('group', 'is_top_team')
 
     def show_logo(self, obj):
@@ -261,6 +263,7 @@ class TopGoalScoringPlayerOutcomeAdmin(admin.ModelAdmin):
 @admin.register(models.CalledBet)
 class CalledBetAdmin(admin.ModelAdmin):
     list_display = ('__str__', 'show_winning_amount', 'date')
+    exclude = ('num_correct', 'num_incorrect')
 
     def show_winning_amount(self, obj):
         return obj.outcome.winning_amount

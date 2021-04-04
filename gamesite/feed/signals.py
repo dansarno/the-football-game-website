@@ -9,9 +9,5 @@ from . import models
 def create_called_bet_post(sender, instance, created, **kwargs):
     if created:
         title = f"🔔 Result: {instance.outcome}"
-        models.Post.objects.create(title=title, content="", author=User.objects.get(username='ros'), post_type='B')
-
-
-# @receiver(post_save, sender=CalledBet)
-# def save_called_bet_post(sender, instance, **kwargs):
-#     instance.calledbetpost.save()
+        models.Post.objects.create(
+            title=title, content="", author=User.objects.get(username='ros'), post_type='B', called_bet=instance)
