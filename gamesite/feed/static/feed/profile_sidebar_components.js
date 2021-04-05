@@ -21,17 +21,30 @@ function addScoreDials(data) {
     if (data.length > 0) {
         for (let entryData of data) {
             $("#scores-container").append(`<div id="score-bar-${entryData.label}" class="score-bar"><strong></strong></div>`);
+            let dialValue = 0
+            let animationDuration = 0
+            if (entryData.current_score != 0) {
+                dialValue = entryData.current_score / entryData.top_score
+                animationDuration = (entryData.current_score / entryData.top_score) * 3000
+            } else {
+                dialValue = 0.03
+                animationDuration = 50
+            }
             $(`#score-bar-${entryData.label}`).circleProgress({
                 //size: ($('.sidebar').width() - 100) / data.length,
-                value: entryData.current_score / entryData.top_score,
+                value: dialValue,
                 startAngle: Math.PI / 2,
                 animation: {
-                    duration: (entryData.current_score / entryData.top_score) * 3000,
+                    duration: animationDuration,
                     easing: "swing"
                 }
-                //fill: {color: '#037bfc'}
             }).on('circle-animation-progress', function (event, progress) {
-                $(this).find('strong').text(Math.round(progress * entryData.current_score).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                if (entryData.current_score != 0) {
+                    $(this).find('strong').text(Math.round(progress * entryData.current_score).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                } else {
+                    $(this).find('strong').text("0");
+                }
+                
             });
         }
     } else {
@@ -43,7 +56,12 @@ function addPositionCounters(data) {
     if (data.length > 0) {
         for (let entryData of data) {
             $("#positions-container").append(`<div id="position-${entryData.label}" class="position-counter"></div>`);
-            duration = (entryData.current_score / entryData.top_score) * 3000
+            let duration = 0
+            if (entryData.current_score != 0) {
+                duration = (entryData.current_score / entryData.top_score) * 3000
+            } else {
+                duration = 50
+            }
             animateValue(`position-${entryData.label}`, entryData.last_place, entryData.current_position, duration)
         }
     } else {
@@ -89,12 +107,16 @@ function addFormData(data) {
 }
 
 function animateValue(id, start, end, duration) {
-    if (start === end) return;
     var range = end - start;
     var current = start;
     var increment = end > start ? 1 : -1;
     var stepTime = Math.abs(Math.floor(duration / range));
     var obj = document.getElementById(id);
+    
+    if (start === end) {
+        obj.innerHTML = "<strong>" + ordinal_suffix_of(start) + "</strong>"
+        return
+    }
     if (end === null) {
         obj.innerHTML = "<strong>---</strong>"
         return

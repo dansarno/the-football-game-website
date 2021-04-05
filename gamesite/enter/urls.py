@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .api.views import entries_detail, my_entries_detail
+from .api.views import entries_detail, my_entries_detail, called_bet_stats
 
 app_name = "enter"
 urlpatterns = [
@@ -16,5 +16,6 @@ urlpatterns = [
     path("entry/view/<int:entry_id>", views.view_entry, name="view_entry"),
     path('api/all', entries_detail, name='all_entries_api'),
     path('api/me', my_entries_detail, name='my_entries_api'),
-
+    path('api/called-bet/<int:called_bet_id>',
+         called_bet_stats, name='bet_success_api'),
 ]

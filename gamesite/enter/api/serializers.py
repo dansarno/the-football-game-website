@@ -111,3 +111,10 @@ class MyEntrySerializer(serializers.ModelSerializer):
     def get_last_place(self, obj):
         last_place = models.Entry.objects.all().aggregate(Max('current_position'))
         return last_place['current_position__max']
+
+
+class CalledBetStatsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.CalledBetStats
+        fields = ['num_correct', 'num_incorrect']

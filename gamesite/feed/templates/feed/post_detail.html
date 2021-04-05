@@ -1,4 +1,5 @@
 {% extends "feed/base.html" %}
+{% load static %}
 {% load humanize %}
 
 {% block content %}
@@ -6,10 +7,10 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-12 col-lg-9 mt-4">
-<h2>Post Detail</h2>
-<div class="card border-light shadow-sm">
-  <div class="card-body">
-    <div class="media d-block d-md-flex">
+  <h2>Post Detail</h2>
+  <div class="card border-light shadow-sm mb-3">
+    <div class="card-body">
+      <div class="media d-block d-md-flex">
         <a class="mr-2" href="{% url 'profile' username=post.author.username %}">
           <img class="rounded-circle article-img" src="{{post.author.profile.profile_picture.url }}">
         </a>
@@ -22,8 +23,24 @@
           <p class="article-content">{{ post.content }}</p>
         </div>
       </div>
+    </div>
   </div>
+
+  {% if post.post_type == 'B' %}
+  <div class="card border-light shadow-sm">
+    <div class="card-body">
+      <div id="bet-success-chart_container"
+        data-bet-success-url-endpoint="{% url 'enter:bet_success_api' called_bet_id=post.called_bet.id %}">
+        <canvas id="betSuccessChart" width="400" height="400"></canvas>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
-</div>
+
+{% if post.post_type == 'B' %}
+<script type="text/javascript" src="{% static 'feed/bet_success_chart.js' %}"></script>
+{% endif %}
+
 
 {% endblock content %}
