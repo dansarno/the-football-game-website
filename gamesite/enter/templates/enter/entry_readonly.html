@@ -1,16 +1,16 @@
 {% extends "enter/enter_base.html" %}
 
 {% block content %}
-  {% if entry.label %}
-    <h1 class="text-center">{{ entry.profile.user.username }}'s Entry {{ entry.label }}</h1>
-  {% else %}
-    <h1 class="text-center">{{ entry.profile.user.username }}'s Entry</h1>
-  {% endif %}
-  <form method="POST">
-    {% csrf_token %}
+{% if entry.label %}
+<h1 class="text-center">{{ entry.profile.user.username }}'s Entry {{ entry.label }}</h1>
+{% else %}
+<h1 class="text-center">{{ entry.profile.user.username }}'s Entry</h1>
+{% endif %}
+<form method="POST">
+  {% csrf_token %}
   <button onclick="window.print();return false;" class="btn btn-outline-secondary btn-sm no-print">Print</button>
   <fieldset disabled="disabled">
     {% include 'enter/form.html' %}
   </fieldset>
-  </form>
+</form>
 {% endblock content %}

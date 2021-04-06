@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .api.views import entries_detail
+from .api.views import entries_detail, my_entries_detail
 
 app_name = "enter"
 urlpatterns = [
@@ -15,4 +15,6 @@ urlpatterns = [
     path("entry/submit/<int:entry_id>", views.submit_entry, name="submit_entry"),
     path("entry/view/<int:entry_id>", views.view_entry, name="view_entry"),
     path('api/all', entries_detail, name='all_entries_api'),
+    path('api/me', my_entries_detail, name='my_entries_api'),
+
 ]

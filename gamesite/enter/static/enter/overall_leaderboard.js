@@ -1,5 +1,5 @@
-$(document).ready(function() {
-  var tableDataEndpoint = $("#table_container").attr("data-url-endpoint");
+$(document).ready(function () {
+  var tableDataEndpoint = $("#overall_table_container").attr("data-url-endpoint");
   createTable();
 
   function createTable() {
@@ -16,7 +16,7 @@ $(document).ready(function() {
       ],
       columns: [{
           data: "current_position",
-          render: function(data, type, row, meta) {
+          render: function (data, type, row, meta) {
             if (type === 'display' || type === 'filter') {
               let latestPositionLog = row.position_logs[row.position_logs.length - 1];
               let previousPositionLog = row.position_logs[row.position_logs.length - 2];
@@ -37,7 +37,7 @@ $(document).ready(function() {
         },
         {
           data: "profile",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return `<a href="/profile/${data.user.username}" class="pic-link">
                               <img class="rounded-circle account-img-sm" src="${data.profile_picture}" />
                             </a>
@@ -46,7 +46,7 @@ $(document).ready(function() {
         },
         {
           data: "profile.user.username",
-          render: function(data, type, row, meta) {
+          render: function (data, type, row, meta) {
             if (type === 'display' || type === 'filter') {
               return `<a href="/profile/${data}" class="text-dark">${data}</a>`;
             }
@@ -55,13 +55,13 @@ $(document).ready(function() {
         },
         {
           data: "profile",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return `${data.user.first_name} ${data.user.last_name}`;
           }
         },
         {
           data: "form",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             form_arr = '';
             for (let bet of data) {
               if (bet.success) {
@@ -85,7 +85,7 @@ $(document).ready(function() {
         },
         {
           data: "profile",
-          render: function(data, type, row) {
+          render: function (data, type, row) {
             return `${data.user.first_name} ${data.user.last_name}`;
           }
         },

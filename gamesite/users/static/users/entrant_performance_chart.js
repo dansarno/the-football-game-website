@@ -1,30 +1,33 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var chartDataEndpoint = $("#performance-chart_container").attr("data-entries-url-endpoint")
   var ctx = document.getElementById('performanceChart').getContext('2d');
 
   $.ajax({
     method: "GET",
     url: chartDataEndpoint,
-    success: function(data) {
+    success: function (data) {
       chartOptions = {
         scale: {
-          ticks: {
-            suggestedMin: 0,
+          r: {
             beginAtZero: true,
             min: 0,
             max: 100,
-            stepSize: 20,
-            callback: function(value, index, values) {
-              return value + '%';
+            ticks: {
+              stepSize: 20,
+              callback: function (value, index, values) {
+                return value + '%';
+              }
             },
+            gridLines: {
+              circular: false
+            }
           },
-          gridLines: {
-            circular: false
-          }
         },
-        legend: {
-          position: 'bottom'
-        },
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+        }
       }
 
       lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
@@ -90,14 +93,14 @@ $(document).ready(function() {
           labels: chartLabels,
           datasets: chartDataset
         }
-        chartOptions.tooltips = {
+        chartOptions.plugins.tooltip = {
           mode: 'nearest',
           callbacks: {
-            title: function(tooltipItem, data) {
-              return data.labels[tooltipItem[0].index]
+            title: function (tooltipItem) {
+              return tooltipItem[0].label
             },
-            label: function(tooltipItem, data) {
-              return `${data['datasets'][tooltipItem['datasetIndex']]['label']}: ${tooltipItem['value']}%`
+            label: function (tooltipItem) {
+              return tooltipItem.dataset.label + ': ' + Math.round(tooltipItem.parsed.r) + '%'
             }
           }
         }
@@ -109,7 +112,7 @@ $(document).ready(function() {
         options: chartOptions
       })
     },
-    error: function(error_data) {
+    error: function (error_data) {
       console.log(error_data)
     }
   })

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import PermissionDenied
+from users.models import Team
 from . import forms
 from . import models
 from random import choice
@@ -29,8 +30,10 @@ def index(request):
 
 @login_required
 def leaderboard(request):
+    teams = Team.objects.all()
     return render(request, "enter/leader_board.html", {
-        "title": "Leader Board"
+        "title": "Leader Board",
+        "teams": teams
     })
 
 
@@ -50,7 +53,8 @@ def results(request):
         game_section = dict()
         numerator = models.CalledBet.objects.filter(outcome__choice_group__game_category=category) \
             .values('outcome__choice_group').distinct().count()
-        denominator = models.ChoiceGroup.objects.filter(game_category=category).count()
+        denominator = models.ChoiceGroup.objects.filter(
+            game_category=category).count()
         if denominator == 0:
             complete = 0
         else:
@@ -74,11 +78,14 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentTotalsForm(request.POST)
         final_bets_form = forms.DuringTheFinalForm(request.POST)
-        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(request.POST)
+        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
+            request.POST)
         group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(request.POST)
-        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(request.POST)
-        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
+        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(
+            request.POST)
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(
+            request.POST)
 
         if (top_goal_group_bets_form.is_valid() and
                 top_goal_player_bets_form.is_valid() and
@@ -89,11 +96,13 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
                 tournament_bets_form.is_valid() and
                 final_bets_form.is_valid()):
 
-            new_entry = models.Entry.objects.create(profile=request.user.profile)
+            new_entry = models.Entry.objects.create(
+                profile=request.user.profile)
 
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
             if group_choice:
-                models.Bet.objects.create(outcome=group_choice, entry=new_entry)
+                models.Bet.objects.create(
+                    outcome=group_choice, entry=new_entry)
 
             choice = top_goal_player_bets_form.cleaned_data['choice']
             if choice:
@@ -134,7 +143,8 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
 def create_random_entry(request, success_url="enter:index"):
     new_entry = models.Entry.objects.create(profile=request.user.profile)
     for choice_group in models.ChoiceGroup.objects.all():
-        random_choice = choice(choice_group.outcome_set.non_polymorphic().all())
+        random_choice = choice(
+            choice_group.outcome_set.non_polymorphic().all())
         models.Bet.objects.create(entry=new_entry, outcome=random_choice)
     messages.add_message(request, messages.SUCCESS, 'Random entry created.')
     return HttpResponseRedirect(reverse(success_url))
@@ -154,11 +164,14 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentTotalsForm(request.POST)
         final_bets_form = forms.DuringTheFinalForm(request.POST)
-        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(request.POST)
+        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
+            request.POST)
         group_winners_form = forms.GroupWinnerOutcomeForm(request.POST)
         fifty_fifty_bets_form = forms.FiftyFiftyOutcomeForm(request.POST)
-        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(request.POST)
-        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(request.POST)
+        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(
+            request.POST)
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(
+            request.POST)
 
         if (top_goal_group_bets_form.is_valid() and
                 top_goal_player_bets_form.is_valid() and
@@ -172,25 +185,32 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
             if group_choice:
                 if group_choice:
-                    bet = models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=group_choice.choice_group)
+                    bet = models.Bet.objects.filter(
+                        entry=requested_entry, outcome__choice_group=group_choice.choice_group)
                     if bet:
                         bet.update(outcome=group_choice)
                     else:
-                        models.Bet.objects.create(outcome=group_choice, entry=requested_entry)
+                        models.Bet.objects.create(
+                            outcome=group_choice, entry=requested_entry)
 
             choice = top_goal_player_bets_form.cleaned_data['choice']
             if choice:
-                bet = models.Bet.objects.filter(entry=requested_entry, outcome__choice_group=choice.choice_group)
+                bet = models.Bet.objects.filter(
+                    entry=requested_entry, outcome__choice_group=choice.choice_group)
                 if bet:
                     bet.update(outcome=choice)
                 else:
-                    models.Bet.objects.create(outcome=choice, entry=requested_entry)
+                    models.Bet.objects.create(
+                        outcome=choice, entry=requested_entry)
 
             create_or_update_bets_in_form(group_matches_form, requested_entry)
             create_or_update_bets_in_form(group_winners_form, requested_entry)
-            create_or_update_bets_in_form(fifty_fifty_bets_form, requested_entry)
-            create_or_update_bets_in_form(best_teams_success_bets_form, requested_entry)
-            create_or_update_bets_in_form(tournament_bets_form, requested_entry)
+            create_or_update_bets_in_form(
+                fifty_fifty_bets_form, requested_entry)
+            create_or_update_bets_in_form(
+                best_teams_success_bets_form, requested_entry)
+            create_or_update_bets_in_form(
+                tournament_bets_form, requested_entry)
             create_or_update_bets_in_form(final_bets_form, requested_entry)
 
             requested_entry.save()
@@ -259,7 +279,8 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
                 'fastest_yellow_card_bet': fastest_yellow_choice,
                 'fastest_tournament_goal_bet': fastest_goal_choice
                 }
-        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(initial=data)
+        best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
+            initial=data)
 
         data = {}
         for i, match in enumerate(models.GroupMatch.objects.order_by('ko_time')):
@@ -285,7 +306,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         groups = ['a', 'b', 'c', 'd', 'e', 'f']
         for i, group in enumerate(models.Group.objects.order_by('name')):
             group_winner_bet = models.Bet.objects.filter(outcome__groupwinneroutcome__group=group,
-                                                       entry=requested_entry).first()
+                                                         entry=requested_entry).first()
             group_winner_choice = None
             if group_winner_bet:
                 group_winner_choice = group_winner_bet.outcome
@@ -297,9 +318,11 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
         tsp_choice = models.Outcome.objects.instance_of(models.TopGoalScoringPlayerOutcome). \
             filter(bet__entry=requested_entry).first()
         data = {'group_choice': tsg_choice}
-        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(initial=data)
+        top_goal_group_bets_form = forms.TopGoalScoringGroupBetForm(
+            initial=data)
         data = {'choice': tsp_choice}
-        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(initial=data)
+        top_goal_player_bets_form = forms.TopGoalScoringPlayerBetForm(
+            initial=data)
 
     return render(request, template_name, {
         "title": "Enter",
@@ -428,7 +451,8 @@ def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
             'fastest_yellow_card_bet': fastest_yellow_choice,
             'fastest_tournament_goal_bet': fastest_goal_choice
             }
-    best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(initial=data)
+    best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
+        initial=data)
 
     data = {}
     for i, match in enumerate(models.GroupMatch.objects.order_by('ko_time')):
@@ -487,7 +511,8 @@ def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
 def create_or_update_bets_in_form(form, entry):
     for field_name, field_value in form.cleaned_data.items():
         if field_value:
-            bet = models.Bet.objects.filter(entry=entry, outcome__choice_group=field_value.choice_group)
+            bet = models.Bet.objects.filter(
+                entry=entry, outcome__choice_group=field_value.choice_group)
             if bet:
                 bet.update(outcome=field_value)
             else:

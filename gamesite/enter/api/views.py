@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from enter import models
-from .serializers import EntrySerializer
+from .serializers import EntrySerializer, MyEntrySerializer
 
 
 @api_view(['GET'])
@@ -18,4 +18,17 @@ def entries_detail(request):
 
     if request.method == 'GET':
         serializer = EntrySerializer(entries, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def my_entries_detail(request):
+    try:
+        my_entries = models.Entry.objects.filter(
+            profile=request.user.profile).all()
+    except models.Entry.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = MyEntrySerializer(my_entries, many=True)
         return Response(serializer.data)

@@ -7,47 +7,86 @@
 {% include 'feed/profile_sidebar.html' %}
 
 <div class="col-12 col-lg-9 mt-4">
-<h2>Leaderboards</h2>
+  <h2>Leaderboards</h2>
 
-<div class="card border-light shadow-sm mb-4">
-  <div class="card-body">
-    <div id="table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}">
-      <h3>Overall Leaderboard</h3>
+  <div class="card border-light shadow-sm mb-4">
+    <div class="card-body">
+      <div id="overall_table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}">
+        <h3>Overall Leaderboard</h3>
         <hr />
-      <table id="overall_leaderboard" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Pos</th>
-                    <th class="all"></th>
-                    <th>User</th>
-                    <th>Name</th>
-                    <th>Form</th>
-                    <th>Upcoming</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Pos</th>
-                    <th class="all"></th>
-                    <th>User</th>
-                    <th>Name</th>
-                    <th>Form</th>
-                    <th>Upcoming</th>
-                    <th>Score</th>
-                </tr>
-            </tfoot>
+        <table id="overall_leaderboard" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+              <th>Form</th>
+              <th>Upcoming</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Pos</th>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+              <th>Form</th>
+              <th>Upcoming</th>
+              <th>Score</th>
+            </tr>
+          </tfoot>
         </table>
-    </div>
+      </div>
     </div>
   </div>
+
+  <h2 class="mb-3">Team Leaderboards</h2>
+  {% for team in teams %}
+  <div class="card border-light shadow-sm mb-4">
+    <div class="card-body">
+      <div id="{{ team }}_table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}">
+        <h3>{{ team }} Leaderboard</h3>
+        <hr />
+        <table id="overall_leaderboard" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+              <th>Form</th>
+              <th>Upcoming</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Pos</th>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+              <th>Form</th>
+              <th>Upcoming</th>
+              <th>Score</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
 </div>
 
 <script type="text/javascript" src="{% static 'enter/overall_leaderboard.js' %}"></script>
 
 <script>
-  $(document).ready(function() {
-    $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+  $(document).ready(function () {
+    $("body").tooltip({
+      selector: '[data-toggle=tooltip]'
+    });
   });
 </script>
 

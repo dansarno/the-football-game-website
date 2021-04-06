@@ -1,66 +1,43 @@
 {% load humanize %}
+{% load static %}
 
-<div class="col-sm-3 d-none d-lg-block">
+
+<div class="col-sm-3 d-none d-lg-block sidebar">
   <div class="sticky-top sticky-offset">
-    <div class="card border-light shadow-sm" id="account-profile">
+    <div class="card border-light shadow-sm" id="account-profile" data-url-endpoint="{% url 'enter:my_entries_api' %}">
       <div class="card-body text-center">
         <a href="{% url 'profile' username=request.user.username %}">
           <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
         </a>
         <div class="mt-2">
-          {% if request.user.first_name and user.last_name %}
-          <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
-          {% else %}
-          <a href="{% url 'profile' username=request.user.username %}" class="account-name">{{ request.user.username }}</a>
-          {% endif %}
+          <a href="{% url 'profile' username=request.user.username %}"
+            class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
+        </div>
+        <div>
+          <a href="{% url 'profile' username=request.user.username %}"
+            class="account-username text-muted">@{{ request.user.username }}</a>
         </div>
         <hr />
         <h5 class="mb-2 mt-3">Score</h5>
-        <div class="row">
-        {% for entry in request.user.profile.entries.all %}
-        <div class="col">
-        <div class="circle">{{ entry.current_score|intcomma }}</div>
-        </div>
-        {% empty %}
-        You have no entries
-        {% endfor %}
-        </div>
+        <div id="scores-container"></div>
         <hr />
         <h5 class="mb-2 mt-3">Position</h5>
-        <div class="row">
-        {% for entry in request.user.profile.entries.all %}
-        {% if entry.current_position %}
-        <div class="col">
-        <div class="circle">{{ entry.current_position|ordinal }}</div>
-        </div>
-        {% else %}
-        <div class="col">
-        <div class="circle">--</div>
-        </div>
-        {% endif %}
-        {% empty %}
-        You have no entries
-        {% endfor %}
-        </div>
+        <div id="positions-container"></div>
         <hr />
         <h5 class="mb-1 mt-3">Form</h5>
         <small class="text-muted mb-2">Last 5 results</small>
-        {% for entry in request.user.profile.entries.all %}
-        <div class="mt-1">
-          {% for bet in entry.bet_set.all|slice:":5" %}
-          {% if bet.success is True %}
-          <span class="correct-dot"></span>
-          {% elif bet.success is False %}
-          <span class="incorrect-dot"></span>
-          {% endif %}
-          {% empty %}
-          No bets have been called
-          {% endfor %}
-        </div>
-        {% empty %}
-        You have no entries
-        {% endfor %}
+        <div id="form-container"></div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript" src="{% static 'feed/profile_sidebar_components.js' %}"></script>
+
+<script>
+  $(document).ready(function () {
+    $("body").tooltip({
+      selector: '[data-toggle=tooltip]'
+    });
+  });
+</script>
