@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   var chartDataEndpoint = $("#all-history-chart-container").attr("data-all-history-url-endpoint")
   var prizeDataEndpoint = $("#all-history-chart-container").attr("data-prize-url-endpoint")
   var defaultScoreData = []
@@ -8,8 +8,8 @@ $(document).ready(function() {
   let ajaxChartData = $.ajax({
     method: "GET",
     url: chartDataEndpoint,
-    success: function(data) {},
-    error: function(error_data) {
+    success: function (data) {},
+    error: function (error_data) {
       console.log(error_data)
     }
   })
@@ -17,13 +17,13 @@ $(document).ready(function() {
   let ajaxPrizeData = $.ajax({
     method: "GET",
     url: prizeDataEndpoint,
-    success: function(data) {},
-    error: function(error_data) {
+    success: function (data) {},
+    error: function (error_data) {
       console.log(error_data)
     }
   })
 
-  $.when(ajaxChartData, ajaxPrizeData).done(function(a1, a2) {
+  $.when(ajaxChartData, ajaxPrizeData).done(function (a1, a2) {
     let data = a1[0]
     prizeData = a2[0]
 
@@ -94,7 +94,7 @@ $(document).ready(function() {
     for (let positions of defaultPositionData) {
       positionChartData.datasets.push({
         label: entryLabels[i],
-        verboseLabel: defaultVerboseLabels[i],
+        verboseLabel: defaultVerboseLabels,
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColour,
@@ -130,10 +130,10 @@ $(document).ready(function() {
             mode: 'nearest',
             intersect: true,
             callbacks: {
-              title: function(tooltipItem) {
-                return tooltipItem[0].dataset.verboseLabel
+              title: function (tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel[tooltipItem[0].dataIndex]
               },
-              label: function(tooltipItem) {
+              label: function (tooltipItem) {
                 return tooltipItem.dataset.label + ': ' + ordinal_suffix_of(tooltipItem.parsed.y)
               },
             },
@@ -154,7 +154,7 @@ $(document).ready(function() {
             ticks: {
               stepSize: 1,
               precision: 0,
-              callback: function(value, index, values) {
+              callback: function (value, index, values) {
                 if (value === 1) {
                   return '🥇 ' + value;
                 } else if (value === 2) {
@@ -243,7 +243,7 @@ $(document).ready(function() {
     return i + "th"
   }
 
-  $("#xaxis-toggle").click(function() {
+  $("#xaxis-toggle").click(function () {
     toggleDistribution(positionChart)
     toggleTickSource(positionChart)
     toggleXLabel(positionChart)

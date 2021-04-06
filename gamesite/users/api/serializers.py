@@ -70,7 +70,8 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
     def get_performance(self, obj):
         performance = []
         for category in models.GameCategory.objects.all():
-            choice_groups = models.ChoiceGroup.objects.filter(game_category=category)
+            choice_groups = models.ChoiceGroup.objects.filter(
+                game_category=category)
             total_bets = choice_groups.count()
             if not total_bets:
                 continue
@@ -79,7 +80,8 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
             winning_bets = 0
             any_called = False
             for choice_group in choice_groups:
-                bet_in_same_group = models.Bet.objects.filter(entry=obj, outcome__choice_group=choice_group).first()
+                bet_in_same_group = models.Bet.objects.filter(
+                    entry=obj, outcome__choice_group=choice_group).first()
                 if bet_in_same_group.success is not None:
                     any_called = True
                 if bet_in_same_group.success:
@@ -93,10 +95,14 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
 
 class ProfileHistorySerializer(serializers.ModelSerializer):
     entries = EntryHistorySerializer(many=True, read_only=True)
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['entries']
+        fields = ['username', 'entries']
+
+    def get_username(self, obj):
+        return obj.user.username
 
 
 class ProfilePositionHistorySerializer(serializers.ModelSerializer):

@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from enter import models
-from .serializers import EntrySerializer, MyEntrySerializer, CalledBetStatsSerializer
+from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer
 
 
 @api_view(['GET'])
@@ -17,7 +17,7 @@ def entries_detail(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = EntrySerializer(entries, many=True)
+        serializer = LeaderboardEntrySerializer(entries, many=True)
         return Response(serializer.data)
 
 
@@ -30,7 +30,7 @@ def my_entries_detail(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = MyEntrySerializer(my_entries, many=True)
+        serializer = SidebarEntrySerializer(my_entries, many=True)
         return Response(serializer.data)
 
 
@@ -43,4 +43,16 @@ def called_bet_stats(request, called_bet_id):
 
     if request.method == 'GET':
         serializer = CalledBetStatsSerializer(stats)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def called_bet_position_changes(request, called_bet_id):
+    try:
+        called_bet = models.CalledBet.objects.get(id=called_bet_id)
+    except models.CalledBet.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CalledBetWinnersAndLosersSerializer(called_bet)
         return Response(serializer.data)

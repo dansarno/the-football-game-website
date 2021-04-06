@@ -75,10 +75,10 @@ $(document).ready(function () {
     defaultScoreData = scores
     defaultPositionData = positions
 
-    setChart(entryLabels)
+    setChart(entryLabels, data.username)
   })
 
-  function setChart(entryLabels) {
+  function setChart(entryLabels, username) {
     var ctx = document.getElementById('scoreChartCanvas').getContext('2d');
     var ctx2 = document.getElementById('positionChartCanvas').getContext('2d');
 
@@ -98,14 +98,15 @@ $(document).ready(function () {
     for (let scores of defaultScoreData) {
       datasetLabel = ""
       if (!entryLabels[i]) {
-        datasetLabel = "Your Entry";
+        datasetLabel = `${username}'s Entry`;
       } else {
         datasetLabel = 'Entry ' + entryLabels[i]
       }
       scoreChartData.datasets.push({
         label: datasetLabel,
-        verboseLabel: defaultVerboseLabels[i],
+        verboseLabel: defaultVerboseLabels,
         data: scores,
+        stepped: true,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
         pointBackgroundColor: lineColourSet[i],
@@ -114,11 +115,10 @@ $(document).ready(function () {
         pointRadius: 2,
         pointHoverRadius: 8,
         fill: false, //'origin',
-        cubicInterpolationMode: 'monotone',
-        tension: 1.5
       })
       i++
     }
+    console.log(defaultScoreData)
 
     positionChartData = {}
     // positionChartData.labels = defaultLabels
@@ -129,13 +129,13 @@ $(document).ready(function () {
     for (let positions of defaultPositionData) {
       label = ""
       if (!entryLabels[i]) {
-        label = "Your Entry";
+        label = `${username}'s Entry`;
       } else {
         label = 'Entry ' + entryLabels[i]
       }
       positionChartData.datasets.push({
         label: label,
-        verboseLabel: defaultVerboseLabels[i],
+        verboseLabel: defaultVerboseLabels,
         data: positions,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
@@ -168,10 +168,10 @@ $(document).ready(function () {
           tooltip: {
             mode: 'nearest',
             callbacks: {
-              title: function(tooltipItem) {
-                return tooltipItem[0].dataset.verboseLabel
+              title: function (tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel[tooltipItem[0].dataIndex]
               },
-              label: function(tooltipItem) {
+              label: function (tooltipItem) {
                 return tooltipItem.dataset.label + ': ' +
                   tooltipItem.parsed.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               },
@@ -238,11 +238,11 @@ $(document).ready(function () {
           tooltip: {
             mode: 'nearest',
             callbacks: {
-              title: function(tooltipItem) {
-                return tooltipItem[0].dataset.verboseLabel
+              title: function (tooltipItem) {
+                return tooltipItem[0].dataset.verboseLabel[tooltipItem[0].dataIndex]
               },
-              label: function(tooltipItem) {
-                return tooltipItem.dataset.label + ': '+ ordinal_suffix_of(tooltipItem.parsed.y)
+              label: function (tooltipItem) {
+                return tooltipItem.dataset.label + ': ' + ordinal_suffix_of(tooltipItem.parsed.y)
               },
             },
           },
@@ -314,7 +314,7 @@ $(document).ready(function () {
     return positionChart, scoreChart
   }
 
-  function getValues(data){
+  function getValues(data) {
     return data.map(d => d.value);
   }
 

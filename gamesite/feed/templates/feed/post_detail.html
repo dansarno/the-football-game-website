@@ -27,11 +27,19 @@
   </div>
 
   {% if post.post_type == 'B' %}
-  <div class="card border-light shadow-sm">
+  <div class="card border-light shadow-sm mb-5">
     <div class="card-body">
-      <div id="bet-success-chart_container"
-        data-bet-success-url-endpoint="{% url 'enter:bet_success_api' called_bet_id=post.called_bet.id %}">
-        <canvas id="betSuccessChart" width="400" height="400"></canvas>
+      <h2>Bet Stats</h2>
+      <div class="row">
+        <div class="col-md">
+        </div>
+        
+        <div class="col-md">
+          <div id="bet-success-chart_container"
+            data-bet-success-url-endpoint="{% url 'enter:bet_success_api' called_bet_id=post.called_bet.id %}">
+            <canvas id="betSuccessChart" width="400" height="400"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>

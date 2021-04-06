@@ -53,7 +53,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['user', 'profile_picture', 'team']
 
 
-class EntrySerializer(serializers.ModelSerializer):
+class LeaderboardEntrySerializer(serializers.ModelSerializer):
     # score_logs = ScoreLogSerializer(many=True, read_only=True)
     # position_logs = PositionLogSerializer(many=True, read_only=True)
     profile = ProfileSerializer(read_only=True)
@@ -88,7 +88,7 @@ class EntrySerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class MyEntrySerializer(serializers.ModelSerializer):
+class SidebarEntrySerializer(serializers.ModelSerializer):
     top_score = serializers.SerializerMethodField()
     last_place = serializers.SerializerMethodField()
     form = serializers.SerializerMethodField('get_last_five_bets')
@@ -111,6 +111,79 @@ class MyEntrySerializer(serializers.ModelSerializer):
     def get_last_place(self, obj):
         last_place = models.Entry.objects.all().aggregate(Max('current_position'))
         return last_place['current_position__max']
+
+
+class EntryChangesSerializer(serializers.ModelSerializer):
+    profile = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Entry
+        fields = ['label', 'profile']
+
+    def get_profile(self, obj):
+        serializer = ProfileSerializer(instance=obj.profile)
+        return serializer.data
+
+
+class PositionLogChangeSerializer(serializers.ModelSerializer):
+    entry = serializers.SerializerMethodField()
+    previous_position = serializers.SerializerMethodField()
+    current_position = serializers.SerializerMethodField()
+    position_change = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.PositionLog
+        fields = ['entry', 'previous_position',
+                  'current_position', 'position_change']
+
+    def get_entry(self, obj):
+        serializer = EntryChangesSerializer(instance=obj.entry)
+        return serializer.data
+
+    def get_previous_position(self, obj):
+        return obj.get_prev_position_log().position
+
+    def get_current_position(self, obj):
+        return obj.position
+
+    def get_position_change(self, obj):
+        return obj.get_prev_position_log().position - obj.position
+
+
+class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
+    biggest_winners = serializers.SerializerMethodField()
+    biggest_losers = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.CalledBet
+        fields = ['biggest_winners', 'biggest_losers']
+
+    def get_biggest_winners(self, obj):
+        biggest_winners = self.calc_winners_or_losers(obj, 5, False)
+        serializer = PositionLogChangeSerializer(
+            instance=biggest_winners, many=True)
+        return serializer.data
+
+    def get_biggest_losers(self, obj):
+        biggest_losers = self.calc_winners_or_losers(obj, 5, True)
+        serializer = PositionLogChangeSerializer(
+            instance=biggest_losers, many=True)
+        return serializer.data
+
+    @staticmethod
+    def calc_winners_or_losers(obj, num_entries, reverse=False):
+        deltas_arr = []
+        for position_log in models.PositionLog.objects.filter(called_bet=obj):
+            deltas = {}
+            deltas['change'] = position_log.position - \
+                position_log.get_prev_position_log().position
+            deltas['entry'] = position_log.entry
+            deltas['username'] = position_log.entry.profile.user.username
+            deltas['position_log'] = position_log
+            deltas_arr.append(deltas)
+        sorted_deltas_arr = sorted(deltas_arr, key=lambda k:
+                                   k['change'], reverse=reverse)[:num_entries]
+        return [deltas['position_log'] for deltas in sorted_deltas_arr]
 
 
 class CalledBetStatsSerializer(serializers.ModelSerializer):

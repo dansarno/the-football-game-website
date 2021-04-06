@@ -50,6 +50,10 @@ class PositionLog(models.Model):
     called_bet = models.ForeignKey('CalledBet', on_delete=models.CASCADE)
     position = models.IntegerField()
 
+    def get_prev_position_log(self):
+        return PositionLog.objects.filter(
+            entry=self.entry, called_bet__date__lt=self.called_bet.date).order_by('-called_bet__date').first()
+
 
 class Bet(models.Model):
     outcome = models.ForeignKey(Outcome, on_delete=models.CASCADE)
