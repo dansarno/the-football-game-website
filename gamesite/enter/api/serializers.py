@@ -128,26 +128,34 @@ class EntryChangesSerializer(serializers.ModelSerializer):
 class PositionLogChangeSerializer(serializers.ModelSerializer):
     entry = serializers.SerializerMethodField()
     previous_position = serializers.SerializerMethodField()
-    current_position = serializers.SerializerMethodField()
+    new_position = serializers.SerializerMethodField()
     position_change = serializers.SerializerMethodField()
 
     class Meta:
         model = models.PositionLog
         fields = ['entry', 'previous_position',
-                  'current_position', 'position_change']
+                  'new_position', 'position_change']
 
     def get_entry(self, obj):
         serializer = EntryChangesSerializer(instance=obj.entry)
         return serializer.data
 
     def get_previous_position(self, obj):
-        return obj.get_prev_position_log().position
+        prev_pos_log = obj.get_prev_position_log()
+        if prev_pos_log:
+            return obj.get_prev_position_log().position
+        else:
+            return None
 
-    def get_current_position(self, obj):
+    def get_new_position(self, obj):
         return obj.position
 
     def get_position_change(self, obj):
-        return obj.get_prev_position_log().position - obj.position
+        prev_pos_log = obj.get_prev_position_log()
+        if prev_pos_log:
+            return obj.get_prev_position_log().position - obj.position
+        else:
+            return None
 
 
 class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
@@ -175,8 +183,11 @@ class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
         deltas_arr = []
         for position_log in models.PositionLog.objects.filter(called_bet=obj):
             deltas = {}
-            deltas['change'] = position_log.position - \
-                position_log.get_prev_position_log().position
+            if position_log.get_prev_position_log():
+                deltas['change'] = position_log.position - \
+                    position_log.get_prev_position_log().position
+            else:
+                deltas['change'] = position_log.position
             deltas['entry'] = position_log.entry
             deltas['username'] = position_log.entry.profile.user.username
             deltas['position_log'] = position_log

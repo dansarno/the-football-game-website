@@ -8,7 +8,7 @@ $(document).ready(function () {
     success: function (data) {
       let totalEntries = data.num_correct + data.num_incorrect
       new Chart(document.getElementById("betSuccessChart"), {
-        type: 'pie',
+        type: 'doughnut',
         data: {
           labels: ["Number Successful", "Number Unsuccessful"],
           datasets: [{
@@ -21,14 +21,17 @@ $(document).ready(function () {
           plugins: {
             tooltip: {
               callbacks: {
-                label: function(tooltipItem) {
+                label: function (tooltipItem) {
                   return tooltipItem.label + ': ' + tooltipItem.parsed + ' of ' + totalEntries;
                 },
               },
             },
+            legend: {
+              reverse: true
+            }
+          }
         }
-      }
-    });
+      });
     },
     error: function (error_data) {
       console.log(error_data)

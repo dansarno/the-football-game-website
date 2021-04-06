@@ -10,7 +10,12 @@ $(document).ready(function () {
       },
       // processing: true,
       orderClasses: false,
-      responsive: true,
+      responsive: {
+        details: {
+          type: 'column',
+          target: 'tr'
+        }
+      },
       order: [
         [0, "asc"]
       ],
@@ -38,10 +43,9 @@ $(document).ready(function () {
         {
           data: "profile",
           render: function (data, type, row) {
-            return `<a href="/profile/${data.user.username}" class="pic-link">
+            return `<div><a href="/profile/${data.user.username}" class="pic-link">
                               <img class="rounded-circle account-img-sm" src="${data.profile_picture}" />
-                            </a>
-                            ${row.label ? row.label : ''}`;
+                            </a>${row.label ? row.label : ''}</div>`;
           }
         },
         {

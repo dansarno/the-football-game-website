@@ -29,13 +29,44 @@
   {% if post.post_type == 'B' %}
   <div class="card border-light shadow-sm mb-5">
     <div class="card-body">
-      <h2>Bet Stats</h2>
+      <h2>More Bet Info</h2>
+      <hr>
+
       <div class="row">
-        <div class="col-md">
+        <div class="col-md-6">
+          <div id="table_container" class="container-fluid"
+            data-url-endpoint="{% url 'enter:bet_changes_api' called_bet_id=post.called_bet.id %}">
+            <h5>Biggest Winners</h5>
+            <table id="winners-leaderboard" class="display" style="width:100%; td, th {font-size: x-small;}">
+              <thead>
+                <tr>
+                  <th class="all"></th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>ΔPos</th>
+                </tr>
+              </thead>
+            </table>
+
+            <hr>
+
+            <h5>Biggest Losers</h5>
+            <table id="losers-leaderboard" class="display" style="width:100%">
+              <thead>
+                <tr>
+                  <th class="all"></th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>ΔPos</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+
         </div>
-        
-        <div class="col-md">
-          <div id="bet-success-chart_container"
+
+        <div class="col-md-6">
+          <div id="bet-success-chart_container" class="mt-5"
             data-bet-success-url-endpoint="{% url 'enter:bet_success_api' called_bet_id=post.called_bet.id %}">
             <canvas id="betSuccessChart" width="400" height="400"></canvas>
           </div>
@@ -48,6 +79,7 @@
 
 {% if post.post_type == 'B' %}
 <script type="text/javascript" src="{% static 'feed/bet_success_chart.js' %}"></script>
+<script type="text/javascript" src="{% static 'feed/bet_winners_and_losers_leaderboard.js' %}"></script>
 {% endif %}
 
 
