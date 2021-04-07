@@ -118,7 +118,6 @@ $(document).ready(function () {
       })
       i++
     }
-    console.log(defaultScoreData)
 
     positionChartData = {}
     // positionChartData.labels = defaultLabels

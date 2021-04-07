@@ -7,7 +7,11 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-12 col-lg-9 mt-4">
+  {% if post.post_type == 'B' %}
+  <h2>Called Bet Post</h2>
+  {% else %}
   <h2>Post Detail</h2>
+  {% endif %}
   <div class="card border-light shadow-sm mb-3">
     <div class="card-body">
       <div class="media d-block d-md-flex">
@@ -19,7 +23,7 @@
             <a class="mr-2" href="{% url 'profile' username=post.author.username %}">{{ post.author }}</a>
             <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
           </div>
-          <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title }}</a></h3>
+          <h3>{{ post.title }}</h3>
           <p class="article-content">{{ post.content }}</p>
         </div>
       </div>

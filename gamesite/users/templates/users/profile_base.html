@@ -4,24 +4,18 @@
 <div class="col-12 mt-4">
 <div class="card border-light shadow-sm mb-4">
   <div class="card-body">
-    <div class="row">
+    <div class="row no-gutters">
       <div class="col-2">
         <img class="rounded-circle account-img" src="{{ user.profile.profile_picture.url }}">
       </div>
       <div class="col-9">
         <div class="media-body">
-          {% if user.first_name and user.last_name %}
           <h2 class="account-heading"><b>{{ user.first_name }} {{ user.last_name }}</b></h2>
-          {% else %}
-          <h2 class="account-heading"><b>{{ user.username }}</b></h2>
-          {% endif %}
 
           <h3 class="text-muted">@{{ user.username }}</h3>
 
           {% if user.profile.bio %}
           <p class="text-muted">{{ user.profile.bio }}</p>
-          {% else %}
-          <p class="text-muted"></p>
           {% endif %}
 
           <span class="mr-3">
