@@ -1,3 +1,7 @@
+body {
+    background-color: #f7f7fa;
+}
+
 table {
     width: 100%;
 }
@@ -20,6 +24,7 @@ label {
 
 .form_section {
     border: 2px solid lightgrey;
+    background-color: #ffffff;
     padding: 10px;
 }
 
@@ -34,8 +39,8 @@ p.help_text {
 }
 
 table.outcomes-table {
-  table-layout: fixed;
-  width: 100%;
+    table-layout: fixed;
+    width: 100%;
 }
 
 fieldset[disabled] input[type="radio"]:checked:after {
@@ -53,28 +58,30 @@ fieldset[disabled] input[type="radio"]:checked:after {
 }
 
 fieldset[disabled] input[type='radio']:after {
-        width: 15px;
-        height: 15px;
-        border-radius: 15px;
-        top: -3px;
-        left: -1px;
-        position: relative;
-        background-color: #e6e6e6;
-        content: '';
-        display: inline-block;
-        visibility: visible;
-        border: 1px solid white;
-    }
-
-* {
-    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
-    color-adjust: exact !important;                 /*Firefox*/
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -3px;
+    left: -1px;
+    position: relative;
+    background-color: #e6e6e6;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 1px solid white;
 }
 
-@media print
-{
-    .no-print, .no-print *
-    {
+* {
+    -webkit-print-color-adjust: exact !important;
+    /* Chrome, Safari */
+    color-adjust: exact !important;
+    /*Firefox*/
+}
+
+@media print {
+
+    .no-print,
+    .no-print * {
         display: none !important;
     }
 }
