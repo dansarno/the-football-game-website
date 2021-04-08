@@ -19,6 +19,20 @@ ul {
   margin: 0;
 }
 
+#site-logo-header svg {
+  height: 32px;
+  width: 32px;
+  transform: translate(0px, -4px);
+  -ms-transform: translate(0px, -4px);
+  /* IE 9 */
+  -webkit-transform: translate(0px, -4px);
+  /* Safari and Chrome */
+  -o-transform: translate(0px, -4px);
+  /* Opera */
+  -moz-transform: translate(0px, -4px);
+  /* Firefox */
+}
+
 .bg-steel {
   background-color: #73797d;
 }
