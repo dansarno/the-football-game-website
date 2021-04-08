@@ -1,11 +1,14 @@
 <div class="row">
-  <div class="form_section col-md-6 col-lg-6  rounded-lg" id="group_games">
+
+  <div class="col-sm-12 col-lg-6">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="group_games">
     <h3>Group Matches</h3>
-    <p class="help_text">Select either home, draw or away wins for every game below.</p>
+    <p class="help_text">Select either home, draw or away wins for <b>every game</b> below.</p>
     <table>
       <tr>
-        <th></th>
-        <th></th>
+        <th class="d-none d-sm-table-cell"></th>
+        <th class="d-none d-sm-table-cell"></th>
         <th></th>
         <th>Home</th>
         <th>Draw</th>
@@ -13,8 +16,8 @@
       </tr>
       {% for field in group_matches_form %}
       <tr>
-        <td class="match_label text-muted">{{ field.label.ko_time|date:'H:00' }}</td>
-        <td class="match_label text-muted">{{ field.label.ko_time|date:'D d' }}</td>
+        <td class="match_label text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'H:00' }}</td>
+        <td class="match_label text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'D d' }}</td>
         <td class="match_label">{{ field.label.home_team.country.name }} vs {{ field.label.away_team.country.name }}
         </td>
         {% for radio in field %}
@@ -26,10 +29,14 @@
       {% endfor %}
     </table>
   </div>
+  </div>
+  </div>
 
-  <div class="form_section col-md-6 col-lg-3 rounded-lg" id="group_winners-bets">
+  <div class="col-md-6 col-lg-3">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="group_winners-bets">
     <h3>Group Winners</h3>
-    <p class="help_text">Select one winner in each group.</p>
+    <p class="help_text">Select one winner in <b>each</b> group.</p>
     {% for field in group_winner_bets_form %}
     <b>{{ field.label }}</b>
     <table>
@@ -56,9 +63,12 @@
     </table>
     {% endfor %}
   </div>
+  </div>
+  </div>
 
-  <div class="col-md-6 col-lg-3 rounded-lg pl-0 pr-0" id="top-goalscoring-bets">
-    <div class="form_section" id="top-goalscoring-group-bet">
+    <div class="col-md-6 col-lg-3" id="top-goalscoring-bets">
+      <div class="card border-light shadow-sm mb-4">
+      <div class="card-body" id="top-goalscoring-group-bet">
       <h3>Top Goalscoring Group</h3>
       <p class="help_text">Select one group.</p>
       {% for field in top_goal_group_bets_form %}
@@ -86,8 +96,10 @@
       </table>
       {% endfor %}
     </div>
+    </div>
 
-    <div class="form_section" id="top-goalscoring-player-bet">
+    <div class="card border-light shadow-sm mb-4">
+      <div class="card-body" id="top-goalscoring-player-bet">
       <h3>Top Goalscorer</h3>
       <p class="help_text">Select one player.</p>
       {% for field in top_goal_player_bets_form %}
@@ -117,7 +129,8 @@
     </div>
   </div>
 
-  <div class="form_section col-md-6 col-lg-3 rounded-lg" id="tournament-bets">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="tournament-bets">
     <h3>Tournament Totals</h3>
     <p class="help_text">Select one of each.</p>
     {% for field in tournament_bets_form %}
@@ -157,8 +170,12 @@
     <!--        </table>-->
     {% endfor %}
   </div>
+  </div>
+  </div>
 
-  <div class="form_section col-md-6 col-lg-3 rounded-lg" id="final-bets">
+    <div class="col-md-6 col-lg-3">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="final-bets">
     <h3>During the Final</h3>
     <p class="help_text">Select one of each.</p>
     {% for field in final_bets_form %}
@@ -187,8 +204,12 @@
     </table>
     {% endfor %}
   </div>
+  </div>
+  </div>
 
-  <div class="form_section col-md-6 col-lg-5 rounded-lg" id="fifty-fifty-bets">
+    <div class="col-md-6 col-lg-5">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="fifty-fifty-bets">
     <h3>50/50's</h3>
     <p class="help_text">Select one of each.</p>
     <table>
@@ -211,8 +232,12 @@
       {% endfor %}
     </table>
   </div>
+  </div>
+  </div>
 
-  <div class="form_section col-md-12 col-lg-8 rounded-lg" id="best-team-bets">
+    <div class="col-md-12 col-lg-8">
+  <div class="card border-light shadow-sm mb-4">
+  <div class="card-body" id="best-team-bets" style="overflow-x:auto;">
     <h3>Top Teams</h3>
     <p class="help_text">Select one from each column.</p>
 
@@ -253,6 +278,8 @@
       </tr>
 
     </table>
+  </div>
+  </div>
   </div>
 
 </div>

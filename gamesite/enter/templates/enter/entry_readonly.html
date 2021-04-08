@@ -1,6 +1,12 @@
 {% extends "enter/enter_base.html" %}
 
+{% load static %}
+
 {% block content %}
+
+<!-- Read-only CSS -->
+<link href="{% static 'enter/read-only-style.css' %}" rel="stylesheet">
+
 {% if entry.label %}
 <h1 class="text-center">{{ entry.profile.user.username }}'s Entry {{ entry.label }}</h1>
 {% else %}
