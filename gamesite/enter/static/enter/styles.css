@@ -1,5 +1,7 @@
 body {
     background-color: #f7f7fa;
+    margin: 10px;
+    padding: 10px;
 }
 
 table {
@@ -12,6 +14,10 @@ td {
 
 label {
     margin-bottom: 0;
+}
+
+.card-body h3 {
+    color: #E71D36;
 }
 
 .match_label {
@@ -50,7 +56,7 @@ fieldset[disabled] input[type="radio"]:checked:after {
     top: -3px;
     left: -1px;
     position: relative;
-    background-color: #4488db;
+    background-color: #0B77D5;
     content: '';
     display: inline-block;
     visibility: visible;
