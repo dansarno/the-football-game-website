@@ -60,10 +60,16 @@ def recalculate_scores_and_positions_delete(instance):
             score_log.score = entry.current_score
             score_log.save()
 
+            # Update the number of correct bets each entry has had after this called bet
+            num_of_correct_bets = models.Bet.objects.filter(
+                entry=entry, success=True).count()
+            entry.correct_bets = num_of_correct_bets
+            entry.save()
+
         # 2. Update positions given the new scores
         position = 1
         ordered_entries = models.Entry.objects.order_by(
-            '-current_score', 'profile__user__first_name')
+            '-current_score', '-correct_bets', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
         for i, entry in enumerate(ordered_entries):
             if entry.current_score < previous_score:
@@ -106,7 +112,7 @@ def recalculate_from_instance(instance, created):
             if bet_in_same_group.outcome == called_bet.outcome:
                 correct_count += 1
                 entry.current_score += called_bet.outcome.winning_amount
-                entry.save()
+                # entry.save()
                 bet_in_same_group.success = True
                 bet_in_same_group.called_bet = called_bet
                 bet_in_same_group.save()
@@ -128,10 +134,16 @@ def recalculate_from_instance(instance, created):
                 score_log.score = entry.current_score
                 score_log.save()
 
+            # Update the number of correct bets each entry has had after this called bet
+            num_of_correct_bets = models.Bet.objects.filter(
+                entry=entry, success=True).count()
+            entry.correct_bets = num_of_correct_bets
+            entry.save()
+
         # 2. Update positions given the new scores
         position = 1
         ordered_entries = models.Entry.objects.order_by(
-            '-current_score', 'profile__user__first_name')
+            '-current_score', '-correct_bets', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
         for i, entry in enumerate(ordered_entries):
             if entry.current_score < previous_score:
@@ -175,9 +187,9 @@ def removed_from_called_bets(sender, instance, **kwargs):
 
 @receiver(post_save, sender=models.Entry)
 def label_entries(sender, instance, created, **kwargs):
-    all_entries = instance.profile.entries.order_by('id')
-    labels = ["A", "B", "C"]
     if created:
+        all_entries = instance.profile.entries.order_by('id')
+        labels = ["A", "B", "C"]
         if len(all_entries) == 1:
             entry = all_entries.first()
             entry.label = None

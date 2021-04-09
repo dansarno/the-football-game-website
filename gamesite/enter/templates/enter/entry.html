@@ -2,10 +2,10 @@
 
 {% block content %}
   <h1 class="text-center">Submission Form</h1>
-  <form method="POST">
+  <form method="POST" id="entry-form">
     {% csrf_token %}
     {% include 'enter/form.html' %}
-    <input type="submit" class="btn btn-primary btn-lg" value="Save">
+    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save">
   </form>
 
 {% endblock content %}

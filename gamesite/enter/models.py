@@ -27,6 +27,7 @@ class Entry(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='entries')
     current_score = models.IntegerField(default=0)
+    correct_bets = models.IntegerField(default=0)
     bets = models.ManyToManyField(Outcome, through='Bet')
     label = models.CharField(max_length=1, blank=True, null=True)
 
