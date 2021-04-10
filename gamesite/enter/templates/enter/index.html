@@ -11,10 +11,10 @@
     <div class="card-body">
       <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.
       </div>
-      <div class="row">
+      <div class="row row-cols-1 row-cols-md-3">
         {% for entry_and_progress in entries_and_progress %}
-        <div class="col-md-4">
-          <div class="card mb-4">
+        <div class="col mb-4">
+          <div class="card h-100">
             {% if entry_and_progress.entry.label %}
             <div class="card-header">
               <h3>Entry {{ entry_and_progress.entry.label }}</h3>
@@ -57,14 +57,18 @@
               {% endif %}
             </div>
             <div class="card-footer">
+              {% if entry_and_progress.entry.date_submitted %}
+              <small class="text-muted">Submitted on: {{ entry_and_progress.entry.date_submitted|date:"D d M Y" }}</small>
+              {% else %}
               <small class="text-muted">Last updated: {{ entry_and_progress.entry.date_updated|naturaltime }}</small>
+              {% endif %}
             </div>
           </div>
         </div>
 
         <!-- Submit Entry Modal -->
         <div class="modal fade" id="submitModalForEntry{{ entry_and_progress.entry.id }}" tabindex="-1" role="dialog"
-          aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
+          aria-labelledby="submitModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -110,11 +114,13 @@
         {% endfor %}
 
         {% if num_of_entries < 3 %}
-        <div class="col-md-6 col-lg-4">
-          <div class="new_entry_section">
+        <div class="col mb-4">
+          <div class="card h-100">
+            <div class="card-body">
             <h3>+</h3>
             <a href="{% url 'enter:create_entry' %}" class="btn btn-outline-primary">Add</a>
             <a href="{% url 'enter:create_random_entry' %}" class="btn btn-outline-primary">Random</a>
+            </div>
           </div>
         </div>
         {% endif %}

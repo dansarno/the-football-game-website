@@ -8,6 +8,7 @@ from users.models import Team
 from . import forms
 from . import models
 from random import choice
+from datetime import datetime
 
 
 @login_required
@@ -378,6 +379,7 @@ def submit_entry(request, entry_id, success_url="enter:index"):
 
     submitted_entry_label = requested_entry.label
     requested_entry.has_submitted = True
+    requested_entry.date_submitted = datetime.now()
     requested_entry.save()
 
     if submitted_entry_label:
