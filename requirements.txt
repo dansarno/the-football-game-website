@@ -5,3 +5,4 @@ sqlparse==0.4.1
 Pillow
 django-crispy-forms
 django-polymorphic
+django-inline-svg
