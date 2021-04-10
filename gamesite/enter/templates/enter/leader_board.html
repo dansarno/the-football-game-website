@@ -4,9 +4,9 @@
 
 {% block content %}
 
-{% include 'feed/profile_sidebar.html' %}
+{% comment %} {% include 'feed/profile_sidebar.html' %} {% endcomment %}
 
-<div class="col-12 col-lg-9 mt-4">
+<div class="col-lg-12 mt-4">
   <h2>Leaderboards</h2>
 
   <div class="card border-light shadow-sm mb-4">
@@ -22,23 +22,10 @@
               <th>User</th>
               <th>Name</th>
               <th>Form</th>
-              <th>Upcoming</th>
-              <th>Correct Bets</th>
+              <th class="correct-bets-header">Correct Bets</th>
               <th>Score</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>Pos</th>
-              <th class="all"></th>
-              <th>User</th>
-              <th>Name</th>
-              <th>Form</th>
-              <th>Upcoming</th>
-              <th>Correct Bets</th>
-              <th>Score</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>
@@ -59,23 +46,10 @@
               <th>User</th>
               <th>Name</th>
               <th>Form</th>
-              <th>Upcoming</th>
-              <th>Correct Bets</th>
+              <th class="correct-bets-header">Correct Bets</th>
               <th>Score</th>
             </tr>
           </thead>
-          <tfoot>
-            <tr>
-              <th>Pos</th>
-              <th class="all"></th>
-              <th>User</th>
-              <th>Name</th>
-              <th>Form</th>
-              <th>Upcoming</th>
-              <th>Correct Bets</th>
-              <th>Score</th>
-            </tr>
-          </tfoot>
         </table>
       </div>
     </div>

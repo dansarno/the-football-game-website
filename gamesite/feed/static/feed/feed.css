@@ -255,6 +255,11 @@ a.article-title:hover {
   text-decoration: none;
 }
 
+table.dataTable thead th {
+  vertical-align: bottom;
+  background-position: right 85% !important;
+}
+
 .score-bar {
   width: 100px;
   margin: 6px;

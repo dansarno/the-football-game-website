@@ -22,6 +22,21 @@ class BetSerializer(serializers.ModelSerializer):
         fields = ['success', 'outcome', 'called_bet']
 
 
+class UpcomingBetSerializer(serializers.ModelSerializer):
+    question = serializers.SerializerMethodField()
+    choice = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Bet
+        fields = ['question', 'choice']
+
+    def get_question(self, obj):
+        return obj.outcome.short_question
+
+    def get_choice(self, obj):
+        return obj.outcome.short_choice
+
+
 class ScoreLogSerializer(serializers.ModelSerializer):
     called_bet = CalledBetSerializer(read_only=True)
 
@@ -61,11 +76,12 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
     position_logs = serializers.SerializerMethodField(
         'get_last_two_position_logs')
     form = serializers.SerializerMethodField('get_last_five_bets')
+    upcoming = serializers.SerializerMethodField('get_upcoming_bets')
 
     class Meta:
         model = models.Entry
         fields = ['id', 'label', 'profile', 'current_score', 'correct_bets',
-                  'current_position', 'position_logs', 'form']
+                  'current_position', 'position_logs', 'form', 'upcoming']
 
     def get_last_five_score_logs(self, obj):
         score_logs = models.ScoreLog.objects.filter(
@@ -85,6 +101,12 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
         recent_bets = models.Bet.objects.filter(entry=obj).exclude(
             success__isnull=True).order_by('-called_bet__date')[:5]
         serializer = BetSerializer(instance=reversed(recent_bets), many=True)
+        return serializer.data
+
+    def get_upcoming_bets(self, obj):
+        next_bets = models.Bet.objects.filter(entry=obj).exclude(
+            success__isnull=False).order_by('outcome__choice_group__when_called')[:3]
+        serializer = UpcomingBetSerializer(instance=next_bets, many=True)
         return serializer.data
 
 
