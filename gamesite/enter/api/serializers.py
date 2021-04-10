@@ -64,7 +64,7 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'profile', 'current_score',
+        fields = ['id', 'label', 'profile', 'current_score', 'correct_bets',
                   'current_position', 'position_logs', 'form']
 
     def get_last_five_score_logs(self, obj):

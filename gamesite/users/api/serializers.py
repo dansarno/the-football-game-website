@@ -50,7 +50,6 @@ class EntryPositionHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Entry
         fields = [
-            'id',
             'label',
             'position_logs'
         ]
@@ -94,7 +93,7 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
 
 
 class ProfileHistorySerializer(serializers.ModelSerializer):
-    entries = EntryHistorySerializer(many=True, read_only=True)
+    entries = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField()
 
     class Meta:
@@ -104,22 +103,43 @@ class ProfileHistorySerializer(serializers.ModelSerializer):
     def get_username(self, obj):
         return obj.user.username
 
+    def get_entries(self, obj):
+        valid_entries = models.Entry.objects.filter(
+            profile=obj, has_submitted=True)
+        serializer = EntryHistorySerializer(
+            instance=valid_entries, many=True, read_only=True)
+        return serializer.data
+
 
 class ProfilePositionHistorySerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
-    entries = EntryPositionHistorySerializer(many=True, read_only=True)
+    entries = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['user', 'profile_picture', 'entries']
 
+    def get_entries(self, obj):
+        valid_entries = models.Entry.objects.filter(
+            profile=obj, has_submitted=True)
+        serializer = EntryPositionHistorySerializer(
+            instance=valid_entries, many=True, read_only=True)
+        return serializer.data
+
 
 class ProfilePerformanceSerializer(serializers.ModelSerializer):
-    entries = EntryPerformanceSerializer(many=True, read_only=True)
+    entries = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
         fields = ['entries']
+
+    def get_entries(self, obj):
+        valid_entries = models.Entry.objects.filter(
+            profile=obj, has_submitted=True)
+        serializer = EntryPerformanceSerializer(
+            instance=valid_entries, many=True, read_only=True)
+        return serializer.data
 
 
 class PrizeSerializer(serializers.ModelSerializer):

@@ -20,31 +20,21 @@
     <tr>
       <th scope="col"></th>
       {% for entry in user.profile.entries.all %}
-        {% if entry.label %}
-          <th scope="col">
-            {% if entry.has_submitted %}
-            <a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a>
-            {% else %}
-            <div>Entry {{ entry.label }}</div>
-            {% endif %}
-          </th>
-        {% else %}
-          {% if request.user == user %}
-          <th scope="col">
-            {% if entry.has_submitted %}
-            <a href="{% url 'enter:view_entry' entry.id %}">My Entry</a>
-            {% else %}
-            <div>My Entry</div>
-            {% endif %}
-          </th>
+        {% if entry.has_submitted %}
+          {% if entry.label %}
+            <th scope="col">
+              <a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a>
+            </th>
           {% else %}
-          <th scope="col">
-            {% if entry.has_submitted %}
-            <a href="{% url 'enter:view_entry' entry.id %}">{{ user.username }}'s Entry</a>
+            {% if request.user == user %}
+            <th scope="col">
+              <a href="{% url 'enter:view_entry' entry.id %}">My Entry</a>
+            </th>
             {% else %}
-            <div>{{ user.username }}'s Entry</div>
+            <th scope="col">
+              <a href="{% url 'enter:view_entry' entry.id %}">{{ user.username }}'s Entry</a>
+            </th>
             {% endif %}
-          </th>
           {% endif %}
         {% endif %}
       {% endfor %}
@@ -54,13 +44,17 @@
     <tr>
       <th scope="row">Current Position</th>
       {% for entry in user.profile.entries.all %}
+        {% if entry.has_submitted %}
         <td scope="col">{{ entry.current_position|ordinal }}</td>
+        {% endif %}
       {% endfor %}
     </tr>
     <tr>
       <th scope="row">Current Score</th>
       {% for entry in user.profile.entries.all %}
+        {% if entry.has_submitted %}
         <td scope="col">{{ entry.current_score|intcomma }}</td>
+        {% endif %}
       {% endfor %}
     </tr>
   </tbody>

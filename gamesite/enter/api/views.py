@@ -12,7 +12,7 @@ from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, Cal
 @api_view(['GET'])
 def entries_detail(request):
     try:
-        entries = models.Entry.objects.all()
+        entries = models.Entry.objects.filter(has_submitted=True)
     except models.Entry.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -25,7 +25,7 @@ def entries_detail(request):
 def my_entries_detail(request):
     try:
         my_entries = models.Entry.objects.filter(
-            profile=request.user.profile).all()
+            profile=request.user.profile, has_submitted=True)
     except models.Entry.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

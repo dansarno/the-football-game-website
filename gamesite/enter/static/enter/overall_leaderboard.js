@@ -94,6 +94,17 @@ $(document).ready(function () {
           }
         },
         {
+          data: "correct_bets",
+          orderSequence: ["desc"],
+          render: function (data, type, row) {
+            if (type === 'sort') {
+              return data * -1;
+            }
+            return data;
+          },
+          visible: false
+        },
+        {
           data: "current_score",
           render: $.fn.dataTable.render.number(',')
         },
@@ -104,6 +115,9 @@ $(document).ready(function () {
       }, {
         targets: [1, 4, 5],
         orderable: false
+      }, {
+        targets: [0],
+        orderData: [0, 6, 3]
       }, {
         targets: 0,
         className: 'column-bolded'

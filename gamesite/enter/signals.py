@@ -29,7 +29,8 @@ def recalculate_scores_and_positions_delete(instance):
         date__gt=instance.date).order_by('date')
     previous_called_bet_to_this_one = models.CalledBet.objects.filter(
         date__lt=instance.date).last()
-    entries = models.Entry.objects.all()
+    # only submitted entries can participate in the game
+    entries = models.Entry.objects.filter(has_submitted=True)
     if previous_called_bet_to_this_one:
         # Restore scores back to the value before the called bet instance
         for entry in entries:
@@ -68,7 +69,7 @@ def recalculate_scores_and_positions_delete(instance):
 
         # 2. Update positions given the new scores
         position = 1
-        ordered_entries = models.Entry.objects.order_by(
+        ordered_entries = models.Entry.objects.filter(has_submitted=True).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
         for i, entry in enumerate(ordered_entries):
@@ -90,7 +91,8 @@ def recalculate_from_instance(instance, created):
         date__gte=instance.date).order_by('date')
     previous_called_bet_to_this_one = models.CalledBet.objects.filter(
         date__lt=instance.date).last()
-    entries = models.Entry.objects.all()
+    # only submitted entries can participate in the game
+    entries = models.Entry.objects.filter(has_submitted=True)
     if previous_called_bet_to_this_one:
         # Restore scores back to the value before the called bet instance
         for entry in entries:
@@ -142,7 +144,7 @@ def recalculate_from_instance(instance, created):
 
         # 2. Update positions given the new scores
         position = 1
-        ordered_entries = models.Entry.objects.order_by(
+        ordered_entries = models.Entry.objects.filter(has_submitted=True).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         previous_score = ordered_entries[0].current_score
         for i, entry in enumerate(ordered_entries):

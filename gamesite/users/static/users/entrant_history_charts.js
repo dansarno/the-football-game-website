@@ -136,6 +136,7 @@ $(document).ready(function () {
         label: label,
         verboseLabel: defaultVerboseLabels,
         data: positions,
+        // stepped: true,
         backgroundColor: areaColourSet[i],
         borderColor: lineColourSet[i],
         pointBackgroundColor: lineColourSet[i],
