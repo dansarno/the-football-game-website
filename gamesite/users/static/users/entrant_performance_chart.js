@@ -30,8 +30,8 @@ $(document).ready(function () {
         }
       }
 
-      lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
-      areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+      lineColourSet = ['rgba(236, 70, 90, 1)', 'rgba(73, 212, 198, 1)', 'rgba(255, 179, 71, 1)']
+      areaColourSet = ['rgba(236, 70, 90, 0.2)', 'rgba(73, 212, 198, 0.2)', 'rgba(255, 179, 71, 0.2)']
 
       if (data.entries[0].performance.length < 3) {
         let txt = $("<h3></h3").text("COMING SOON");

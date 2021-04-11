@@ -87,8 +87,8 @@ $(document).ready(function () {
     scoreChartData.dateLabels = defaultDateLabels
     scoreChartData.datasets = []
 
-    lineColourSet = ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
-    areaColourSet = ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+    lineColourSet = ['rgba(236, 70, 90, 1)', 'rgba(73, 212, 198, 1)', 'rgba(255, 179, 71, 1)']
+    areaColourSet = ['rgba(236, 70, 90, 0.2)', 'rgba(73, 212, 198, 0.2)', 'rgba(255, 179, 71, 0.2)']
     prizeColours = {
       T: 'rgba(218, 165, 32, 0.5)',
       M: 'rgba(192, 192, 192, 0.5)',

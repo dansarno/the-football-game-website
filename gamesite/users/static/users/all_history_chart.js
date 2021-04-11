@@ -99,11 +99,11 @@ $(document).ready(function () {
         backgroundColor: areaColourSet[i],
         borderColor: lineColour,
         pointBackgroundColor: lineColour,
-        pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+        pointHoverBackgroundColor: 'rgba(236, 70, 90, 1)',
         borderWidth: 3,
         pointRadius: 0,
         pointHoverRadius: 2,
-        hoverBorderColor: 'rgba(255, 99, 132, 1)',
+        hoverBorderColor: 'rgba(236, 70, 90, 1)',
         hoverBorderWidth: 4,
         fill: false,
         lineTension: 0

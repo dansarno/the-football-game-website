@@ -37,6 +37,9 @@ function addScoreDials(data) {
                 animation: {
                     duration: animationDuration,
                     easing: "swing"
+                },
+                fill: {
+                    gradient: ["#CAF1EB", "#2EC4B6"]
                 }
             }).on('circle-animation-progress', function (event, progress) {
                 if (entryData.current_score != 0) {
@@ -44,7 +47,7 @@ function addScoreDials(data) {
                 } else {
                     $(this).find('strong').text("0");
                 }
-                
+
             });
         }
     } else {
@@ -77,7 +80,7 @@ function addFormData(data) {
                 if (bet.success === true) {
                     $(`#form-${entryData.label}`).append(
                         `<span data-toggle="tooltip" data-placement="top" title="${bet.outcome}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2EC4B6"
                             class="bi bi-check-circle correct" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                             <path
@@ -88,7 +91,7 @@ function addFormData(data) {
                 } else {
                     $(`#form-${entryData.label}`).append(
                         `<span data-toggle="tooltip" data-placement="top" title="${bet.outcome}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#E71D36"
                             class="bi bi-x-circle incorrect" viewBox="0 0 16 16">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                             <path
@@ -112,7 +115,7 @@ function animateValue(id, start, end, duration) {
     var increment = end > start ? 1 : -1;
     var stepTime = Math.abs(Math.floor(duration / range));
     var obj = document.getElementById(id);
-    
+
     if (start === end) {
         obj.innerHTML = "<strong>" + ordinal_suffix_of(start) + "</strong>"
         return
