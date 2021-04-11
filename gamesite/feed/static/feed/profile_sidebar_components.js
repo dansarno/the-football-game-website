@@ -58,7 +58,11 @@ function addScoreDials(data) {
 function addPositionCounters(data) {
     if (data.length > 0) {
         for (let entryData of data) {
-            $("#positions-container").append(`<div id="position-${entryData.label}" class="position-counter"></div>`);
+            if (entryData.label) {
+                $("#positions-container").append(`<div class="text-muted">Entry ${entryData.label}</div><div id="position-${entryData.label}" class="position-counter"></div>`);
+            } else {
+                $("#positions-container").append(`<div id="position-${entryData.label}" class="position-counter"></div>`);
+            }
             let duration = 0
             if (entryData.current_score != 0) {
                 duration = (entryData.current_score / entryData.top_score) * 3000
@@ -75,7 +79,11 @@ function addPositionCounters(data) {
 function addFormData(data) {
     if (data.length > 0) {
         for (let entryData of data) {
-            $("#form-container").append(`<div id="form-${entryData.label}" class="mt-1"></div>`)
+            if (entryData.label) {
+                $("#form-container").append(`<div class="text-muted">Entry ${entryData.label}</div><div id="form-${entryData.label}" class="mt-1"></div>`)
+            } else {
+                $("#form-container").append(`<div id="form-${entryData.label}" class="mt-1"></div>`)
+            }
             for (let bet of entryData.form) {
                 if (bet.success === true) {
                     $(`#form-${entryData.label}`).append(
