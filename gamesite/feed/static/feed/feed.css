@@ -53,6 +53,10 @@ ul {
   background: #ffffff;
 }
 
+.muted-card {
+  opacity: .4;
+}
+
 .content-section {
   background: #ffffff;
   padding: 10px 20px;

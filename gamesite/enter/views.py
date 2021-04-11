@@ -11,8 +11,12 @@ from random import choice
 from datetime import datetime
 
 
+deadline = datetime(2021, 6, 11)
+
+
 @login_required
 def index(request):
+    has_deadline_passed = datetime.now() > deadline
     existing_entries = request.user.profile.entries.order_by('id')
     entries_and_progress = []
     for entry in existing_entries:
@@ -25,7 +29,8 @@ def index(request):
     return render(request, "enter/index.html", {
         "title": "Entry Manager",
         "entries_and_progress": entries_and_progress,
-        "num_of_entries": len(entries_and_progress)
+        "num_of_entries": len(entries_and_progress),
+        "has_deadline_passed": has_deadline_passed
     })
 
 
@@ -33,7 +38,7 @@ def index(request):
 def leaderboard(request):
     teams = Team.objects.all()
     return render(request, "enter/leader_board.html", {
-        "title": "Leader Board",
+        "title": "Leaderboard",
         "teams": teams
     })
 
@@ -75,6 +80,11 @@ def results(request):
 
 @login_required
 def create_entry(request, template_name="enter/entry.html", success_url="enter:index"):
+    if datetime.now() > deadline:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as the deadline has now passed.')
+        return HttpResponseRedirect(reverse(success_url))
+
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentTotalsForm(request.POST)
@@ -142,12 +152,18 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
 
 @login_required
 def create_random_entry(request, success_url="enter:index"):
+    if datetime.now() > deadline:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as the deadline has now passed.')
+        return HttpResponseRedirect(reverse(success_url))
+
     new_entry = models.Entry.objects.create(profile=request.user.profile)
     for choice_group in models.ChoiceGroup.objects.all():
         random_choice = choice(
             choice_group.outcome_set.non_polymorphic().all())
         models.Bet.objects.create(entry=new_entry, outcome=random_choice)
-    messages.add_message(request, messages.SUCCESS, 'Random entry created.')
+    messages.add_message(request, messages.WARNING,
+                         'Random entry created.')
     return HttpResponseRedirect(reverse(success_url))
 
 
@@ -160,6 +176,11 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 
     if requested_entry.has_submitted:
         raise PermissionDenied
+
+    if datetime.now() > deadline:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as the deadline has now passed.')
+        return HttpResponseRedirect(reverse(success_url))
 
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
@@ -349,6 +370,11 @@ def delete_entry(request, entry_id, success_url="enter:index"):
     if requested_entry.has_submitted:
         raise PermissionDenied
 
+    if datetime.now() > deadline:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as the deadline has now passed.')
+        return HttpResponseRedirect(reverse(success_url))
+
     deleted_entry_label = requested_entry.label
     requested_entry.delete()
 
@@ -371,6 +397,11 @@ def submit_entry(request, entry_id, success_url="enter:index"):
 
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
+
+    if datetime.now() > deadline:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as the deadline has now passed.')
+        return HttpResponseRedirect(reverse(success_url))
 
     if requested_entry.bets.count() < models.ChoiceGroup.objects.count():
         msg = "Submission failed. Entry does not have the complete number of bets."

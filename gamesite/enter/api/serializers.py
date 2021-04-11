@@ -214,7 +214,11 @@ class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
             deltas['username'] = position_log.entry.profile.user.username
             deltas['position_log'] = position_log
             deltas_arr.append(deltas)
-        sorted_deltas_arr = sorted(deltas_arr, key=lambda k:
+        if reverse:
+            filtered_deltas_arr = [d for d in deltas_arr if d['change'] >= 0]
+        else:
+            filtered_deltas_arr = [d for d in deltas_arr if d['change'] <= 0]
+        sorted_deltas_arr = sorted(filtered_deltas_arr, key=lambda k:
                                    k['change'], reverse=reverse)[:num_entries]
         return [deltas['position_log'] for deltas in sorted_deltas_arr]
 

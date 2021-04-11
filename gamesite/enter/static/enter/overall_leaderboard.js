@@ -11,7 +11,7 @@ $(document).ready(function () {
 
         i = 0
         for (let upcoming of data[0].upcoming) {
-          $(`<th>${upcoming.question}</th>`).insertBefore('.correct-bets-header')
+          $(`<th><small>${upcoming.question}</small></th>`).insertBefore('.correct-bets-header')
           // $(`<th>${upcoming.question}</th>`).insertBefore('.correct-bets-footer')
 
           upcomingColumns.push({
