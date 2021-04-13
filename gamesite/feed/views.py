@@ -14,6 +14,24 @@ def landing(request):
     })
 
 
+def charity(request):
+    return render(request, 'feed/charity.html', {
+        'title': "Charity",
+    })
+
+
+def how_it_works(request):
+    return render(request, 'feed/how_it_works.html', {
+        'title': "How It Works",
+    })
+
+
+def about(request):
+    return render(request, 'feed/about.html', {
+        'title': "About",
+    })
+
+
 class PostListView(LoginRequiredMixin, ListView):
     model = Post
     template_name = 'feed/home.html'
