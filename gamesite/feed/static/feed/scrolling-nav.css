@@ -1,0 +1,50 @@
+canvas {
+  position: relative;
+  z-index: -3 !important;
+}
+
+section {
+  padding-top: 250px;
+  height: 1100px
+}
+
+#sign-up svg {
+  height: 100px;
+  width: 100px;
+}
+
+.short-name {
+  display: none;
+}
+
+.long-name {
+  display: inline-block;
+}
+
+@media screen and (max-width: 1200px) {
+  .long-name {
+    display: none;
+  }
+
+  .short-name {
+    display: inline-block;
+  }
+}
+
+#about {
+  background-color: #011627;
+  color: white;
+}
+
+#how-it-works {
+  background-color: #49D4C6;
+}
+
+#charity {
+  background-color: #E71D36;
+  color: white;
+}
+
+#history {
+  background-color: #FFB347;
+}

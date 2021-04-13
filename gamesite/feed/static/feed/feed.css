@@ -315,7 +315,7 @@ table.dataTable thead th {
 .footer-dark {
   padding: 50px 0;
   color: #f0f9ff;
-  background-color: #282d32;
+  background-color: #343A3F;
 }
 
 .footer-dark h3 {
@@ -323,6 +323,7 @@ table.dataTable thead th {
   margin-bottom: 12px;
   font-weight: bold;
   font-size: 16px;
+  color: #f0f9ff;
 }
 
 .footer-dark ul {
