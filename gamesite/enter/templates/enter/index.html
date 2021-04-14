@@ -47,10 +47,11 @@
                 Submit
               </button>
               {% else %}
-              <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal"
-                data-target="#submitModalForEntry{{ entry_and_progress.entry.id }}" disabled>
+              <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="You can only submit complete entries">
+              <button type="button" class="btn btn-outline-primary btn-sm mr-1" style="pointer-events: none;" disabled>
                 Submit
               </button>
+              </span>
               {% endif %}
               {% if not has_deadline_passed %}
               <a href="{% url 'enter:entry' entry_and_progress.entry.id %}"

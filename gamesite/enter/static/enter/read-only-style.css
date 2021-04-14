@@ -1,3 +1,21 @@
 .help_text {
     display: none;
 }
+
+svg {
+    height: 50px;
+    width: 70px;
+    transform: translate(0px, -10px);
+    -ms-transform: translate(0px, -10px);
+    /* IE 9 */
+    -webkit-transform: translate(0px, -10px);
+    /* Safari and Chrome */
+    -o-transform: translate(0px, -10px);
+    /* Opera */
+    -moz-transform: translate(0px, -10px);
+    /* Firefox */
+}
+
+h1 {
+    vertical-align: bottom;
+}
