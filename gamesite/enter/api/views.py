@@ -6,7 +6,20 @@ from rest_framework.decorators import api_view
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from enter import models
-from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer
+from users.models import Team
+from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer, TeamSerializer
+
+
+@api_view(['GET'])
+def teams_detail(request):
+    try:
+        teams = Team.objects.all()
+    except Team.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = TeamSerializer(teams, many=True)
+        return Response(serializer.data)
 
 
 @api_view(['GET'])

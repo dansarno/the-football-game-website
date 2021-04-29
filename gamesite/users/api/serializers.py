@@ -68,7 +68,8 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
 
     def get_performance(self, obj):
         performance = []
-        for category in models.GameCategory.objects.all():
+        game_categories = models.GameCategory.objects.all()
+        for category in game_categories:
             choice_groups = models.ChoiceGroup.objects.filter(
                 game_category=category)
             total_bets = choice_groups.count()
@@ -77,17 +78,25 @@ class EntryPerformanceSerializer(serializers.ModelSerializer):
             percentage_success = dict()
             percentage_success['game_category'] = category.title
             winning_bets = 0
+            score = 0
+            total_score = 0
+            total_bets = 0
             any_called = False
             for choice_group in choice_groups:
                 bet_in_same_group = models.Bet.objects.filter(
                     entry=obj, outcome__choice_group=choice_group).first()
                 if bet_in_same_group.success is not None:
+                    total_bets += 1
+                    total_score += bet_in_same_group.outcome.winning_amount
                     any_called = True
                 if bet_in_same_group.success:
                     winning_bets += 1
-            percentage_wins = (winning_bets / total_bets) * 100
-            percentage_success['percentage_wins'] = percentage_wins
+                    score += bet_in_same_group.outcome.winning_amount
             if any_called:
+                percentage_wins = (winning_bets / total_bets) * 100
+                percentage_score = (score / total_score) * 100
+                percentage_success['percentage_wins'] = percentage_wins
+                percentage_success['percentage_score'] = percentage_score
                 performance.append(percentage_success)
         return performance
 

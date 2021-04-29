@@ -40,7 +40,7 @@ def recalculate_scores_and_positions_delete(instance):
             entry.save()
     else:
         # Restore scores back to zero
-        entries.update(current_score=0)
+        entries.update(current_score=0, current_position=None, correct_bets=0)
     for called_bet in called_bets_after_this_one:
         # 1. Update scores for those that won this called bet
         for entry in entries:

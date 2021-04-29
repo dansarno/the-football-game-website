@@ -10,8 +10,10 @@ def generate_random_code():
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_picture = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    team = models.ForeignKey('Team', on_delete=models.SET_NULL, blank=True, null=True)
+    profile_picture = models.ImageField(
+        default='default.jpg', upload_to='profile_pics')
+    team = models.ForeignKey(
+        'Team', on_delete=models.SET_NULL, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
     bio = models.TextField(max_length=160, blank=True, null=True)
 

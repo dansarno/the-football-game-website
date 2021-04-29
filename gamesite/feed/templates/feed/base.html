@@ -79,7 +79,7 @@
                 Explore
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'enter:leaderboard' %}">Leaderboard</a>
+                <a class="dropdown-item" href="{% url 'enter:leaderboard' %}">Leaderboards</a>
                 <a class="dropdown-item" href="{% url 'enter:results' %}">Results</a>
                 <a class="dropdown-item" href="{% url 'enter:explore' %}">Chart</a>
               </div>
@@ -163,6 +163,34 @@
       </div>
     </footer>
   </div>
+
+  <script>
+    const $dropdown = $(".dropdown");
+    const $dropdownToggle = $(".dropdown-toggle");
+    const $dropdownMenu = $(".dropdown-menu");
+    const showClass = "show";
+    
+    $(window).on("load resize", function() {
+      if (this.matchMedia("(min-width: 768px)").matches) {
+        $dropdown.hover(
+          function() {
+            const $this = $(this);
+            $this.addClass(showClass);
+            $this.find($dropdownToggle).attr("aria-expanded", "true");
+            $this.find($dropdownMenu).addClass(showClass);
+          },
+          function() {
+            const $this = $(this);
+            $this.removeClass(showClass);
+            $this.find($dropdownToggle).attr("aria-expanded", "false");
+            $this.find($dropdownMenu).removeClass(showClass);
+          }
+        );
+      } else {
+        $dropdown.off("mouseenter mouseleave");
+      }
+    });
+  </script>
 
 </body>
 

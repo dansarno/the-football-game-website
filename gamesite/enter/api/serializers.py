@@ -1,8 +1,15 @@
 from rest_framework import serializers
 from enter import models
-from users.models import Profile
+from users.models import Profile, Team
 from django.contrib.auth.models import User
 from django.db.models import Max
+
+
+class TeamSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Team
+        fields = ['id', 'name']
 
 
 class CalledBetSerializer(serializers.ModelSerializer):
@@ -69,10 +76,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class LeaderboardEntrySerializer(serializers.ModelSerializer):
-    # score_logs = ScoreLogSerializer(many=True, read_only=True)
-    # position_logs = PositionLogSerializer(many=True, read_only=True)
     profile = ProfileSerializer(read_only=True)
-    # score_logs = serializers.SerializerMethodField('get_last_five_score_logs')
     position_logs = serializers.SerializerMethodField(
         'get_last_two_position_logs')
     form = serializers.SerializerMethodField('get_last_five_bets')

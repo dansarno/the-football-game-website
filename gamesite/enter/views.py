@@ -38,15 +38,15 @@ def index(request):
 def leaderboard(request):
     teams = Team.objects.all()
     return render(request, "enter/leader_board.html", {
-        "title": "Leaderboard",
+        "title": "Leaderboards",
         "teams": teams
     })
 
 
 @login_required
 def explore(request):
-    return render(request, "enter/explore.html", {
-        "title": "Explore"
+    return render(request, "enter/all_history.html", {
+        "title": "Chart"
     })
 
 
@@ -162,7 +162,7 @@ def create_random_entry(request, success_url="enter:index"):
         random_choice = choice(
             choice_group.outcome_set.non_polymorphic().all())
         models.Bet.objects.create(entry=new_entry, outcome=random_choice)
-    messages.add_message(request, messages.WARNING,
+    messages.add_message(request, messages.SUCCESS,
                          'Random entry created.')
     return HttpResponseRedirect(reverse(success_url))
 

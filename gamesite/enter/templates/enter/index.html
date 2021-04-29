@@ -1,5 +1,6 @@
 {% extends "feed/base.html" %}
 {% load humanize %}
+{% load svg %}
 
 {% block content %}
 
@@ -20,8 +21,15 @@
           <div class="card h-100">
           {% endif %}
             {% if entry_and_progress.entry.label %}
-            <div class="card-header">
-              <h3>Entry {{ entry_and_progress.entry.label }}</h3>
+            <div class="card-header hex-labeled-entry">
+              <h3 class="mr-2">Entry</h3>
+              {% if entry_and_progress.entry.label == 'A' %}
+              {% svg 'A-label' %}
+              {% elif entry_and_progress.entry.label == 'B' %}
+              {% svg 'B-label' %}
+              {% elif entry_and_progress.entry.label == 'C' %}
+              {% svg 'C-label' %}
+              {% endif %}
             </div>
             {% else %}
             <div class="card-header">
@@ -42,28 +50,28 @@
                 class="btn btn-outline-secondary btn-sm mr-1">View</a>
               {% else %}
               {% if entry_and_progress.progress == 100 and not has_deadline_passed %}
-              <button type="button" class="btn btn-outline-primary btn-sm mr-1" data-toggle="modal"
+              <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-2" data-toggle="modal"
                 data-target="#submitModalForEntry{{ entry_and_progress.entry.id }}">
                 Submit
               </button>
               {% else %}
               <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="You can only submit complete entries">
-              <button type="button" class="btn btn-outline-primary btn-sm mr-1" style="pointer-events: none;" disabled>
+              <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-2" style="pointer-events: none;" disabled>
                 Submit
               </button>
               </span>
               {% endif %}
               {% if not has_deadline_passed %}
               <a href="{% url 'enter:entry' entry_and_progress.entry.id %}"
-                class="btn btn-outline-secondary btn-sm mr-1">Edit</a>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                class="btn btn-outline-secondary btn-sm mr-1 mb-2">Edit</a>
+              <button type="button" class="btn btn-outline-danger btn-sm mb-2" data-toggle="modal"
                 data-target="#deleteModalForEntry{{ entry_and_progress.entry.id }}">
                 Delete
               </button>
               {% else %}
               <a href="{% url 'enter:entry' entry_and_progress.entry.id %}"
-                class="btn btn-outline-secondary btn-sm mr-1 disabled">Edit</a>
-              <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal"
+                class="btn btn-outline-secondary btn-sm mr-1 mb-2 disabled">Edit</a>
+              <button type="button" class="btn btn-outline-danger btn-sm mb-2" data-toggle="modal"
                 data-target="#deleteModalForEntry{{ entry_and_progress.entry.id }}" disabled>
                 Delete
               </button>
@@ -92,7 +100,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                Are you sure you want to submit this entry?
+                Are you sure you want to submit this entry? This action cannot be undone.
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No, Take Me Back</button>
@@ -115,7 +123,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                Are you sure you want to permanently delete this entry?
+                Are you sure you want to permanently delete this entry? This action cannot be undone.
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">No, Take Me Back</button>

@@ -1,6 +1,7 @@
 {% extends "feed/base.html" %}
 {% load static %}
 {% load humanize %}
+{% load svg %}
 
 {% block content %}
 
@@ -19,7 +20,11 @@
     <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}">
       <canvas id="allHistoryChart" width="400" height="400"></canvas>
     </div>
-    <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle X Axis</button>
+    <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle Time Axis</button>
+    <small class="mt-3 text-muted">
+      {% svg 'info' %}
+      Switch between a time axis where called bets are spaced according to the amount of time between them (aka "linear") and a time axis where called bets are equally spaced (aka "series")
+    </small>
   </div>
 </div>
 </div>

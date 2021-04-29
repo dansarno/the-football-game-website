@@ -165,6 +165,10 @@ $(document).ready(function () {
           }
         },
         plugins: {
+          title: {
+            display: true,
+            text: 'Score History'
+          },
           tooltip: {
             mode: 'nearest',
             callbacks: {
@@ -184,6 +188,7 @@ $(document).ready(function () {
         scales: {
           y: {
             beginAtZero: true,
+            suggestedMax: 1000,
             ticks: {
               callback: function (value, index, values) {
                 if (Math.max(...getValues(values)) > 1500) {
@@ -235,6 +240,10 @@ $(document).ready(function () {
           }
         },
         plugins: {
+          title: {
+            display: true,
+            text: 'Position History'
+          },
           tooltip: {
             mode: 'nearest',
             callbacks: {
@@ -255,6 +264,7 @@ $(document).ready(function () {
           y: {
             scaleID: "y-axis-0",
             beginAtZero: false,
+            suggestedMin: 2,
             reverse: true,
             ticks: {
               stepSize: 1,

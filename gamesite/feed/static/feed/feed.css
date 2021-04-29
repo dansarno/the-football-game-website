@@ -19,6 +19,21 @@ ul {
   margin: 0;
 }
 
+svg {
+  overflow: visible;
+}
+
+.hex-labeled-entry h3 {
+  float: left;
+  color: #011627;
+}
+
+.hex-labeled-entry svg {
+  float: left;
+  height: 32px;
+  width: 32px;
+}
+
 #site-logo-header svg {
   height: 32px;
   width: 32px;
@@ -73,6 +88,36 @@ ul {
 
 .muted-card {
   opacity: .4;
+}
+
+
+.dropdown-toggle::after {
+  transition: transform 0.15s linear;
+}
+
+.show.dropdown .dropdown-toggle::after {
+  transform: translateY(3px);
+}
+
+.dropdown-menu {
+  margin-top: 0;
+  border: 1px solid #5c5c5c;
+}
+
+.dropdown-divider {
+  border-color: #5c5c5c;
+}
+
+.navbar-nav>li>.dropdown-menu {
+  background-color: #343a40;
+}
+
+.navbar-nav>li>.dropdown-menu a {
+  color: #FDFFFC;
+}
+
+.navbar-nav>li>.dropdown-menu a:hover {
+  background-color: #007bff;
 }
 
 .content-section {
@@ -178,8 +223,6 @@ a.article-title:hover {
 .account-img-sm {
   height: 25px;
   width: 25px;
-  margin-right: 5px;
-  margin-top: 5px;
 }
 
 .account-img-md {
@@ -270,6 +313,14 @@ a.article-title:hover {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
 }
 
 .table a {
@@ -297,7 +348,7 @@ table.dataTable thead th {
 
 .score-bar strong {
   position: absolute;
-  top: 30px;
+  top: 60%;
   left: 0;
   width: 100%;
   text-align: center;
@@ -305,10 +356,52 @@ table.dataTable thead th {
   font-size: 20px;
 }
 
-.position-counter strong {
+.score-bar svg {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
+}
+
+.pic-and-label {
+  display: inline-block;
+  position: relative;
+}
+
+.pic-and-label svg {
+  position: absolute;
+  top: 30%;
+  left: -50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
+}
+
+.position-counter,
+#form-container strong {
   font-size: 20px;
 }
 
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 /*FOOTER*/
 
