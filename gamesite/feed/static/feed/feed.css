@@ -129,7 +129,7 @@ svg {
 }
 
 .account-name {
-  margin-top: 10px;
+  margin-top: 30px;
   color: #444444;
   font-size: 25px;
 }
@@ -171,11 +171,19 @@ a.article-title:hover {
 
 .sticker-img {
   position: absolute;
-  top: -20%;
-  left: 92%;
-  height: 120px;
-  width: 120px;
-  margin-right: 16px;
+  bottom: -30%;
+  left: 3%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
+  height: 100px;
+  width: 100px;
   -webkit-filter: drop-shadow(3px 3px 0 white) drop-shadow(-3px 3px 0 white) drop-shadow(3px -3px 0 white) drop-shadow(-3px -3px 0 white);
 
   filter: drop-shadow(3px 3px 0 white) drop-shadow(-3px 3px 0 white) drop-shadow(3px -3px 0 white) drop-shadow(-3px -3px 0 white);
@@ -210,6 +218,18 @@ a.article-title:hover {
 }
 
 .account-img-md {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
   height: 90px;
   width: 90px;
 }

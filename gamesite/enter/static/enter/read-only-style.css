@@ -2,6 +2,10 @@
     display: none;
 }
 
+.randomise-btn {
+    display: none;
+}
+
 svg {
     height: 50px;
     width: 70px;

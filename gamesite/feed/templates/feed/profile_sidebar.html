@@ -9,7 +9,7 @@
         <a href="{% url 'profile' username=request.user.username %}">
           <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">
         </a>
-        <div class="mt-2">
+        <div class="mt-4">
           <a href="{% url 'profile' username=request.user.username %}"
             class="account-name">{{ request.user.first_name }} {{ request.user.last_name }}</a>
         </div>

@@ -23,6 +23,7 @@ class UserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['access_code'].help_text = "An access code is required to create an account."
+        self.fields['username'].help_text = "A short unique username, 20 characters max."
 
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")

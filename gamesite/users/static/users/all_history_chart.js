@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var chartDataEndpoint = $("#all-history-chart-container").attr("data-all-history-url-endpoint")
   var prizeDataEndpoint = $("#all-history-chart-container").attr("data-prize-url-endpoint")
+  var username = $("#all-history-chart-container").attr("data-username")
   var defaultScoreData = []
   var defaultPositionData = []
   var defaultLabels = []
@@ -32,6 +33,7 @@ $(document).ready(function () {
     let verboseLabels = []
     let dateLabels = []
     let entryLabels = []
+    let usernames = []
 
     prizePositions = []
     for (let prize of prizeData) {
@@ -48,6 +50,7 @@ $(document).ready(function () {
 
     for (let profile of data) {
       for (let entry of profile.entries) {
+        usernames.push(profile.user)
         if (entry.label) {
           entryLabels.push(`${profile.user} (${entry.label})`)
         } else {
@@ -70,11 +73,11 @@ $(document).ready(function () {
     defaultPositionData = positions
 
     $("#loading").hide()
-    setChart(entryLabels)
+    setChart(entryLabels, usernames)
     $('#xaxis-toggle').show()
   })
 
-  function setChart(entryLabels) {
+  function setChart(entryLabels, usernames) {
     var ctx = document.getElementById('allHistoryChart').getContext('2d');
 
     areaColourSet = [] // ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
@@ -97,13 +100,13 @@ $(document).ready(function () {
         label: entryLabels[i],
         verboseLabel: defaultVerboseLabels,
         data: positions,
-        backgroundColor: lineColor,
-        borderColor: lineColor,
+        backgroundColor: (usernames[i] === username) ? lineColorFull : lineColor,
+        borderColor: (usernames[i] === username) ? lineColorFull : lineColor,
         hoverBorderColor: lineColorFull,
-        pointBackgroundColor: lineColor,
+        pointBackgroundColor: (usernames[i] === username) ? lineColorFull : lineColor,
         pointHoverBackgroundColor: lineColorFull,
-        borderWidth: 3,
-        pointRadius: 0,
+        borderWidth: (usernames[i] === username) ? 6 : 3,
+        pointRadius: (usernames[i] === username) ? 3 : 0,
         pointHitRadius: 5,
         pointHoverRadius: 3,
         hoverBorderWidth: 6,

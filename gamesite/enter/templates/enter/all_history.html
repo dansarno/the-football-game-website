@@ -17,7 +17,7 @@
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}">
+    <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}" data-username="{{ request.user.username }}">
       <canvas id="allHistoryChart" width="400" height="400"></canvas>
     </div>
     <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle Time Axis</button>

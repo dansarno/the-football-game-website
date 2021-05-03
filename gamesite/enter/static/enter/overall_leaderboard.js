@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var tableDataEndpoint = $("#overall_table_container").attr("data-url-endpoint");
   var teamsDataEndpoint = $("#overall_table_container").attr("data-teams-url-endpoint");
+  var prizesDataEndpoint = $("#overall_table_container").attr("data-prizes-url-endpoint");
   let upcomingColumns = []
 
   let ajaxTableData = $.ajax({
@@ -21,9 +22,24 @@ $(document).ready(function () {
     }
   })
 
-  $.when(ajaxTableData, ajaxTeamData).done(function (a1, a2) {
+  let ajaxPrizeData = $.ajax({
+    method: "GET",
+    url: prizesDataEndpoint,
+    success: function (data) {},
+    error: function (error_data) {
+      console.log(error_data)
+    }
+  })
+
+  $.when(ajaxTableData, ajaxTeamData, ajaxPrizeData).done(function (a1, a2, a3) {
     let data = a1[0]
     let teamData = a2[0]
+    let prizeData = a3[0]
+
+    prizePositions = []
+    for (let prize of prizeData) {
+      prizePositions.push(prize.position)
+    }
 
     i = 0
     for (let upcoming of data[0].upcoming) {
@@ -47,18 +63,30 @@ $(document).ready(function () {
         data: "current_position",
         render: function (data, type, row, meta) {
           if (type === 'display' || type === 'filter') {
+            let positionPrefix = ""
+            if (data === 1) {
+              positionPrefix = '🥇 ';
+            } else if (data === 2) {
+              positionPrefix = '🥈 ';
+            } else if (data === 3) {
+              positionPrefix = '🥉 ';
+            } else if (prizePositions.includes(data)) {
+              positionPrefix = '💰 ';
+            } else {
+              positionPrefix = " ";
+            }
             let latestPositionLog = row.position_logs[row.position_logs.length - 1];
             let previousPositionLog = row.position_logs[row.position_logs.length - 2];
             if (previousPositionLog) {
               if (latestPositionLog.position > previousPositionLog.position) {
-                return `<div>${data}</div> <div class="arrow-down"></div>`;
+                return `<div>${data}${positionPrefix}</div> <div class="arrow-down"></div>`;
               } else if (latestPositionLog.position < previousPositionLog.position) {
-                return `<div class="arrow-up"></div> <div>${data}</div>`;
+                return `<div class="arrow-up"></div> <div>${data}${positionPrefix}</div>`;
               } else {
-                return data;
+                return data + positionPrefix;
               }
             } else {
-              return data;
+              return data + positionPrefix;
             }
           }
           return data;
