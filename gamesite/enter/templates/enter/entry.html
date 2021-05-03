@@ -1,11 +1,18 @@
 {% extends "enter/enter_base.html" %}
+{% load static %}
+{% load svg %}
 
 {% block content %}
-  <h1 class="text-center">Submission Form</h1>
+<h1 class="text-center mt-4">{% svg 'football-game-logo' %}
+Football Game | Euro '20</h1>
+  <h1 class="text-center mb-4">Entry Form</h1>
   <form method="POST" id="entry-form">
+    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save1">
     {% csrf_token %}
     {% include 'enter/form.html' %}
-    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save">
+    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save2">
   </form>
+
+<script type="text/javascript" src="{% static 'enter/randomise.js' %}"></script>
 
 {% endblock content %}

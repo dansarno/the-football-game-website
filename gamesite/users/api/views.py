@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, status
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from django.core.cache import cache
 from rest_framework import authentication, permissions
 from rest_framework.decorators import api_view
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -21,6 +23,22 @@ def all_entries_history(request):
     if request.method == 'GET':
         serializer = ProfilePositionHistorySerializer(profiles, many=True)
         return Response(serializer.data)
+
+
+class AllHistoryViewSet(ReadOnlyModelViewSet):
+    queryset = models.Profile.objects.all()
+    serializer_class = ProfilePositionHistorySerializer
+
+    def list(self, request):
+        cache_key = f"all_history_list"
+
+        data = cache.get(cache_key)
+        if data:
+            return Response(data)
+
+        response = super().list(request)
+        cache.set(cache_key, response.data)
+        return response
 
 
 @api_view(['GET'])

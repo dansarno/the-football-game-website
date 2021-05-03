@@ -1,13 +1,42 @@
 {% extends "feed/base.html" %}
 {% load humanize %}
+{% load svg %}
 
 {% block content %}
 
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-12 col-lg-9 mt-4">
+  
   <h2>Feed</h2>
+  
+  {% if pinned_post %}
+  <div class="card border-secondary shadow-sm mb-4">
+    <div class="card-body">
+      <div class="media">
+        <a class="mr-2" href="{% url 'profile' username=pinned_post.author.username %}">
+          <img class="rounded-circle article-img" src="{{pinned_post.author.profile.profile_picture.url }}">
+        </a>
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'profile' username=pinned_post.author.username %}">{{ pinned_post.author }}</a>
+            <small class="text-muted">{{ pinned_post.date_posted|naturaltime }}</small>
+            {% svg 'bookmark_icon' %}
+          </div>
+          <h3><a class="article-title" href="{% url 'feed:detail' pinned_post.id %}">{{ pinned_post.title }}</a></h3>
+          <p class="article-content">{{ pinned_post.content|truncatewords_html:50 }}</p>
+        </div>
+      </div>
+    </div>
+    {% if pinned_post.sticker %}
+    <img class="sticker-img" src="{{pinned_post.sticker.sticker_picture.url }}">
+    {% endif %}
+  </div>
+  {% endif %}
+
   {% for post in posts %}
+
+  {% if not post.is_pinned %}
   <div class="card border-light shadow-sm mb-4">
     <div class="card-body">
       <div class="media">
@@ -28,6 +57,8 @@
     <img class="sticker-img" src="{{post.sticker.sticker_picture.url }}">
     {% endif %}
   </div>
+  {% endif %}
+
   {% empty %}
   <div class="card text-center border-light shadow-sm mb-4">
     <div class="card-body">

@@ -9,14 +9,12 @@ from . import forms
 from . import models
 from random import choice
 from datetime import datetime
-
-
-deadline = datetime(2021, 6, 11)
+from django.conf import settings
 
 
 @login_required
 def index(request):
-    has_deadline_passed = datetime.now() > deadline
+    has_deadline_passed = datetime.now() > settings.GAME_DEADLINE
     existing_entries = request.user.profile.entries.order_by('id')
     entries_and_progress = []
     for entry in existing_entries:
@@ -80,7 +78,7 @@ def results(request):
 
 @login_required
 def create_entry(request, template_name="enter/entry.html", success_url="enter:index"):
-    if datetime.now() > deadline:
+    if datetime.now() > settings.GAME_DEADLINE:
         messages.add_message(request, messages.WARNING,
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
@@ -152,7 +150,7 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
 
 @login_required
 def create_random_entry(request, success_url="enter:index"):
-    if datetime.now() > deadline:
+    if datetime.now() > settings.GAME_DEADLINE:
         messages.add_message(request, messages.WARNING,
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
@@ -177,7 +175,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
     if requested_entry.has_submitted:
         raise PermissionDenied
 
-    if datetime.now() > deadline:
+    if datetime.now() > settings.GAME_DEADLINE:
         messages.add_message(request, messages.WARNING,
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
@@ -370,7 +368,7 @@ def delete_entry(request, entry_id, success_url="enter:index"):
     if requested_entry.has_submitted:
         raise PermissionDenied
 
-    if datetime.now() > deadline:
+    if datetime.now() > settings.GAME_DEADLINE:
         messages.add_message(request, messages.WARNING,
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
@@ -398,7 +396,7 @@ def submit_entry(request, entry_id, success_url="enter:index"):
     if request.user != requested_entry.profile.user:
         raise PermissionDenied
 
-    if datetime.now() > deadline:
+    if datetime.now() > settings.GAME_DEADLINE:
         messages.add_message(request, messages.WARNING,
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))

@@ -8,18 +8,26 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class UserRegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=150)
-    last_name = forms.CharField(max_length=150)
+    username = forms.CharField(max_length=20)
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
     email = forms.EmailField()
-    access_code = forms.CharField(max_length=10, validators=[RegexValidator(r'^\d{1,10}$')])
+    access_code = forms.CharField(max_length=10, validators=[
+                                  RegexValidator(r'^\d{1,10}$')])
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'access_code']
+        fields = ['username', 'first_name', 'last_name',
+                  'email', 'password1', 'password2', 'access_code']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['access_code'].help_text = "An access code is required to create an account."
 
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")
-        valid_code = AccessCode.objects.filter(code=access_code).first()  # could use a get and try/except block here
+        # could use a get and try/except block here
+        valid_code = AccessCode.objects.filter(code=access_code).first()
         if not valid_code:
             raise forms.ValidationError("This is not a valid access code")
         elif valid_code.remaining <= 0:
@@ -31,6 +39,12 @@ class UserRegisterForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
+    username = forms.CharField(max_length=20)
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = User
@@ -42,7 +56,9 @@ class ProfileUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['bio'].widget.attrs.update(rows='2', id="bio-text")
+        self.fields['team'].help_text = "Want to create you own team? Get in touch, let us know your team name and your team will be created for you and your friends"
+        self.fields['bio'].help_text = "160 characters max"
 
     class Meta:
         model = Profile
-        fields = ['profile_picture', 'team', 'location', 'bio']
+        fields = ['profile_picture', 'team', 'bio']

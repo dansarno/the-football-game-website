@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date_posted')
+    list_display = ('title', 'date_posted', 'is_pinned')
     exclude = ('called_bet',)
 
 

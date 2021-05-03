@@ -77,7 +77,6 @@ $(document).ready(function () {
   function setChart(entryLabels) {
     var ctx = document.getElementById('allHistoryChart').getContext('2d');
 
-    lineColour = 'rgba(199, 199, 199, 0.4)' // ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)']
     areaColourSet = [] // ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
     prizeColours = {
       T: 'rgba(218, 165, 32, 0.5)',
@@ -92,19 +91,22 @@ $(document).ready(function () {
 
     i = 0
     for (let positions of defaultPositionData) {
+      lineColor = "hsla(" + (360 * i / defaultPositionData.length) + ",90%,70%,0.5)"
+      lineColorFull = "hsla(" + (360 * i / defaultPositionData.length) + ",90%,70%,1)"
       positionChartData.datasets.push({
         label: entryLabels[i],
         verboseLabel: defaultVerboseLabels,
         data: positions,
-        backgroundColor: areaColourSet[i],
-        borderColor: lineColour,
-        pointBackgroundColor: lineColour,
-        pointHoverBackgroundColor: 'rgba(236, 70, 90, 1)',
+        backgroundColor: lineColor,
+        borderColor: lineColor,
+        hoverBorderColor: lineColorFull,
+        pointBackgroundColor: lineColor,
+        pointHoverBackgroundColor: lineColorFull,
         borderWidth: 3,
         pointRadius: 0,
-        pointHoverRadius: 2,
-        hoverBorderColor: 'rgba(236, 70, 90, 1)',
-        hoverBorderWidth: 4,
+        pointHitRadius: 5,
+        pointHoverRadius: 3,
+        hoverBorderWidth: 6,
         fill: false,
         lineTension: 0
       })

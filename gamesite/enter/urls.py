@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .api.views import teams_detail, entries_detail, my_entries_detail, called_bet_stats, called_bet_position_changes
+from .api.views import teams_detail, entries_detail, my_entries_detail, called_bet_stats, called_bet_position_changes, EntriesViewSet
 
 app_name = "enter"
 urlpatterns = [
@@ -14,7 +14,9 @@ urlpatterns = [
     path("entry/delete/<int:entry_id>", views.delete_entry, name="delete_entry"),
     path("entry/submit/<int:entry_id>", views.submit_entry, name="submit_entry"),
     path("entry/view/<int:entry_id>", views.view_entry, name="view_entry"),
-    path('api/all', entries_detail, name='all_entries_api'),
+    #     path('api/all', entries_detail, name='all_entries_api'),
+    path(
+        'api/all', EntriesViewSet.as_view({'get': 'list'}), name='all_entries_api'),
     path('api/me', my_entries_detail, name='my_entries_api'),
     path('api/teams', teams_detail, name='teams_api'),
     path('api/called-bet-stats/<int:called_bet_id>',

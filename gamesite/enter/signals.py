@@ -1,6 +1,7 @@
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from . import models
+from django.core.cache import cache
 
 
 @receiver(post_save, sender=models.GroupMatch)
@@ -176,11 +177,15 @@ def recalculate_from_instance(instance, created):
 @receiver(post_save, sender=models.CalledBet)
 def updated_called_bets(sender, instance, created, **kwargs):
     recalculate_from_instance(instance, created)
+    _invalidate_cached_data("entries_list")
+    _invalidate_cached_data("all_history_list")
 
 
 @receiver(post_delete, sender=models.CalledBet)
 def removed_from_called_bets(sender, instance, **kwargs):
     recalculate_scores_and_positions_delete(instance)
+    _invalidate_cached_data("entries_list")
+    _invalidate_cached_data("all_history_list")
 
     # Finally clear the success statuses
     models.Bet.objects.filter(
@@ -216,3 +221,7 @@ def relabel_entries(sender, instance, **kwargs):
         for entry, label in zip(all_entries, labels):
             entry.label = label
             entry.save()
+
+
+def _invalidate_cached_data(cache_key):
+    cache.delete(cache_key)

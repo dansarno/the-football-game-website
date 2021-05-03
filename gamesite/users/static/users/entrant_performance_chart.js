@@ -56,7 +56,7 @@ $(document).ready(function () {
         chartOptions.animation = {
           duration: 0
         }
-        chartOptions.tooltips = {
+        chartOptions.plugins.tooltip = {
           enabled: false
         }
 

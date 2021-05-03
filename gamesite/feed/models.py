@@ -27,6 +27,7 @@ class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_pinned = models.BooleanField(default=False)
     sticker = models.ForeignKey(
         Sticker, on_delete=models.CASCADE, blank=True, null=True)
     post_type = models.CharField(

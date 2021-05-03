@@ -39,6 +39,11 @@ class PostListView(LoginRequiredMixin, ListView):
     ordering = ['-date_posted']
     paginate_by = 10
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostListView,self).get_context_data(*args, **kwargs)
+        context['pinned_post'] = Post.objects.order_by('-date_posted').filter(is_pinned=True).first()
+        return context
+
 
 class PostDetailView(LoginRequiredMixin, DetailView):
     model = Post

@@ -137,11 +137,11 @@
 
         {% if num_of_entries < 3 and not has_deadline_passed %}
         <div class="col mb-4">
-          <div class="card h-100">
+          <div class="card new-entry-card h-100">
             <div class="card-body">
-            <h3>+</h3>
-            <a href="{% url 'enter:create_entry' %}" class="btn btn-outline-primary">Add</a>
-            <a href="{% url 'enter:create_random_entry' %}" class="btn btn-outline-primary">Random</a>
+            <a href="{% url 'enter:create_entry' %}" class="btn btn-outline-primary">+ New Entry</a>
+            <h5>or</h5>
+            <a href="{% url 'enter:create_random_entry' %}" class="btn btn-outline-primary">+ Random Entry</a>
             </div>
           </div>
         </div>

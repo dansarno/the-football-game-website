@@ -1,5 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from django.core.cache import cache
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import generics, status
 from rest_framework import authentication, permissions
 from rest_framework.decorators import api_view
@@ -8,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from enter import models
 from users.models import Team
 from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer, TeamSerializer
+from django.conf import settings
+from datetime import datetime
 
 
 @api_view(['GET'])
@@ -20,6 +26,27 @@ def teams_detail(request):
     if request.method == 'GET':
         serializer = TeamSerializer(teams, many=True)
         return Response(serializer.data)
+
+
+class EntriesViewSet(ReadOnlyModelViewSet):
+    queryset = models.Entry.objects.filter(has_submitted=True)
+    serializer_class = LeaderboardEntrySerializer
+
+    # @method_decorator(cache_page(60*60*2))
+    # def list(self, request, *args, **kwargs):
+    #     return super().list(request, *args, **kwargs)
+
+    def list(self, request):
+        cache_key = f"entries_list"
+
+        data = cache.get(cache_key)
+        # if cached data exists and the game has started, use the cached data
+        if data:  # and datetime.now() > settings.GAME_DEADLINE:
+            return Response(data)
+
+        response = super().list(request)
+        cache.set(cache_key, response.data)
+        return response
 
 
 @api_view(['GET'])

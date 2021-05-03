@@ -76,7 +76,7 @@ $(document).ready(function () {
           } else if (row.label == "B") {
             labelSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgSize}px" viewBox="0 0 97.84 89.01"><path d="M83.15,10.64A13.6,13.6,0,0,0,72.52,4.5H38.19a13.6,13.6,0,0,0-10.63,6.14L10.39,40.37a13.66,13.66,0,0,0,0,12.27L27.56,82.37A13.62,13.62,0,0,0,38.19,88.5H72.52a13.62,13.62,0,0,0,10.63-6.13l17.16-29.73a13.6,13.6,0,0,0,0-12.27Z" transform="translate(-6.43 -2)" fill="none" stroke="#0d1726" stroke-miterlimit="10" stroke-width="5"/><path d="M74.58,72.27C71.89,73.61,66.52,75,59.63,75c-16,0-28-10.07-28-28.64,0-17.72,12-29.74,29.57-29.74,7.05,0,11.5,1.52,13.44,2.52l-1.77,6a26.52,26.52,0,0,0-11.42-2.35c-13.27,0-22.09,8.48-22.09,23.35,0,13.86,8,22.76,21.75,22.76a29.24,29.24,0,0,0,11.93-2.35Z" transform="translate(-6.43 -2)" fill="#011627" stroke="#0d1726" stroke-miterlimit="10" stroke-width="5"/></svg>`
           }
-          return `<div class="pic-and-label"><a href="/profile/${data.user.username}" class="pic-link">
+          return `<div class="pic-and-label ml-3"><a href="/profile/${data.user.username}" class="pic-link">
                           <img class="rounded-circle account-img-sm" src="${data.profile_picture}" />
                         </a>${row.label ? labelSvg : ''}</div>`;
         }

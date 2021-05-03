@@ -105,7 +105,7 @@
                 <img class="rounded-circle account-img-sm" src="{{ request.user.profile.profile_picture.url }}">
               </a>
               <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'profile' username=request.user.username %}">Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' username=request.user.username %}">My Profile</a></li>
                 <li>
                   <div class="dropdown-divider"></div>
                 </li>

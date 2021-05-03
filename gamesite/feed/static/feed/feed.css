@@ -163,22 +163,6 @@ a.article-title:hover {
   margin-right: 16px;
 }
 
-.correct-dot {
-  height: 20px;
-  width: 20px;
-  background-color: #8cff75;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.incorrect-dot {
-  height: 20px;
-  width: 20px;
-  background-color: #ed5a5a;
-  border-radius: 50%;
-  display: inline-block;
-}
-
 .card {
   position: relative;
   top: 0;
@@ -242,19 +226,18 @@ a.article-title:hover {
   top: 125px;
 }
 
-.entry_section {
-  background: white;
-  border: 2px solid lightgrey;
-  border-radius: 15px;
-  padding: 10px;
-}
-
-.new_entry_section {
+.new-entry-card {
   background: white;
   border: 2px solid lightgrey;
   border-style: dashed;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px 20px 20px 20px;
+  text-align: center;
+}
+
+.new-entry-card a, h5{
+  width: 100%;
+  margin-top: 20px
 }
 
 .score-list {
@@ -331,6 +314,10 @@ a.article-title:hover {
 table.dataTable thead th {
   vertical-align: bottom;
   background-position: right 85% !important;
+}
+
+table.dataTable td {
+  white-space: nowrap;
 }
 
 .score-bar {

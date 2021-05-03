@@ -90,9 +90,9 @@ $(document).ready(function () {
     lineColourSet = ['rgba(236, 70, 90, 1)', 'rgba(73, 212, 198, 1)', 'rgba(255, 179, 71, 1)']
     areaColourSet = ['rgba(236, 70, 90, 0.2)', 'rgba(73, 212, 198, 0.2)', 'rgba(255, 179, 71, 0.2)']
     prizeColours = {
-      T: 'rgba(218, 165, 32, 0.5)',
-      M: 'rgba(192, 192, 192, 0.5)',
-      B: 'rgba(205, 127, 50, 0.5)'
+      T: 'rgba(218, 165, 32, 0.8)',
+      M: 'rgba(169, 169, 169, 0.8)',
+      B: 'rgba(205, 127, 50, 0.8)'
     }
     i = 0
     for (let scores of defaultScoreData) {
