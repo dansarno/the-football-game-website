@@ -3,15 +3,25 @@
 {% load svg %}
 
 {% block content %}
-<h1 class="text-center mt-4">{% svg 'football-game-logo' %}
-Football Game | Euro '20</h1>
-  <h1 class="text-center mb-4">Entry Form</h1>
+<div class="entry-header">
+  <h1 class="text-center mt-4">{% svg 'football-game-logo' %}
+  <b>Football Game | Euro '20</b></h1>
+  <h2 class="text-center mb-4">Entry Form</h2>
+</div>
+<div class="entry-body">
   <form method="POST" id="entry-form">
-    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save1">
+    <div class="btn-group" role="group" id="btn-group-1">
+      <a href="{% url 'enter:index' %}" class="btn btn-secondary btn-sm return-btn mr-1" id="return-btn-1">Back</a>
+      <button type="submit" class="btn btn-primary btn-sm" value="Save">Save</button>
+    </div>
     {% csrf_token %}
     {% include 'enter/form.html' %}
-    <input type="submit" class="btn btn-primary btn-lg" value="Save" id="save2">
+    <div class="btn-group" role="group" id="btn-group-2">
+      <a href="{% url 'enter:index' %}" class="btn btn-secondary btn-sm return-btn mr-1" id="return-btn-1">Back</a>
+      <button type="submit" class="btn btn-primary btn-sm" value="Save">Save</button>
+    </div>
   </form>
+</div>
 
 <script type="text/javascript" src="{% static 'enter/randomise.js' %}"></script>
 

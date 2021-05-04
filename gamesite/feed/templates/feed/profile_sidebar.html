@@ -4,7 +4,7 @@
 
 <div class="col-sm-3 d-none d-lg-block sidebar">
   <div class="sticky-top sticky-offset">
-    <div class="card border-light shadow-sm" id="account-profile" data-url-endpoint="{% url 'enter:my_entries_api' %}">
+    <div class="card border-light shadow" id="account-profile" data-url-endpoint="{% url 'enter:my_entries_api' %}">
       <div class="card-body text-center">
         <a href="{% url 'profile' username=request.user.username %}">
           <img class="rounded-circle account-img-md" src="{{ request.user.profile.profile_picture.url }}">

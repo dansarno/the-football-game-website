@@ -8,9 +8,9 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class UserRegisterForm(UserCreationForm):
-    username = forms.CharField(max_length=20)
-    first_name = forms.CharField(max_length=20)
-    last_name = forms.CharField(max_length=20)
+    username = forms.CharField(max_length=8)
+    first_name = forms.CharField(max_length=10)
+    last_name = forms.CharField(max_length=10)
     email = forms.EmailField()
     access_code = forms.CharField(max_length=10, validators=[
                                   RegexValidator(r'^\d{1,10}$')])
@@ -23,7 +23,7 @@ class UserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['access_code'].help_text = "An access code is required to create an account."
-        self.fields['username'].help_text = "A short unique username, 20 characters max."
+        self.fields['username'].help_text = "A short unique username, 8 characters max."
 
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")
@@ -40,9 +40,9 @@ class UserRegisterForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
-    username = forms.CharField(max_length=20)
-    first_name = forms.CharField(max_length=20)
-    last_name = forms.CharField(max_length=20)
+    username = forms.CharField(max_length=8)
+    first_name = forms.CharField(max_length=10)
+    last_name = forms.CharField(max_length=10)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

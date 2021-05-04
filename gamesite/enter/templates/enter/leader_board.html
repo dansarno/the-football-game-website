@@ -9,7 +9,7 @@
 <div class="col-lg-12 mt-4">
   <h2>Leaderboards</h2>
 
-  <div class="card border-light shadow-sm mb-4">
+  <div class="card border-light shadow mb-4">
     <div class="card-body">
       <div id="overall_table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}" data-teams-url-endpoint="{% url 'enter:teams_api' %}" data-prizes-url-endpoint="{% url 'prize_api' %}">
         <h3>Overall Leaderboard</h3>
@@ -33,7 +33,7 @@
 
   <h2 class="mb-3">Team Leaderboards</h2>
   {% for team in teams %}
-  <div class="card border-light shadow-sm mb-4">
+  <div class="card border-light shadow mb-4">
     <div class="card-body">
       <div id="team_{{ team.id }}_table_container">
         <h3>{{ team }} Leaderboard</h3>

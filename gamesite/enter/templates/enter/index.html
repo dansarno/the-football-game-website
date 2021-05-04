@@ -8,7 +8,7 @@
 
 <div class="col-12 col-lg-9 mt-4">
   <h2>Entry Manager</h2>
-  <div class="card border-light shadow-sm">
+  <div class="card border-light shadow">
     <div class="card-body">
       <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.
       </div>
@@ -37,7 +37,7 @@
             </div>
             {% endif %}
             <div class="card-body">
-              <div class="card-text">Completed: {{ entry_and_progress.progress }}%</div>
+              <div class="card-text">Complete: {{ entry_and_progress.progress }}%</div>
               <div class="progress mb-1" style="height: 5px;">
                 <div class="progress-bar bg-primary" role="progressbar"
                   style="width: {{ entry_and_progress.progress }}%" aria-valuenow="{{ entry_and_progress.progress }}"

@@ -1,12 +1,17 @@
 {% load svg %}
 
+  <small class="text-muted progress-text"></small>
+  <div class="progress mt-2 mb-3" style="height: 8px;">
+    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+  </div>
+
 <div class="row">
 
   <div class="col-sm-12 col-lg-6">
   <div class="card section-card mb-4">
   <div class="card-body" id="group_games">
     <h3>Group Matches</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" id="randomise-group-matches">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" id="randomise-group-matches">R</button>
     <p class="help_text">Select either home, draw or away outcomes for <b>each game</b> below.</p>
     <table>
       <tr>
@@ -39,7 +44,7 @@
   <div class="card section-card mb-4">
   <div class="card-body" id="group_winners-bets">
     <h3>Group Winners</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
     <p class="help_text">Select one winner in <b>each</b> group.</p>
     {% for field in group_winner_bets_form %}
     <b class="option-text">{{ field.label }}</b>
@@ -74,7 +79,7 @@
       <div class="card section-card mb-4">
       <div class="card-body" id="top-goalscoring-group-bet">
       <h3>Top Goalscoring Group</h3>
-      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
       <p class="help_text">Select one group.</p>
       {% for field in top_goal_group_bets_form %}
       <table>
@@ -106,7 +111,7 @@
     <div class="card section-card mb-4">
       <div class="card-body" id="top-goalscoring-player-bet">
       <h3>Top Goalscorer</h3>
-      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
       <p class="help_text">Select one player.</p>
       {% for field in top_goal_player_bets_form %}
       <table>
@@ -138,7 +143,7 @@
   <div class="card section-card mb-4">
   <div class="card-body" id="tournament-bets">
     <h3>Tournament Totals</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
     <p class="help_text">Select one of each.</p>
     {% for field in tournament_bets_form %}
     {{ field.label }}
@@ -184,7 +189,7 @@
   <div class="card section-card mb-4">
   <div class="card-body" id="final-bets">
     <h3>During the Final</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
     <p class="help_text">Select one of each.</p>
     {% for field in final_bets_form %}
     {{ field.label }}
@@ -219,7 +224,7 @@
   <div class="card section-card mb-4">
   <div class="card-body" id="fifty-fifty-bets">
     <h3>50/50's</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
     <p class="help_text">Select one of each.</p>
     <table>
       <tr>
@@ -245,10 +250,10 @@
   </div>
 
     <div class="col-md-12 col-lg-8">
-  <div class="card section-card mb-4">
+  <div class="card section-card mb-5">
   <div class="card-body" id="best-team-bets" style="overflow-x:auto;">
     <h3>Top Teams</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">Randomise</button>
+    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
     <p class="help_text">Select one from each column.</p>
 
     <table>
@@ -293,3 +298,8 @@
   </div>
 
 </div>
+
+<small class="text-muted progress-text"></small>
+  <div class="progress mt-2" style="height: 8px;">
+    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+  </div>

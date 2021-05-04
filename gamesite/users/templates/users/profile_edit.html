@@ -4,13 +4,13 @@
 
 {% block button %}
 <div class="col-1">
-  <a href="{% url 'profile' username=request.user.username %}" class="btn btn-light btn-sm">Back</a>
+  <a href="{% url 'profile' username=request.user.username %}" class="btn btn-outline-secondary btn-sm">Back</a>
 </div>
 {% endblock button %}
 
 {% block profile %}
 
-<div class="card border-light shadow-sm mb-4">
+<div class="card border-light shadow mb-4">
 <div class="card-body">
 <form method="POST" enctype="multipart/form-data">
   {% csrf_token %}

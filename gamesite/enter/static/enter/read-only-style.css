@@ -1,8 +1,4 @@
-.help_text {
-    display: none;
-}
-
-.randomise-btn {
+.help_text, .randomise-btn, .progress, #progress-text, .btn-group {
     display: none;
 }
 

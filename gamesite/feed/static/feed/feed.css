@@ -165,14 +165,12 @@ a.article-title:hover {
 
 .card {
   position: relative;
-  top: 0;
-  left: 0;
 }
 
 .sticker-img {
   position: absolute;
-  bottom: -30%;
-  left: 3%;
+  bottom: -60px;
+  left: 20px;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   /* IE 9 */
@@ -408,6 +406,14 @@ table.dataTable td {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
 }
 
 /*FOOTER*/

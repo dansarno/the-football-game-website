@@ -12,7 +12,7 @@
   {% else %}
   <h2>Post Detail</h2>
   {% endif %}
-  <div class="card border-light shadow-sm mb-3">
+  <div class="card border-light shadow mb-3">
     <div class="card-body">
       <div class="media d-block d-md-flex">
         <a class="mr-2" href="{% url 'profile' username=post.author.username %}">
@@ -31,7 +31,7 @@
   </div>
 
   {% if post.post_type == 'B' %}
-  <div class="card border-light shadow-sm mb-5">
+  <div class="card border-light shadow mb-5">
     <div class="card-body">
       <h2>More Bet Info</h2>
       <hr>

@@ -9,13 +9,13 @@
 <div class="col-12 col-lg-9 mt-4">
 <h2>Results</h2>
 
-<div class="card border-light shadow-sm mb-4">
+<div class="card border-light shadow mb-4">
   <div class="card-body">
       <h3>Game Progress</h3>
         <hr />
        <h5 class="mb-2 mt-3">Overall</h5>
       <div class="progress mb-3 mt-3">
-        <div class="progress-bar" role="progressbar" style="width: {{ game_progress }}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ game_progress }}%</div>
+        <div class="progress-bar" role="progressbar" style="width: {{ game_progress }}%" aria-valuenow="{{ game_progress }}" aria-valuemin="0" aria-valuemax="100">{{ game_progress }}%</div>
       </div>
 
       <h5 class="mb-2">Game Section Progress</h5>
@@ -24,7 +24,7 @@
       {% for section in section_progress %}
       <h6>{{ section.title }}   <small class="text-muted">({{ section.number_completed }} of {{ section.total_number }})</small></h6>
       <div class="progress mb-3 mt-1">
-        <div class="progress-bar bg-info" role="progressbar" style="width: {{ section.percentage }}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ section.percentage }}%</div>
+        <div class="progress-bar bg-info" role="progressbar" style="width: {{ section.percentage }}%" aria-valuenow="{{ game_progress }}" aria-valuemin="0" aria-valuemax="100">{{ section.percentage }}%</div>
       </div>
       {% endfor %}
     </div>

@@ -3,7 +3,8 @@
 
 {% block content %}
 <h1>Login</h1>
-<div class="content-section">
+<div class="card border-light shadow mb-5">
+  <div class="card-body">
   <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
@@ -21,6 +22,7 @@
     <small class="text-muted">
       Do you need an account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
     </small>
+  </div>
   </div>
 </div>
 {% endblock content %}
