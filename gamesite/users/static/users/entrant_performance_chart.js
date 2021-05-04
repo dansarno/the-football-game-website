@@ -36,7 +36,7 @@ $(document).ready(function () {
       areaColourSet = ['rgba(236, 70, 90, 0.2)', 'rgba(73, 212, 198, 0.2)', 'rgba(255, 179, 71, 0.2)']
 
       if (data.entries[0].performance.length < 3) {
-        let txt = $("<h3></h3").text("COMING SOON");
+        let txt = $("<h2 style='text-align: center;'></h2>").text("COMING SOON");
         $("#middle-element").append(txt)
         $("#performanceScoreChart").addClass("grayout")
         $("#performanceNumberChart").addClass("grayout")

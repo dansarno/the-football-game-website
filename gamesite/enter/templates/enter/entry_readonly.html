@@ -18,7 +18,7 @@
 {% endif %}
 <form method="POST">
   {% csrf_token %}
-  <button onclick="window.print();return false;" class="btn btn-outline-secondary btn-sm no-print">Print</button>
+  <button onclick="window.print();return false;" class="btn btn-secondary no-print">Print</button>
   <fieldset disabled="disabled">
     {% include 'enter/form.html' %}
   </fieldset>

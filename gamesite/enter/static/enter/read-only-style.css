@@ -19,3 +19,14 @@ svg {
 h1 {
     vertical-align: bottom;
 }
+
+form {
+    position: relative;
+    padding-top: 60px;
+ }
+
+button {
+    position: absolute;
+    top: 10px;
+    right: 0px;
+}

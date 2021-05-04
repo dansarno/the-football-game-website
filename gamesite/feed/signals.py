@@ -8,6 +8,6 @@ from . import models
 @receiver(post_save, sender=CalledBet)
 def create_called_bet_post(sender, instance, created, **kwargs):
     if created:
-        title = f"🔔 Result: {instance.outcome}"
+        title = f"🔔 {instance.outcome}"
         models.Post.objects.create(
             title=title, content="", author=User.objects.get(username='ros'), post_type='B', called_bet=instance)
