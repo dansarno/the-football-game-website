@@ -6,6 +6,9 @@ from .models import Profile, AccessCode
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 
+from datetime import datetime
+from django.conf import settings
+
 
 class UserRegisterForm(UserCreationForm):
     username = forms.CharField(max_length=8)
@@ -59,7 +62,17 @@ class ProfileUpdateForm(forms.ModelForm):
         self.fields['bio'].widget.attrs.update(rows='2', id="bio-text")
         self.fields['team'].help_text = "Want to create you own team? Get in touch, let us know your team name and your team will be created for you and your friends"
         self.fields['bio'].help_text = "160 characters max"
+        if datetime.now() > settings.GAME_DEADLINE:
+            print("should be disabled")
+            self.fields['team'].widget.attrs['disabled'] = True
 
     class Meta:
         model = Profile
         fields = ['profile_picture', 'team', 'bio']
+
+    def clean_team(self):
+        instance = getattr(self, 'instance', None)
+        if datetime.now() > settings.GAME_DEADLINE:
+            return instance.team
+        else:
+            return self.cleaned_data['team']

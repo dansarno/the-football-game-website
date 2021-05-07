@@ -1,12 +1,18 @@
 $(document).ready(function () {
   var chartDataEndpoint = $("#performance-chart_container").attr("data-entries-url-endpoint")
-  var ctx = document.getElementById('performanceScoreChart').getContext('2d');
-  var ctx2 = document.getElementById('performanceNumberChart').getContext('2d');
 
   $.ajax({
     method: "GET",
     url: chartDataEndpoint,
     success: function (data) {
+
+      if (!data.entries.length) {
+        return
+      }
+
+      var ctx = document.getElementById('performanceScoreChart').getContext('2d');
+      var ctx2 = document.getElementById('performanceNumberChart').getContext('2d');
+
       chartOptions = {
         scales: {
           r: {
@@ -178,7 +184,11 @@ $(document).ready(function () {
         options: chartOptions
       })
 
-      chartOptions.plugins.title = {
+      let betPerformanceChartOptions = {
+        ...chartOptions
+      };
+
+      betPerformanceChartOptions.plugins.title = {
         display: true,
         text: 'Bet Performance'
       }

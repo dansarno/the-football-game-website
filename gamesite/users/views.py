@@ -26,10 +26,13 @@ def register(request):
 @login_required
 def profile(request, username):
     user = get_object_or_404(User, username=username)
+    entries = user.profile.entries.filter(has_submitted=True)
 
     return render(request, 'users/profile.html', {
         'title': user.username,
-        'user': user
+        'user': user,
+        'entries': entries,
+        'team': user.profile.team,
     })
 
 

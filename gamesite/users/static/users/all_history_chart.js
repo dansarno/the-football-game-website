@@ -102,7 +102,7 @@ $(document).ready(function () {
         data: positions,
         backgroundColor: (usernames[i] === username) ? lineColorFull : lineColor,
         borderColor: (usernames[i] === username) ? lineColorFull : lineColor,
-        hoverBorderColor: lineColorFull,
+        hoverBorderColor: "rgb(50,50,50)",
         pointBackgroundColor: (usernames[i] === username) ? lineColorFull : lineColor,
         pointHoverBackgroundColor: lineColorFull,
         borderWidth: (usernames[i] === username) ? 6 : 3,

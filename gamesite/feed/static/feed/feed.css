@@ -110,6 +110,7 @@ svg {
 
 .navbar-nav>li>.dropdown-menu {
   background-color: #343a40;
+  opacity: 0.9;
 }
 
 .navbar-nav>li>.dropdown-menu a {
@@ -324,6 +325,29 @@ a.article-title:hover {
   /* Firefox */
 }
 
+.profile-summary-table td {
+  text-align: center;
+}
+
+.placeholder-box {
+  height: 400px;
+  width: 100%;
+  padding: 200px 0;
+  background-color: white;
+  border-radius: 8px;
+  border-width: 3px;
+  border: 1px solid lightgrey;
+  text-align: center;
+}
+
+.sidebar-placeholder-box {
+  height: 90px;
+  width: 100%;
+  padding-top: 35px;
+  text-align: center;
+  background-color: white;
+}
+
 .table a {
   display: block;
   text-decoration: none;
@@ -443,11 +467,16 @@ table.dataTable td {
 .footer-dark ul a {
   color: inherit;
   text-decoration: none;
+  opacity: 0.8;
+}
+
+.footer-dark ul li {
+  color: inherit;
   opacity: 0.6;
 }
 
 .footer-dark ul a:hover {
-  opacity: 0.8;
+  opacity: 1.0;
 }
 
 @media (max-width:767px) {
@@ -470,6 +499,7 @@ table.dataTable td {
 .footer-dark .item.text p {
   opacity: 0.6;
   margin-bottom: 0;
+  font-size: 14px;
 }
 
 .footer-dark .item.social {

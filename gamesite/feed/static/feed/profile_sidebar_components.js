@@ -1,18 +1,33 @@
 $(document).ready(function () {
     var scoreDataEndpoint = $("#account-profile").attr("data-url-endpoint");
+    var prizeDataEndpoint = $("#account-profile").attr("data-prize-url-endpoint");
     jQuery.easing.def = "easeOutQuad";
+    
+    let ajaxPrizeData = $.ajax({
+        method: "GET",
+        url: prizeDataEndpoint,
+        success: function (data) {},
+        error: function (error_data) {
+          console.log(error_data)
+        }
+      })
 
-    $.ajax({
+    let ajaxProfileData = $.ajax({
         method: "GET",
         url: scoreDataEndpoint,
-        success: function (data) {
-            addScoreDials(data)
-            addPositionCounters(data)
-            addFormData(data)
-        },
+        success: function (data) {},
         error: function (error_data) {
             console.log(error_data)
         }
+    })
+
+    $.when(ajaxProfileData, ajaxPrizeData).done(function (a1, a2) {
+        let data = a1[0]
+        let prizeData = a2[0]
+
+        addScoreDials(data)
+        addPositionCounters(data, prizeData)
+        addFormData(data)
     })
 
 });
@@ -35,7 +50,7 @@ function addScoreDials(data) {
             let animationDuration = 0
             if (entryData.current_score != 0) {
                 dialValue = entryData.current_score / entryData.top_score
-                animationDuration = (entryData.current_score / entryData.top_score) * 3000
+                animationDuration = (entryData.current_score / entryData.top_score) * 4000
             } else {
                 dialValue = 0.03
                 animationDuration = 50
@@ -64,12 +79,17 @@ function addScoreDials(data) {
             });
         }
     } else {
-        $("#scores-container").append("<small>You have no entries</small>");
+        $("#scores-container").append("<div class='sidebar-placeholder-box'><small class='test-muted'>You have no entries</small></div>");
     }
 }
 
-function addPositionCounters(data) {
+function addPositionCounters(data, prizeData) {
     if (data.length > 0) {
+        let prizePositions = []
+        for (let prize of prizeData) {
+            prizePositions.push(prize.position)
+        }
+
         for (let entryData of data) {
             if (entryData.label) {
                 $("#positions-container").append(`<div class="text-muted">Entry ${entryData.label}</div><div id="position-${entryData.label}" class="position-counter"></div>`);
@@ -78,14 +98,14 @@ function addPositionCounters(data) {
             }
             let duration = 0
             if (entryData.current_score != 0) {
-                duration = (entryData.current_score / entryData.top_score) * 3000
+                duration = (entryData.current_score / entryData.top_score) * 4000
             } else {
                 duration = 50
             }
-            animateValue(`position-${entryData.label}`, entryData.last_place, entryData.current_position, duration)
+            animateValue(`position-${entryData.label}`, entryData.last_place, entryData.current_position, duration, prizePositions)
         }
     } else {
-        $("#positions-container").append("<small>You have no entries</small>");
+        $("#positions-container").append("<div class='sidebar-placeholder-box'><small class='test-muted'>You have no entries</small></div>");
     }
 }
 
@@ -127,14 +147,14 @@ function addFormData(data) {
                 $(`#form-${entryData.label}`).append("<strong>---</strong>")
             }
         }
-    } else if (data[0].form.length > 0) {
-        $("#form-container").append(`<div class="mt-1">No bets have been called</div>`)
+    // } else if (data[0].form.length > 0) {
+    //     $("#form-container").append(`<div class="sidebar-placeholder-box mt-1">No bets have been called</div>`)
     } else {
-        $("#form-container").append("<small>You have no entries</small>");
+        $("#form-container").append("<div class='sidebar-placeholder-box'><small class='test-muted'>You have no entries</small></div>");
     }
 }
 
-function animateValue(id, start, end, duration) {
+function animateValue(id, start, end, duration, prizePositions) {
     var range = end - start;
     var current = start;
     var increment = end > start ? 1 : -1;
@@ -156,6 +176,21 @@ function animateValue(id, start, end, duration) {
         obj.innerHTML = "<strong>" + ordinal_suffix_of(current) + "</strong>";
         if (current == end) {
             clearInterval(timer);
+            let positionPrefix = ""
+
+            if (current === 1) {
+                positionPrefix = '🥇 ';
+              } else if (current === 2) {
+                positionPrefix = '🥈 ';
+              } else if (current === 3) {
+                positionPrefix = '🥉 ';
+              } else if (prizePositions.includes(current)) {
+                positionPrefix = '💰 ';
+              } else {
+                positionPrefix = " ";
+              }
+            
+              obj.innerHTML = "<strong>" + ordinal_suffix_of(current) + positionPrefix + "</strong>";
         }
     }, stepTime);
 }

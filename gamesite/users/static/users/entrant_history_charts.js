@@ -27,6 +27,10 @@ $(document).ready(function () {
     let data = a1[0]
     prizeData = a2[0]
 
+    if (!data.entries.length) {
+      return
+    }
+
     let scores = []
     let positions = []
     let labels = []
@@ -264,7 +268,7 @@ $(document).ready(function () {
           y: {
             scaleID: "y-axis-0",
             beginAtZero: false,
-            suggestedMin: 2,
+            suggestedMin: (positionChartData.dateLabels.length) ? null : 2,
             reverse: true,
             ticks: {
               stepSize: 1,

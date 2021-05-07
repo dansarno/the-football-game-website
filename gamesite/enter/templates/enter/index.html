@@ -8,9 +8,9 @@
 
 <div class="col-12 col-lg-9 mt-4">
   <h2>Entry Manager</h2>
-  <div class="card border-light shadow">
+  <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <div class="pb-4">You can submit up to 3 entries per person. Each entry £7.50 and must be paid by 11th June 2021.
+      <div class="pb-4">You can submit up to 3 entries per person. Each entry costs £7.50 and must be paid by 11th June 2021.
       </div>
       <div class="row row-cols-1 row-cols-md-3">
         {% for entry_and_progress in entries_and_progress %}
@@ -148,6 +148,17 @@
         {% endif %}
 
       </div>
+    </div>
+  </div>
+
+  <div class="card border-light shadow">
+    <div class="card-body">
+      <h5>Game Rules Summary</h5>
+      <ol>
+        <li>Each entry costs £7.50 and must be paid by 11th June 2021</li>
+        <li>Entries must be submitted in order to enter the game</li>
+        <li></li>
+      </ol>
     </div>
   </div>
 </div>

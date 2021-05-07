@@ -37,7 +37,7 @@ class EntriesViewSet(ReadOnlyModelViewSet):
     #     return super().list(request, *args, **kwargs)
 
     def list(self, request):
-        cache_key = f"entries_list"
+        cache_key = "entries_list"
 
         data = cache.get(cache_key)
         # if cached data exists and the game has started, use the cached data

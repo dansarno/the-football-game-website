@@ -16,46 +16,66 @@
   <div class="card-body">
     <h4>Summary</h4>
 
-    <table class="table">
+    <table class="table profile-summary-table">
       <thead>
         <tr>
           <th scope="col"></th>
-          {% for entry in user.profile.entries.all %}
-          {% if entry.has_submitted %}
-          {% if entry.label %}
-          <th scope="col">
-            <a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a>
-          </th>
-          {% else %}
-          {% if request.user == user %}
-          <th scope="col">
-            <a href="{% url 'enter:view_entry' entry.id %}">My Entry</a>
-          </th>
-          {% else %}
-          <th scope="col">
-            <a href="{% url 'enter:view_entry' entry.id %}">{{ user.username }}'s Entry</a>
-          </th>
-          {% endif %}
-          {% endif %}
-          {% endif %}
+          {% for entry in entries %}
+            {% if entry.label %}
+              <th scope="col" style="text-align:center">
+                <a href="{% url 'enter:view_entry' entry.id %}">Entry {{ entry.label }}</a>
+              </th>
+            {% else %}
+              {% if request.user == user %}
+                <th scope="col" style="text-align:center">
+                  <a href="{% url 'enter:view_entry' entry.id %}">My Entry</a>
+                </th>
+              {% else %}
+                <th scope="col" style="text-align:center">
+                  <a href="{% url 'enter:view_entry' entry.id %}">{{ user.username }}'s Entry</a>
+                </th>
+              {% endif %}
+            {% endif %}
+          {% empty %}
+            <th scope="col" style="text-align:center">No Entries</th>
           {% endfor %}
         </tr>
       </thead>
       <tbody>
         <tr>
           <th scope="row">Current Position</th>
-          {% for entry in user.profile.entries.all %}
-          {% if entry.has_submitted %}
-          <td scope="col">{{ entry.current_position|ordinal }}</td>
-          {% endif %}
+          {% for entry in entries %}
+            {% if entry.current_position %}
+              <td scope="col">{{ entry.current_position|ordinal }}</td>
+            {% else %}
+              <td scope="col">---</td>
+            {% endif %}
+          {% empty %}
+            <td scope="col">---</td>
           {% endfor %}
         </tr>
+
+        {% if team %}        
+        <tr>
+          <th scope="row" class="text-muted">Current Position in "{{team}}"</th>
+          {% for entry in entries %}
+            {% if entry.current_position %}
+              <td scope="col" class="text-muted">{{ entry.current_team_position|ordinal }}</td>
+            {% else %}
+              <td scope="col" class="text-muted">---</td>
+            {% endif %}
+          {% empty %}
+            <td scope="col" class="text-muted">---</td>
+          {% endfor %}
+        </tr>
+        {% endif %}
+
         <tr>
           <th scope="row">Current Score</th>
-          {% for entry in user.profile.entries.all %}
-          {% if entry.has_submitted %}
-          <td scope="col">{{ entry.current_score|intcomma }}</td>
-          {% endif %}
+          {% for entry in entries %}
+            <td scope="col">{{ entry.current_score|intcomma }}</td>
+          {% empty %}
+            <td scope="col">---</td>
           {% endfor %}
         </tr>
       </tbody>
@@ -76,20 +96,27 @@
     <div id="history-charts_container"
       data-entries-url-endpoint="{% url 'profile_history_api' username=user.username %}"
       data-prize-url-endpoint="{% url 'prize_api' %}">
+      {% if entries %}
       <div class="row mb-3">
-        <div class="col-sm-6">
+        <div class="col-lg-6">
           <canvas id="positionChartCanvas" width="400" height="400"></canvas>
         </div>
-        <div class="col-sm-6">
+        <div class="col-lg-6">
           <canvas id="scoreChartCanvas" width="400" height="400"></canvas>
         </div>
       </div>
+      {% else %}
+      <div class="placeholder-box text-muted">No Entries To Display</div>
+      {% endif %}
     </div>
+
+    {% if entries %}
     <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle">Toggle Time Axis</button>
     <small class="mt-3 text-muted">
       {% svg 'info' %}
       Switch between a time axis where called bets are spaced according to the amount of time between them (aka "linear") and a time axis where called bets are equally spaced (aka "series")
     </small>
+    {% endif %}
 
   </div>
 </div>
@@ -103,18 +130,20 @@
     {% else %}
     <p class='mb-3'>@{{ user.username }}'s performance in each of the game sections (Group Matches, Group Winners etc.)</p>
     {% endif %}
+
     <div id="wrapper">
       <div id="performance-chart_container"
         data-entries-url-endpoint="{% url 'profile_performance_api' username=user.username %}">
+        {% if entries %}
         <div class="row mt-3 mb-3">
-          <div class="col-sm-6 mb-3">
+          <div class="col-lg-6 mb-3">
             <canvas id="performanceScoreChart" width="400" height="400"></canvas>
             <small class="mt-3 text-muted">
               {% svg 'info' %}
               Score Performance = (score so far / total possible score so far) %
             </small>
           </div>
-          <div class="col-sm-6">
+          <div class="col-lg-6">
             <canvas id="performanceNumberChart" width="400" height="400"></canvas>
             <small class="mt-3 text-muted">
               {% svg 'info' %}
@@ -122,6 +151,9 @@
             </small>
           </div>
         </div>
+        {% else %}
+        <div class="placeholder-box text-muted">No Entries To Display</div>
+        {% endif %}
       </div>
       <div id="middle-element">
       </div>

@@ -33,9 +33,9 @@ def create_default_profile_picture(user):
     d = ImageDraw.Draw(profile_picture)
 
     f_co = (random.randint(0, 255), random.randint(
-        150, 255), random.randint(150, 255))
+        0, 255), random.randint(0, 255))
     t_co = (random.randint(0, 255), random.randint(
-        150, 255), random.randint(150, 255))
+        0, 255), random.randint(0, 255))
 
     opposite_direction = False
     if random.random() > 0.5:

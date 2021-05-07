@@ -24,6 +24,7 @@ class Entry(models.Model):
     has_paid = models.BooleanField(default=False)
     has_submitted = models.BooleanField(default=False)
     current_position = models.IntegerField(blank=True, null=True)
+    current_team_position = models.IntegerField(blank=True, null=True)
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='entries')
     current_score = models.IntegerField(default=0)

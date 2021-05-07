@@ -2,6 +2,7 @@ from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from . import models
 from django.core.cache import cache
+from users.models import Team
 
 
 @receiver(post_save, sender=models.GroupMatch)
@@ -41,7 +42,7 @@ def recalculate_scores_and_positions_delete(instance):
             entry.save()
     else:
         # Restore scores back to zero
-        entries.update(current_score=0, current_position=None, correct_bets=0)
+        entries.update(current_score=0, current_position=None, current_team_position=None, correct_bets=0)
     for called_bet in called_bets_after_this_one:
         # 1. Update scores for those that won this called bet
         for entry in entries:
@@ -86,6 +87,22 @@ def recalculate_scores_and_positions_delete(instance):
 
             previous_score = entry.current_score
 
+        # 3. Update positions in teams
+        teams = Team.objects.all()
+        for team in teams:
+            team_position = 1
+            ordered_entries = models.Entry.objects.filter(has_submitted=True, profile__team=team).order_by(
+                '-current_score', '-correct_bets', 'profile__user__first_name')
+            if not ordered_entries:
+                continue
+            previous_score = ordered_entries[0].current_score
+            for i, entry in enumerate(ordered_entries):
+                if entry.current_score < previous_score:
+                    team_position = i + 1
+                entry.current_team_position = team_position
+                entry.save()
+                previous_score = entry.current_score
+
 
 def recalculate_from_instance(instance, created):
     called_bets_including_and_after_this_one = models.CalledBet.objects.filter(
@@ -119,7 +136,7 @@ def recalculate_from_instance(instance, created):
                 bet_in_same_group.success = True
                 bet_in_same_group.called_bet = called_bet
                 bet_in_same_group.save()
-            elif bet_in_same_group.success:
+            elif bet_in_same_group.success:  # i.e. was this bet already flagged as successful?
                 incorrect_count += 1
                 pass
             else:
@@ -163,7 +180,25 @@ def recalculate_from_instance(instance, created):
                 position_log.save()
             previous_score = entry.current_score
 
-        # 3. Update or create correct and incorrect count stats for the called bet instance
+        # 3. Update positions in teams
+        teams = Team.objects.all()
+        for team in teams:
+            team_position = 1
+            ordered_entries = models.Entry.objects.filter(has_submitted=True, profile__team=team).order_by(
+                '-current_score', '-correct_bets', 'profile__user__first_name')
+            if not ordered_entries:
+                continue
+            previous_score = ordered_entries[0].current_score
+            for i, entry in enumerate(ordered_entries):
+                if entry.current_score < previous_score:
+                    team_position = i + 1
+                entry.current_team_position = team_position
+                entry.save()
+                previous_score = entry.current_score
+
+
+
+        # 4. Update or create correct and incorrect count stats for the called bet instance
         if created:
             models.CalledBetStats.objects.create(
                 called_bet=called_bet, num_correct=correct_count, num_incorrect=incorrect_count)

@@ -52,7 +52,7 @@ $(document).ready(function () {
         orderable: false,
         className: 'dt-body-center dt-head-center text-muted',
         render: function (data, type, row) {
-          return data.choice
+          return `<span data-toggle="tooltip" data-placement="top" title="${data.winning_amount} points">${data.choice}</span>`
         }
       })
 
@@ -64,21 +64,21 @@ $(document).ready(function () {
         render: function (data, type, row, meta) {
           if (type === 'display' || type === 'filter') {
             if (data != null) {
-              let positionPrefix = ""
-              if (data === 1) {
-                positionPrefix = '🥇 ';
-              } else if (data === 2) {
-                positionPrefix = '🥈 ';
-              } else if (data === 3) {
-                positionPrefix = '🥉 ';
-              } else if (prizePositions.includes(data)) {
-                positionPrefix = '💰 ';
-              } else {
-                positionPrefix = " ";
-              }
               let latestPositionLog = row.position_logs[row.position_logs.length - 1];
               let previousPositionLog = row.position_logs[row.position_logs.length - 2];
+              let positionPrefix = ""
+
               if (previousPositionLog) {
+                if (data === 1) {
+                  positionPrefix = '🥇 ';
+                } else if (data === 2) {
+                  positionPrefix = '🥈 ';
+                } else if (data === 3) {
+                  positionPrefix = '🥉 ';
+                } else if (prizePositions.includes(data)) {
+                  positionPrefix = '💰 ';
+                }
+
                 if (latestPositionLog.position > previousPositionLog.position) {
                   return `<div>${data}${positionPrefix}</div> <div class="arrow-down"></div>`;
                 } else if (latestPositionLog.position < previousPositionLog.position) {
@@ -87,7 +87,7 @@ $(document).ready(function () {
                   return data + positionPrefix;
                 }
               } else {
-                return data + positionPrefix;
+                return data;
               }
             } else {
               return "---"
@@ -131,7 +131,10 @@ $(document).ready(function () {
       {
         data: "form",
         render: function (data, type, row) {
-          form_arr = '';
+          let form_arr = '';
+          if (!data.length) {
+            return "---"
+          } 
           for (let bet of data) {
             if (bet.success) {
               form_arr += `<span data-toggle="tooltip" data-placement="top" title="${bet.outcome}">
@@ -213,6 +216,22 @@ $(document).ready(function () {
 
     for (let team of teamData) {
 
+      teamTableColumns = tableColumns;
+
+      teamTableColumns[0] = {
+        data: "current_team_position",
+        render: function (data, type, row, meta) {
+          if (type === 'display' || type === 'filter') {
+            if (data != null) {
+              return data;
+            } else {
+              return "---"
+            }
+          }
+          return data;
+        }
+      }
+
       let teamTable = $(`#team_${team.id}_leaderboard`).DataTable({
         data: data.filter(entry => entry.profile.team === team.id),
         // processing: true,
@@ -226,12 +245,12 @@ $(document).ready(function () {
         order: [
           [0, "asc"]
         ],
-        columns: tableColumns,
+        columns: teamTableColumns,
         columnDefs: [{
           targets: '_all',
           defaultContent: "-"
         }, {
-          targets: '_all',
+          targets: [1, 4, 5],
           orderable: false
         }, {
           targets: [0],
@@ -248,17 +267,9 @@ $(document).ready(function () {
         }, {
           targets: -1,
           responsivePriority: 2
-        }, ],
+        },
+       ],
       })
-
-      teamTable.on('order.dt search.dt', function () {
-        teamTable.column(0, {
-          search: 'applied',
-          order: 'applied'
-        }).nodes().each(function (cell, i) {
-          cell.innerHTML = i + 1;
-        });
-      }).draw();
 
     }
 

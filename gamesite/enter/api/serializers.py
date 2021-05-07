@@ -32,16 +32,20 @@ class BetSerializer(serializers.ModelSerializer):
 class UpcomingBetSerializer(serializers.ModelSerializer):
     question = serializers.SerializerMethodField()
     choice = serializers.SerializerMethodField()
+    winning_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Bet
-        fields = ['question', 'choice']
+        fields = ['question', 'choice', 'winning_amount']
 
     def get_question(self, obj):
         return obj.outcome.short_question
 
     def get_choice(self, obj):
         return obj.outcome.short_choice
+
+    def get_winning_amount(self, obj):
+        return obj.outcome.winning_amount
 
 
 class ScoreLogSerializer(serializers.ModelSerializer):
@@ -85,7 +89,7 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Entry
         fields = ['id', 'label', 'profile', 'current_score', 'correct_bets',
-                  'current_position', 'position_logs', 'form', 'upcoming']
+                  'current_position', 'current_team_position', 'position_logs', 'form', 'upcoming']
 
     def get_last_five_score_logs(self, obj):
         score_logs = models.ScoreLog.objects.filter(
