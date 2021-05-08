@@ -601,7 +601,7 @@ class GroupMatch(Match):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.group.name}, Match {self.match_number}: {self.home_team.country.country_code} vs. {self.away_team.country.country_code}"
+        return f"Group {self.group.name}, Match {self.match_number}: {self.home_team.country.country_code} v {self.away_team.country.country_code}"
 
 
 class GroupMatchOutcome(Outcome):

@@ -1,6 +1,7 @@
 # Django
 *.log
 *.pot
+*.djcache
 db.sqlite3
 media
 

@@ -74,15 +74,36 @@ svg {
 
 .option-text {
     color: #2EC4B6;
+    text-align: left;
 }
 
 .card-body h3 {
     color: #E71D36;
 }
 
-.match_label {
+.match_date {
     text-align: left;
 }
+
+.match_label-lg {
+    text-align: left;
+}
+
+.match_label-sm {
+    text-align: left;
+}
+
+@media screen and (max-width: 700px) {
+    .match_label-lg {
+      display: none;
+    }
+  }
+  
+  @media screen and (min-width: 701px) {
+    .match_label-sm {
+      display: none;
+    }
+  }
 
 .match_radio {
     text-align: left;
