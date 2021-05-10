@@ -1,308 +1,365 @@
 {% load svg %}
 
-  <small class="text-muted progress-text"></small>
-  <div class="progress mt-2 mb-3" style="height: 8px;">
-    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-  </div>
-
 <div class="row">
+<div class="col">
+<small class="text-muted progress-text"></small>
+<div class="progress mt-2 mb-3" style="height: 8px;">
+  <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+</div>
+</div>
+</div>
 
-  <div class="col-md-12 col-lg-9 col-xl-6">
-  <div class="card section-card mb-4">
-  <div class="card-body" id="group_games">
-    <h3>Group Matches</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" id="randomise-group-matches">R</button>
-    <p class="help_text">Select either home, draw or away outcomes for <b>each game</b> below.</p>
-    <table>
-      <tr>
-        <th class="d-none d-sm-table-cell"></th>
-        <th class="d-none d-sm-table-cell"></th>
-        <th></th>
-        <th class="option-text">Home</th>
-        <th class="option-text">Draw</th>
-        <th class="option-text">Away</th>
-      </tr>
-      {% for field in group_matches_form %}
-      <tr>
-        <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'H:00' }}</td>
-        <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'D d' }}</td>
-        <td class="match_label-lg">{{ field.label.home_team.country.name }} v {{ field.label.away_team.country.name }}
-        <td class="match_label-sm">{{ field.label.home_team.country.country_code }} v {{ field.label.away_team.country.country_code }}
-        </td>
-        {% for radio in field %}
-        <td class="text-muted" style="text-align: left;">
-          {{ radio }}
-        </td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-  </div>
-  </div>
+<div class="row d-block">
 
-  <div class="col-md-6 col-lg-3">
-  <div class="card section-card mb-4">
-  <div class="card-body" id="group_winners-bets">
-    <h3>Group Winners</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-    <p class="help_text">Select one winner in <b>each</b> group.</p>
-    {% for field in group_winner_bets_form %}
-    <div class="mt-3">
-    <b class="option-text">{{ field.label }}</b>
-    <table>
-      <tr>
-        <td class="pt-0 pb-0" style="width: 70%; padding=0;">
-          <table>
-            {% for choice in field.field.queryset %}
-            <tr>
-              <td class="pt-0 pb-0" style="text-align: center;">{{ choice.team.country.name }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </td>
-        <td style="width: 30%;">
-          <table>
+  <div class="col-lg-8 col-xl-6 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="group_games">
+        <h3>Group Matches</h3>
+        <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select either home, draw or away outcomes for <b>each match</b> below.</p>
+        <table>
+          <tr>
+            <th class="d-none d-sm-table-cell"></th>
+            <th class="d-none d-sm-table-cell"></th>
+            <th></th>
+            <th class="option-text">Home</th>
+            <th class="option-text">Draw</th>
+            <th class="option-text">Away</th>
+          </tr>
+          {% for field in group_matches_form %}
+          <tr class="row-space">
+            <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'H:00' }}</td>
+            <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'D d' }}</td>
+            <td class="match_label-lg">{{ field.label.home_team.country.name }} v {{ field.label.away_team.country.name }}
+            <td class="match_label-sm">{{ field.label.home_team.country.country_code }} v {{ field.label.away_team.country.country_code }}
+            </td>
             {% for radio in field %}
-            <tr>
-              <td class="match_radio text-muted" style="text-align: left;">{{ radio }}</td>
-            </tr>
+            <td class="text-muted" style="text-align: left;">
+              {{ radio }}
+            </td>
             {% endfor %}
-          </table>
-        </td>
-      </tr>
-    </table>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
-    {% endfor %}
-  </div>
-  </div>
   </div>
 
-    <div class="col-md-6 col-lg-3" id="top-goalscoring-bets">
-      <div class="card section-card mb-4">
+  <div class="col-sm-6 col-lg-4 col-xl-3 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="group_winners-bets">
+        <h3>Group Winners</h3>
+                <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select one in <b>each</b> group.</p>
+        {% for field in group_winner_bets_form %}
+        <div>
+        <b class="option-text">{{ field.label }}</b>
+        <table>
+          <tr>
+            <td style="width: 68%;">
+              <table>
+                {% for choice in field.field.queryset %}
+                <tr>
+                  <td style="text-align: center;">{{ choice.team.country.name }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+            <td style="width: 32%;">
+              <table>
+                {% for radio in field %}
+                <tr>
+                  <td class="match_radio text-muted" style="text-align: left;">{{ radio }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-lg-3 float-left">
+    <div class="card section-card mb-4">
       <div class="card-body" id="top-goalscoring-group-bet">
-      <h3>Top Goalscoring Group</h3>
-      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-      <p class="help_text">Select one group.</p>
-      {% for field in top_goal_group_bets_form %}
-      <table>
-        <tr>
-          <td class="pt-0 pb-0">
-            <table>
-              {% for choice in field.field.queryset %}
-              <tr>
-                <td class="pt-0 pb-0">Group {{ choice.group.name }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-          </td>
-          <td>
-            <table>
-              {% for radio in field %}
-              <tr>
-                <td class="match_radio text-muted">{{ radio }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-          </td>
-        </tr>
-      </table>
-      {% endfor %}
+        <h3>Top Goalscoring Group</h3>
+                <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select one group.</p>
+        {% for field in top_goal_group_bets_form %}
+        <table>
+          <tr>
+            <td>
+              <table>
+                {% for choice in field.field.queryset %}
+                <tr class="row-space">
+                  <td>Group {{ choice.group.name }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+            <td>
+              <table>
+                {% for radio in field %}
+                <tr class="row-space">
+                  <td class="match_radio text-muted">{{ radio }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+        {% endfor %}
+      </div>
     </div>
-    </div>
+  </div>
 
+  <div class="col-sm-6 col-lg-3 float-left">
     <div class="card section-card mb-4">
       <div class="card-body" id="top-goalscoring-player-bet">
-      <h3>Top Goalscorer</h3>
-      <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-      <p class="help_text">Select one player.</p>
-      {% for field in top_goal_player_bets_form %}
-      <table>
-        <tr>
-          <td class="pt-0 pb-0">
-            <table>
-              {% for choice in field.field.queryset %}
-              <tr>
-                <td class="pt-0 pb-0">{{ choice.player.first_name }} {{ choice.player.last_name }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-          </td>
-          <td>
-            <table>
-              {% for radio in field %}
-              <tr>
-                <td class="match_radio text-muted">{{ radio }}</td>
-              </tr>
-              {% endfor %}
-            </table>
-          </td>
-        </tr>
-      </table>
-      {% endfor %}
+        <h3>Top Goalscorer</h3>
+                <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select <b>one</b> player.</p>
+        {% for field in top_goal_player_bets_form %}
+        <table>
+          <tr>
+            <td>
+              <table>
+                {% for choice in field.field.queryset %}
+                <tr>
+                  <td class="player-label-lg">{{ choice.player.first_name }} {{ choice.player.last_name }}</td>
+                  <td class="player-label-sm">{{ choice.short_choice }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+            <td>
+              <table>
+                {% for radio in field %}
+                <tr>
+                  <td class="match_radio text-muted">{{ radio }}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+        </table>
+        {% endfor %}
+      </div>
     </div>
   </div>
 
-  <div class="card section-card mb-4">
-  <div class="card-body" id="tournament-bets">
-    <h3>Tournament Totals</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-    <p class="help_text">Select one of each.</p>
-    {% for field in tournament_bets_form %}
-    {{ field.label }}
-    <table>
-      <tr>
-        <td class="pt-0 pb-0">
-          <table>
-            {% for choice in field.field.queryset %}
-            <tr>
-              <td class="pt-0 pb-0">{{ choice.verbose_outcome }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </td>
-        <td>
-          <table>
+  <div class="col-lg-6 col-xl-6 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="fifty-fifty-bets">
+        <h3>50/50's</h3>
+        <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text mb-1">Select either yes or no for each of the 8 questions below.</p>
+        <p class="help_text very-small-display-label"><i>Using a device with a smaller screen? Try viewing in landscape mode to see the full question.</i></p>
+        <table>
+          <tr>
+            <th></th>
+            <th class="option-text" style="text-align: center;">Yes</th>
+            <th class="option-text" style="text-align: center;">No</th>
+          </tr>
+          {% for field in fifty_fifty_bets_form %}
+          <tr class="row-space">
+            <td class="fifty-fifty-label-lg">{{ field.label.question }}</td>
+            <td class="fifty-fifty-label-sm">{{ field.label.brief_question|safe }}</td>
             {% for radio in field %}
+            <td class="match_radio text-muted">
+              {{ radio }}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="best-team-bets" style="overflow-x:auto;">
+        <h3>Top Teams</h3>
+        <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text mb-1">Select one from each of the 8 columns.</p>
+        <p class="help_text small-display-label"><i>Using a device with a smaller screen? Scroll left and right to view all columns.</i></p>
+
+        <div class="top-teams-table-lg">
+          <table class="top-teams-table">
             <tr>
-              <td class="match_radio text-muted">{{ radio }}</td>
+              <th class="top-team-column"></th>
+              {% for field in best_teams_success_bets_form %}
+              <th class="option-text top-team-column">{{ field.label }}</th>
+              {% endfor %}
             </tr>
-            {% endfor %}
-          </table>
-        </td>
-      </tr>
-    </table>
-    <!--        <table class="outcomes-table">-->
-    <!--        {% for choice in field.field.queryset %}-->
-    <!--          <tr>-->
-    <!--          <td>{{ choice.min_value }} to {{ choice.max_value }}</td>-->
-    <!--          <td class="text-muted">-->
-    <!--            <input value="{{ choice.id }}" type="radio" name="{{ field.label }}" required/>-->
-    <!--            {{ choice.winning_amount }}-->
-    <!--          </td>-->
-    <!--         </tr>-->
-    <!--        {% endfor %}-->
-    <!--        </table>-->
-    {% endfor %}
-  </div>
-  </div>
-  </div>
 
-    <div class="col-md-6 col-lg-3">
-  <div class="card section-card mb-4">
-  <div class="card-body" id="final-bets">
-    <h3>During the Final</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-    <p class="help_text">Select one of each.</p>
-    {% for field in final_bets_form %}
-    {{ field.label }}
-    <table>
-      <tr>
-        <td class="pt-0 pb-0">
-          <table>
-            {% for choice in field.field.queryset %}
             <tr>
-              <td class="pt-0 pb-0">{{ choice.verbose_outcome }}</td>
+              <td>
+                <table>
+                  {% for field in best_teams_success_bets_form %}
+                  {% if forloop.first %}
+                  {% for choice in field.field.queryset %}
+                  <tr>
+                    <td style="text-align: left;">{{ choice.team.country.name }}</td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+                  {% endfor %}
+                </table>
+              </td>
+
+              {% for field in best_teams_success_bets_form %}
+              <td>
+                <table>
+                  {% for radio in field %}
+                  <tr>
+                    <td class="text-muted" style="text-align: left;">{{ radio }}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </td>
+              {% endfor %}
             </tr>
-            {% endfor %}
+
           </table>
-        </td>
-        <td>
-          <table>
-            {% for radio in field %}
-            <tr>
-              <td class="match_radio text-muted">{{ radio }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </td>
-      </tr>
-    </table>
-    {% endfor %}
-  </div>
-  </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-    <div class="col-md-6 col-lg-5">
-  <div class="card section-card mb-4">
-  <div class="card-body" id="fifty-fifty-bets">
-    <h3>50/50's</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-    <p class="help_text">Select one of each.</p>
-    <table>
-      <tr>
-        <th></th>
-        <th class="option-text">Yes</th>
-        <th class="option-text">No</th>
-      </tr>
-      {% for field in fifty_fifty_bets_form %}
-      <tr>
-        <td class="pt-0 pb-0">
-          {{ field.label.question }}
-        </td>
-        {% for radio in field %}
-        <td class="match_radio text-muted">
-          {{ radio }}
-        </td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-  </div>
+  <div class="col-12 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="tournament-bets">
+        <h3>Tournament Totals</h3>
+                <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select one outcome from each of the 4 questions below.</p>
+        <div class="row">
+          {% for field in tournament_bets_form %}
+          <div class="col-md-6 col-lg-3 mb-2">
+            <div class="mb-1">{{ field.label }}</div>
+            <table>
+              <tr>
+                <td style="width: 68%;">
+                  <table>
+                    {% for choice in field.field.queryset %}
+                    <tr>
+                      <td>{{ choice.verbose_outcome }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </td>
+                <td style="width: 32%;">
+                  <table>
+                    {% for radio in field %}
+                    <tr>
+                      <td class="match_radio text-muted">{{ radio }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 
-    <div class="col-md-12 col-lg-8">
-  <div class="card section-card mb-5">
-  <div class="card-body" id="best-team-bets" style="overflow-x:auto;">
-    <h3>Top Teams</h3>
-    <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn">R</button>
-    <p class="help_text">Select one from each column.</p>
 
-    <table>
-      <tr>
-        <th></th>
-        {% for field in best_teams_success_bets_form %}
-        <th class="option-text">{{ field.label }}</th>
-        {% endfor %}
-      </tr>
-
-      <tr>
-        <td>
-          <table>
-            {% for field in best_teams_success_bets_form %}
-            {% if forloop.first %}
-            {% for choice in field.field.queryset %}
-            <tr>
-              <td>{{ choice.team.country.name }}</td>
-            </tr>
-            {% endfor %}
-            {% endif %}
-            {% endfor %}
-          </table>
-        </td>
-
-        {% for field in best_teams_success_bets_form %}
-        <td>
-          <table>
-            {% for radio in field %}
-            <tr>
-              <td class="text-muted">{{ radio }}</td>
-            </tr>
-            {% endfor %}
-          </table>
-        </td>
-        {% endfor %}
-      </tr>
-
-    </table>
-  </div>
-  </div>
+  <div class="col-12 float-left">
+    <div class="card section-card mb-4">
+      <div class="card-body" id="final-bets">
+        <h3>During the Final</h3>
+        <button type="button" class="btn btn-outline-secondary btn-sm randomise-btn" data-toggle="tooltip" data-placement="bottom" title="Random selection">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dice-5" viewBox="0 0 16 16">
+            <path d="M13 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h10zM3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3z"/>
+            <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          </svg>
+        </button>
+        <p class="help_text">Select one outcome from each of the 4 questions below.</p>
+        <div class="row">
+          {% for field in final_bets_form %}
+          <div class="col-md-6 col-lg-3">
+            <div class="mb-2">
+              <div class="mb-1">{{ field.label }}</div>
+              <table>
+                <tr>
+                  <td style="width: 68%;">
+                    <table>
+                      {% for choice in field.field.queryset %}
+                      <tr>
+                        <td class="final-label-lg">{{ choice.verbose_outcome }}</td>
+                        <td class="final-label-sm">{{ choice.short_choice }}</td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                  </td>
+                  <td style="width: 32%;">
+                    <table>
+                      {% for radio in field %}
+                      <tr>
+                        <td class="match_radio text-muted">{{ radio }}</td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>
 
+<div class="row w-100">
+<div class="col">
 <small class="text-muted progress-text"></small>
-  <div class="progress mt-2" style="height: 8px;">
-    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
-  </div>
+<div class="progress mt-2" style="height: 8px;">
+  <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+</div>
+</div>
+</div>

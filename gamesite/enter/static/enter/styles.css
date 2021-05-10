@@ -12,6 +12,10 @@ th, td {
     text-align: center;
 }
 
+tr.row-space>td {
+    padding-top: 4px;
+}
+
 label {
     margin-bottom: 0;
 }
@@ -55,6 +59,15 @@ svg {
     position: absolute;
     top: 10px;
     right: 10px;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+.section-card button svg {
+    position: absolute;
+    width: 20px;
+    left: 4px;
 }
 
 .section-card svg {
@@ -77,6 +90,10 @@ svg {
     text-align: left;
 }
 
+.card-body {
+    padding: 15px;
+}
+
 .card-body h3 {
     color: #E71D36;
 }
@@ -97,13 +114,61 @@ svg {
     .match_label-lg {
       display: none;
     }
-  }
+}
   
-  @media screen and (min-width: 701px) {
+@media screen and (min-width: 701px) {
     .match_label-sm {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .player-label-lg {
       display: none;
     }
-  }
+}
+  
+@media screen and (min-width: 1301px) {
+    .player-label-sm {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .final-label-lg {
+      display: none;
+    }
+}
+  
+@media screen and (min-width: 501px) {
+    .final-label-sm {
+        display: none;
+    }
+}
+
+.fifty-fifty-label-lg {
+    text-align: left;
+}
+
+.fifty-fifty-label-sm {
+    text-align: left;
+}
+
+@media screen and (max-width: 540px) {
+    .fifty-fifty-label-lg {
+      display: none;
+    }
+}
+  
+@media screen and (min-width: 541px) {
+    .fifty-fifty-label-sm {
+        display: none;
+    }
+    .very-small-display-label {
+        display: none;
+    }
+}
+
 
 .match_radio {
     text-align: left;
@@ -125,9 +190,18 @@ p.help_text {
     margin-top: 5px;
 }
 
-table.outcomes-table {
+table.top-teams-table {
     table-layout: fixed;
-    width: 100%;
+}
+
+th.top-team-column {
+    width: 70px;
+}
+
+@media screen and (min-width: 750px) {
+    .small-display-label {
+        display: none;
+    }
 }
 
 fieldset[disabled] input[type="radio"]:checked:after {

@@ -246,34 +246,31 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
     else:
         final_first_goal_choice = models.Outcome.objects.instance_of(models.FinalFirstGoalOutcome). \
             filter(bet__entry=requested_entry).first()
-        final_own_goal_choice = models.Outcome.objects.instance_of(models.FinalOwnGoalOutcome). \
-            filter(bet__entry=requested_entry).first()
         final_yellow_cards_choice = models.Outcome.objects.instance_of(models.FinalYellowCardsOutcome). \
             filter(bet__entry=requested_entry).first()
-        final_ref_continent_choice = models.Outcome.objects.instance_of(models.FinalRefContinentOutcome). \
+        final_ref_country_choice = models.Outcome.objects.instance_of(models.FinalRefCountryOutcome). \
             filter(bet__entry=requested_entry).first()
         final_total_goals_choice = models.Outcome.objects.instance_of(models.FinalGoalsOutcome). \
             filter(bet__entry=requested_entry).first()
         data = {'final_first_goal_bet': final_first_goal_choice,
-                'final_own_goals_bet': final_own_goal_choice,
+                'final_goals_bet': final_total_goals_choice,
                 'final_yellow_cards_bet': final_yellow_cards_choice,
-                'final_ref_continent_bet': final_ref_continent_choice,
-                'final_goals_bet': final_total_goals_choice
+                'final_ref_country_bet': final_ref_country_choice
                 }
         final_bets_form = forms.DuringTheFinalForm(initial=data)
 
         total_goals_choice = models.Outcome.objects.instance_of(models.TournamentGoalsOutcome). \
             filter(bet__entry=requested_entry).first()
-        total_reds_choice = models.Outcome.objects.instance_of(models.TournamentRedCardsOutcome). \
+        total_penalties_choice = models.Outcome.objects.instance_of(models.TournamentPenaltiesOutcome). \
             filter(bet__entry=requested_entry).first()
         total_own_goals_choice = models.Outcome.objects.instance_of(models.TournamentOwnGoalsOutcome). \
             filter(bet__entry=requested_entry).first()
-        total_hattricks_choice = models.Outcome.objects.instance_of(models.TournamentHattricksOutcome). \
+        total_goals_in_a_game_choice = models.Outcome.objects.instance_of(models.TournamentGoalsInAGameOutcome). \
             filter(bet__entry=requested_entry).first()
         data = {'total_goals_bet': total_goals_choice,
-                'total_red_cards_bet': total_reds_choice,
+                'total_goals_in_a_game_bet': total_goals_in_a_game_choice,
                 'total_own_goals_bet': total_own_goals_choice,
-                'total_hattricks_bet': total_hattricks_choice
+                'total_penalties_bet': total_penalties_choice
                 }
         tournament_bets_form = forms.TournamentTotalsForm(initial=data)
 
@@ -291,13 +288,16 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
             filter(bet__entry=requested_entry).first()
         fastest_goal_choice = models.Outcome.objects.instance_of(models.FastestGoalOutcome). \
             filter(bet__entry=requested_entry).first()
+        most_clean_sheets_choice = models.Outcome.objects.instance_of(models.MostCleanSheetsOutcome). \
+            filter(bet__entry=requested_entry).first()
         data = {'to_reach_semi_final_bet': to_reach_semi_choice,
                 'to_reach_final_bet': to_reach_final_choice,
                 'to_win_bet': to_reach_win_choice,
                 'highest_scoring_team_bet': highest_scoring_team_choice,
                 'most_yellow_cards_bet': most_yellow_cards_choice,
                 'fastest_yellow_card_bet': fastest_yellow_choice,
-                'fastest_tournament_goal_bet': fastest_goal_choice
+                'fastest_tournament_goal_bet': fastest_goal_choice,
+                'most_clean_sheets_bet': most_clean_sheets_choice
                 }
         best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
             initial=data)
@@ -429,34 +429,31 @@ def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
 
     final_first_goal_choice = models.Outcome.objects.instance_of(models.FinalFirstGoalOutcome). \
         filter(bet__entry=requested_entry).first()
-    final_own_goal_choice = models.Outcome.objects.instance_of(models.FinalOwnGoalOutcome). \
-        filter(bet__entry=requested_entry).first()
     final_yellow_cards_choice = models.Outcome.objects.instance_of(models.FinalYellowCardsOutcome). \
         filter(bet__entry=requested_entry).first()
-    final_ref_continent_choice = models.Outcome.objects.instance_of(models.FinalRefContinentOutcome). \
+    final_ref_country_choice = models.Outcome.objects.instance_of(models.FinalRefCountryOutcome). \
         filter(bet__entry=requested_entry).first()
     final_total_goals_choice = models.Outcome.objects.instance_of(models.FinalGoalsOutcome). \
         filter(bet__entry=requested_entry).first()
     data = {'final_first_goal_bet': final_first_goal_choice,
-            'final_own_goals_bet': final_own_goal_choice,
+            'final_goals_bet': final_total_goals_choice,
             'final_yellow_cards_bet': final_yellow_cards_choice,
-            'final_ref_continent_bet': final_ref_continent_choice,
-            'final_goals_bet': final_total_goals_choice
+            'final_ref_country_bet': final_ref_country_choice
             }
     final_bets_form = forms.DuringTheFinalForm(initial=data)
 
     total_goals_choice = models.Outcome.objects.instance_of(models.TournamentGoalsOutcome). \
         filter(bet__entry=requested_entry).first()
-    total_reds_choice = models.Outcome.objects.instance_of(models.TournamentRedCardsOutcome). \
+    total_penalties_choice = models.Outcome.objects.instance_of(models.TournamentPenaltiesOutcome). \
         filter(bet__entry=requested_entry).first()
     total_own_goals_choice = models.Outcome.objects.instance_of(models.TournamentOwnGoalsOutcome). \
         filter(bet__entry=requested_entry).first()
-    total_hattricks_choice = models.Outcome.objects.instance_of(models.TournamentHattricksOutcome). \
+    total_goals_in_a_game_choice = models.Outcome.objects.instance_of(models.TournamentGoalsInAGameOutcome). \
         filter(bet__entry=requested_entry).first()
     data = {'total_goals_bet': total_goals_choice,
-            'total_red_cards_bet': total_reds_choice,
+            'total_goals_in_a_game_bet': total_goals_in_a_game_choice,
             'total_own_goals_bet': total_own_goals_choice,
-            'total_hattricks_bet': total_hattricks_choice
+            'total_penalties_bet': total_penalties_choice
             }
     tournament_bets_form = forms.TournamentTotalsForm(initial=data)
 
@@ -474,13 +471,16 @@ def view_entry(request, entry_id, template_name="enter/entry_readonly.html"):
         filter(bet__entry=requested_entry).first()
     fastest_goal_choice = models.Outcome.objects.instance_of(models.FastestGoalOutcome). \
         filter(bet__entry=requested_entry).first()
+    most_clean_sheets_choice = models.Outcome.objects.instance_of(models.MostCleanSheetsOutcome). \
+        filter(bet__entry=requested_entry).first()
     data = {'to_reach_semi_final_bet': to_reach_semi_choice,
             'to_reach_final_bet': to_reach_final_choice,
             'to_win_bet': to_reach_win_choice,
             'highest_scoring_team_bet': highest_scoring_team_choice,
             'most_yellow_cards_bet': most_yellow_cards_choice,
             'fastest_yellow_card_bet': fastest_yellow_choice,
-            'fastest_tournament_goal_bet': fastest_goal_choice
+            'fastest_tournament_goal_bet': fastest_goal_choice,
+            'most_clean_sheets_bet': most_clean_sheets_choice
             }
     best_teams_success_bets_form = forms.BestTeamsSuccessBetGroupForm(
         initial=data)

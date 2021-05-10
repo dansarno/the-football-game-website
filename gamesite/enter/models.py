@@ -193,7 +193,7 @@ class TopGoalScoringGroupOutcome(Outcome):
 class Player(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    goals_scored = models.IntegerField(default=0)
+    order = models.IntegerField(blank=True, null=True)
     team = models.ForeignKey(
         Team,
         on_delete=models.CASCADE
@@ -333,9 +333,25 @@ class FastestGoalOutcome(Outcome):
         return self.team.short_choice
 
 
+class MostCleanSheetsOutcome(Outcome):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, limit_choices_to={
+                             'is_top_team': True})
+
+    def __str__(self):
+        return f"Most Clean Sheets = {self.short_choice} ({self.winning_amount})"
+
+    @property
+    def short_question(self):
+        return f"Most Clean Sheets"
+
+    @property
+    def short_choice(self):
+        return self.team.short_choice
+
+
 class FiftyFiftyQuestion(models.Model):
     question = models.CharField(max_length=100)
-    # brief_question = models.CharField(max_length=100, blank=True, null=True)
+    brief_question = models.CharField(max_length=100, blank=True, null=True)
     order = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -352,7 +368,7 @@ class FiftyFiftyOutcome(Outcome):
 
     @property
     def short_question(self):
-        return self.fifty_fifty.question
+        return self.fifty_fifty.brief_question
 
     @property
     def short_choice(self):
@@ -405,21 +421,21 @@ class TournamentGoalsOutcome(Outcome):
             return f">{self.min_value}"
 
 
-class TournamentRedCardsOutcome(Outcome):
+class TournamentPenaltiesOutcome(Outcome):
     min_value = models.IntegerField(blank=True, null=True)
     max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Total Reds = {self.min_value} ({self.winning_amount})"
+            return f"Total Pens = {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Total Reds = {self.min_value} - {self.max_value}" \
+            return f"Total Pens = {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Total Reds = {self.max_value} or fewer" \
+            return f"Total Pens = {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Total Reds = {self.min_value} or more" \
+            return f"Total Pens = {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -434,7 +450,7 @@ class TournamentRedCardsOutcome(Outcome):
 
     @property
     def short_question(self):
-        return "Total Reds"
+        return "Total Pens"
 
     @property
     def short_choice(self):
@@ -491,21 +507,21 @@ class TournamentOwnGoalsOutcome(Outcome):
             return f">{self.min_value}"
 
 
-class TournamentHattricksOutcome(Outcome):
+class TournamentGoalsInAGameOutcome(Outcome):
     min_value = models.IntegerField(blank=True, null=True)
     max_value = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Total Hattricks = {self.min_value} ({self.winning_amount})"
+            return f"Most Goals in a Single Game = {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Total Hattricks = {self.min_value} - {self.max_value}" \
+            return f"Most Goals in a Single Game = {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Total Hattricks = {self.max_value} or fewer" \
+            return f"Most Goals in a Single Game = {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Total Hattricks = {self.min_value} or more" \
+            return f"Most Goals in a Single Game = {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -520,7 +536,7 @@ class TournamentHattricksOutcome(Outcome):
 
     @property
     def short_question(self):
-        return "Total Hattricks"
+        return "Goals in a Game"
 
     @property
     def short_choice(self):
@@ -532,19 +548,6 @@ class TournamentHattricksOutcome(Outcome):
             return f"<{self.max_value}"
         else:
             return f">{self.min_value}"
-
-
-class Venue(models.Model):
-    name = models.CharField(max_length=20)
-    country = models.ForeignKey(
-        Country,
-        on_delete=models.CASCADE
-    )
-    city = models.CharField(max_length=20)
-    capacity = models.IntegerField()
-
-    def __str__(self):
-        return self.name
 
 
 class Match(models.Model):
@@ -578,7 +581,6 @@ class Match(models.Model):
         null=True
     )
     ko_time = models.DateTimeField()
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     result = models.CharField(
         max_length=1,
         choices=MATCH_RESULT_CHOICES,
@@ -634,30 +636,36 @@ class FinalMatch(Match):
     MATCH_PERIOD_CHOICES = [
         (FIRST_HALF, "First Half"),
         (SECOND_HALF, "Second Half"),
-        (FIRST_ET, "First Half of Extra Time"),
-        (SECOND_ET, "Second Half of Extra Time"),
-        (PEN_SHOOTOUT, "Penality Shootout")
+        (FIRST_ET, "First Half of ET"),
+        (SECOND_ET, "Second Half of ET"),
+        (PEN_SHOOTOUT, "Penalty Shootout")
     ]
     SHORT_MATCH_PERIOD_CHOICES = [
-        (FIRST_HALF, "1st H"),
-        (SECOND_HALF, "2nd H"),
+        (FIRST_HALF, "1st Half"),
+        (SECOND_HALF, "2nd Half"),
         (FIRST_ET, "1st ET"),
         (SECOND_ET, "2nd ET"),
         (PEN_SHOOTOUT, "Pens")
     ]
 
-    EUROPEAN = "EU"
-    SOUTH_AMERICAN = "SA"
-    OTHER = "OT"
-    REF_CONTINENT_CHOICES = [
-        (EUROPEAN, "European"),
-        (SOUTH_AMERICAN, "South American"),
-        (OTHER, "Other Continent")
-    ]
-    SHORT_REF_CONTINENT_CHOICES = [
-        (EUROPEAN, "EU"),
-        (SOUTH_AMERICAN, "SA"),
+    ENGLAND = "ENG"
+    SPAIN = "ESP"
+    ITALY = "ITA"
+    GERMANY = "GER"
+    OTHER = "OTH"
+    REF_COUNTRY_CHOICES = [
+        (ENGLAND, "English"),
+        (SPAIN, "Spanish"),
+        (ITALY, "Italian"),
+        (GERMANY, "German"),
         (OTHER, "Other")
+    ]
+    SHORT_REF_COUNTRY_CHOICES = [
+        (ENGLAND, "ENG"),
+        (SPAIN, "ESP"),
+        (ITALY, "ITA"),
+        (GERMANY, "GER"),
+        (OTHER, "OTH")
     ]
 
     # Fields
@@ -666,8 +674,8 @@ class FinalMatch(Match):
     own_goal = models.BooleanField(default=False)
     yellow_cards = models.IntegerField(default=0, blank=True, null=True)
     goals = models.IntegerField(default=0, blank=True, null=True)
-    ref_continent = models.CharField(
-        max_length=2, choices=REF_CONTINENT_CHOICES, blank=True, null=True)
+    ref_country = models.CharField(
+        max_length=3, choices=REF_COUNTRY_CHOICES, blank=True, null=True)
 
     def __str__(self):
         return "Final match"
@@ -691,31 +699,6 @@ class FinalFirstGoalOutcome(Outcome):
     @property
     def short_choice(self):
         return dict(FinalMatch.SHORT_MATCH_PERIOD_CHOICES)[self.choice]
-
-
-class FinalOwnGoalOutcome(Outcome):
-    final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
-    choice = models.BooleanField()
-
-    def __str__(self):
-        return f"Final Own Goal = {self.short_choice} ({self.winning_amount})"
-
-    def verbose_outcome(self):
-        if self.choice:
-            return "Yes there will be"
-        else:
-            return "No there won't be"
-
-    @property
-    def short_question(self):
-        return "Final OG"
-
-    @property
-    def short_choice(self):
-        if self.choice:
-            return "Yes"
-        else:
-            return "No"
 
 
 class FinalYellowCardsOutcome(Outcome):
@@ -762,16 +745,16 @@ class FinalYellowCardsOutcome(Outcome):
             return f">{self.min_value}"
 
 
-class FinalRefContinentOutcome(Outcome):
+class FinalRefCountryOutcome(Outcome):
     final = models.ForeignKey(FinalMatch, on_delete=models.CASCADE)
     choice = models.CharField(
-        max_length=2, choices=FinalMatch.REF_CONTINENT_CHOICES)
+        max_length=3, choices=FinalMatch.REF_COUNTRY_CHOICES)
 
     def __str__(self):
         return f"Final Ref = {self.short_choice} ({self.winning_amount})"
 
     def verbose_outcome(self):
-        return dict(FinalMatch.REF_CONTINENT_CHOICES)[self.choice]
+        return dict(FinalMatch.REF_COUNTRY_CHOICES)[self.choice]
 
     @property
     def short_question(self):
@@ -779,7 +762,7 @@ class FinalRefContinentOutcome(Outcome):
 
     @property
     def short_choice(self):
-        return dict(FinalMatch.SHORT_REF_CONTINENT_CHOICES)[self.choice]
+        return dict(FinalMatch.SHORT_REF_COUNTRY_CHOICES)[self.choice]
 
 
 class FinalGoalsOutcome(Outcome):

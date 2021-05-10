@@ -45,8 +45,8 @@ class GroupMatchOutcomeInline(admin.TabularInline):
 
 @admin.register(models.GroupMatch)
 class GroupMatchAdmin(admin.ModelAdmin):
-    list_display = ('groupmatch', 'result')
-    ordering = ['match_number']
+    list_display = ('groupmatch', 'result', 'ko_time')
+    ordering = ['ko_time', 'match_number']
 
     inlines = [
         GroupMatchOutcomeInline,
@@ -78,11 +78,6 @@ class CountryAdmin(admin.ModelAdmin):
     show_flag.short_description = 'Flag'
 
 
-@admin.register(models.Venue)
-class VenueAdmin(admin.ModelAdmin):
-    pass
-
-
 # @admin.register(models.TournamentBetGroup)
 # class TournamentBetGroupAdmin(admin.ModelAdmin):
 #     pass
@@ -93,8 +88,8 @@ class TournamentGoalsOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.TournamentRedCardsOutcome)
-class TournamentRedCardsOutcomeAdmin(admin.ModelAdmin):
+@admin.register(models.TournamentPenaltiesOutcome)
+class TournamentPenaltiesOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
@@ -103,8 +98,8 @@ class TournamentOwnGoalsOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.TournamentHattricksOutcome)
-class TournamentHatricksOutcomeAdmin(admin.ModelAdmin):
+@admin.register(models.TournamentGoalsInAGameOutcome)
+class TournamentGoalsInAGameOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
@@ -128,12 +123,7 @@ class FinalYellowCardsOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(models.FinalOwnGoalOutcome)
-class FinalOwnGoalOutcomeAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(models.FinalRefContinentOutcome)
+@admin.register(models.FinalRefCountryOutcome)
 class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
     pass
 
@@ -141,11 +131,7 @@ class FinalRefContinentOutcomeAdmin(admin.ModelAdmin):
 @admin.register(models.FinalGoalsOutcome)
 class FinalGoalsOutcomeAdmin(admin.ModelAdmin):
     pass
-#
-#
-# @admin.register(models.BestTeamsSuccessBetGroup)
-# class BestTeamsSuccessBetGroupAdmin(admin.ModelAdmin):
-#     pass
+
 
 
 @admin.register(models.ToReachSemiFinalOutcome)
@@ -183,6 +169,11 @@ class FastestGoalOutcomeAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(models.MostCleanSheetsOutcome)
+class MostCleanSheetsOutcomeAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.GroupWinnerOutcome)
 class GroupWinnerOutcomeAdmin(admin.ModelAdmin):
     pass
@@ -206,7 +197,8 @@ class BetAdmin(admin.ModelAdmin):
 
 @admin.register(models.ChoiceGroup)
 class ChoiceGroupAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'order', 'game_category', 'when_called')
+    ordering = ['order']
 
 
 @admin.register(models.GameCategory)
