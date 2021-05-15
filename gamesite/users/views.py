@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User
+from .models import User, AccessCode
 from enter import models
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
@@ -9,17 +9,21 @@ from django.contrib.auth.decorators import login_required
 
 def register(request):
     if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
+        user_form = UserRegisterForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save()
+            new_profile = new_user.profile
+            access_code = user_form.cleaned_data.get('access_code')
+            access_code_obj = AccessCode.objects.filter(code=access_code).first()
+            new_profile.access_code = access_code_obj
+            new_profile.save()
             messages.success(request, f"Your account has now been created! You are now able to log in")
             return redirect('login')
     else:
-        form = UserRegisterForm()
+        user_form = UserRegisterForm()
     return render(request, 'users/register.html', {
         'title': "Register",
-        'form': form
+        'user_form': user_form
     })
 
 

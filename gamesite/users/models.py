@@ -16,6 +16,7 @@ class Profile(models.Model):
     team = models.ForeignKey(
         'Team', on_delete=models.SET_NULL, blank=True, null=True)
     bio = models.TextField(max_length=160, blank=True, null=True)
+    access_code = models.ForeignKey("AccessCode", blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"Profile: {self.user.username}"

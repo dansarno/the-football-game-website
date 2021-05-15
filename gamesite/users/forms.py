@@ -63,7 +63,6 @@ class ProfileUpdateForm(forms.ModelForm):
         self.fields['team'].help_text = "Want to create you own team? Get in touch, let us know your team name and your team will be created for you and your friends"
         self.fields['bio'].help_text = "160 characters max"
         if datetime.now() > settings.GAME_DEADLINE:
-            print("should be disabled")
             self.fields['team'].widget.attrs['disabled'] = True
 
     class Meta:

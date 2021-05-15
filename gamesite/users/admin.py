@@ -4,7 +4,7 @@ from .models import Profile, AccessCode, Team, Prize
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('__str__', 'access_code')
 
 
 @admin.register(AccessCode)
