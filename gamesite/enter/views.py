@@ -35,9 +35,11 @@ def index(request):
 @login_required
 def leaderboard(request):
     teams = Team.objects.all()
+    any_called_bets = models.CalledBet.objects.all().exists()
     return render(request, "enter/leader_board.html", {
         "title": "Leaderboards",
-        "teams": teams
+        "teams": teams,
+        "any_called_bets": any_called_bets
     })
 
 
@@ -50,8 +52,12 @@ def explore(request):
 
 @login_required
 def results(request):
-    game_progress_percentage = round((models.CalledBet.objects.values('outcome__choice_group').distinct().count()
-                                      / models.ChoiceGroup.objects.count()) * 100, 1)
+    num_completed = models.CalledBet.objects.values('outcome__choice_group').distinct().count()
+    total = models.ChoiceGroup.objects.count()
+    overall_game_progress = dict()
+    overall_game_progress['number_completed'] = num_completed
+    overall_game_progress['total_number'] = total
+    overall_game_progress['percentage'] = round((num_completed/total) * 100, 1)
     game_section_progress = []
     for category in models.GameCategory.objects.all().order_by('order'):
         game_section = dict()
@@ -71,7 +77,7 @@ def results(request):
 
     return render(request, "enter/results.html", {
         "title": "Results",
-        'game_progress': game_progress_percentage,
+        'game_progress': overall_game_progress,
         'section_progress': game_section_progress
     })
 

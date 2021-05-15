@@ -24,7 +24,7 @@
             <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
           </div>
           <h3>{{ post.title }}</h3>
-          <p class="article-content">{% autoescape off %}{{ post.content }}{% endautoescape %}</p>
+          <p class="article-content">{{ post.content|safe }}</p>
         </div>
       </div>
     </div>

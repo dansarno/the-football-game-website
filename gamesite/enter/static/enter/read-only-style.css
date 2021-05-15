@@ -16,6 +16,14 @@ svg {
     /* Firefox */
 }
 
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
 h1 {
     vertical-align: bottom;
 }

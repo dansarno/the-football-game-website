@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from random import randint
 from PIL import Image
 
@@ -28,6 +29,9 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.profile_picture.path)
+
+    def get_absolute_url(self):
+        return reverse('profile', kwargs={'username': self.user.username})
 
 
 class Team(models.Model):

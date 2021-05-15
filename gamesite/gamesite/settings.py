@@ -193,3 +193,8 @@ INTERNAL_IPS = [
 # Other Settings
 
 GAME_DEADLINE = datetime(2021, 6, 11)
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
+    # '...
+}

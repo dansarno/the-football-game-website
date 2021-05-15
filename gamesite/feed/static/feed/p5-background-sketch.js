@@ -27,12 +27,15 @@ function setup() {
     ]
 
     for (let i = 0; i < 20; i++) {
-        balls.push(new Ball(colorSet[i % colorSet.length]));
+        let colorSetIndex = i % colorSet.length;
+        let quotient = Math.floor(i / colorSet.length)
+        let ballColor = colorSet[colorSetIndex]
+        balls.push(new Ball(ballColor));
     }
 }
 
 function draw() {
-    background(255, 255, 255, 85);
+    background(255, 255, 255, 60);
 
     for (let i = 0; i < balls.length; i++) {
         balls[i].move();
@@ -71,7 +74,7 @@ class Ball {
         this.y = random(height);
         this.diameter = 30;
         this.angle = random(0, 6.2);
-        this.speed = random(3, 5);
+        this.speed = random(1, 3);
         this.xspeed = this.speed * cos(this.angle);
         this.yspeed = this.speed * sin(this.angle);
         this.oxspeed = this.xspeed;

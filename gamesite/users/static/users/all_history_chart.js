@@ -1,10 +1,12 @@
 $(document).ready(function () {
   var chartDataEndpoint = $("#all-history-chart-container").attr("data-all-history-url-endpoint")
   var prizeDataEndpoint = $("#all-history-chart-container").attr("data-prize-url-endpoint")
+  var calledBetsDataEndpoint = $("#all-history-chart-container").attr("data-called-bets-url-endpoint")
+
+  var ctx = document.getElementById('winnersChart').getContext('2d');
+  var ctx2 = document.getElementById('top20Chart').getContext('2d');
+
   var username = $("#all-history-chart-container").attr("data-username")
-  var defaultScoreData = []
-  var defaultPositionData = []
-  var defaultLabels = []
 
   let ajaxChartData = $.ajax({
     method: "GET",
@@ -24,12 +26,21 @@ $(document).ready(function () {
     }
   })
 
-  $.when(ajaxChartData, ajaxPrizeData).done(function (a1, a2) {
+  let calledBetsData = $.ajax({
+    method: "GET",
+    url: calledBetsDataEndpoint,
+    success: function (data) {},
+    error: function (error_data) {
+      console.log(error_data)
+    }
+  })
+
+  $.when(ajaxChartData, ajaxPrizeData, calledBetsData).done(function (a1, a2, a3) {
     let data = a1[0]
     prizeData = a2[0]
+    let calledBetsData = a3[0]
 
     let positions = []
-    let labels = []
     let verboseLabels = []
     let dateLabels = []
     let entryLabels = []
@@ -40,47 +51,71 @@ $(document).ready(function () {
       prizePositions.push(prize.position)
     }
 
-    i = 1
-    for (let position_log of data[0].entries[0].position_logs) {
-      labels.push(position_log.called_bet.date)
-      verboseLabels.push(position_log.called_bet.outcome)
-      dateLabels.push(position_log.called_bet.date)
-      i++
+    for (let calledBet of calledBetsData) {
+      verboseLabels.push(calledBet.outcome)
+      dateLabels.push(calledBet.date)
     }
 
-    for (let profile of data) {
-      for (let entry of profile.entries) {
-        usernames.push(profile.user)
+    for (let entry of data) {
+      if (prizePositions.includes(entry.current_position)) {
+        usernames.push(entry.username)
         if (entry.label) {
-          entryLabels.push(`${profile.user} (${entry.label})`)
+          entryLabels.push(`${entry.username} (${entry.label})`)
         } else {
-          entryLabels.push(`${profile.user}`)
+          entryLabels.push(`${entry.username}`)
         }
         entryPostions = []
+        let i = 0
         for (let position_log of entry.position_logs) {
           entryPostions.push({
             y: position_log.position,
-            x: position_log.called_bet.date
+            x: calledBetsData[i].date
           })
+          i++
         }
         positions.push(entryPostions)
       }
     }
 
-    defaultLabels = labels
-    defaultVerboseLabels = verboseLabels
-    defaultDateLabels = dateLabels
-    defaultPositionData = positions
+    let buttonElement = '#xaxis-toggle'
+    $(".loading").hide()
+    setChart(ctx, verboseLabels, dateLabels, positions, entryLabels, usernames, buttonElement)
+    $(buttonElement).show()
 
-    $("#loading").hide()
-    setChart(entryLabels, usernames)
-    $('#xaxis-toggle').show()
+    positions = []
+    entryLabels = []
+    usernames = []
+
+    for (let entry of data) {
+      if (entry.current_position <= 20) {
+        usernames.push(entry.username)
+        if (entry.label) {
+          entryLabels.push(`${entry.username} (${entry.label})`)
+        } else {
+          entryLabels.push(`${entry.username}`)
+        }
+        entryPostions = []
+        let i = 0
+        for (let position_log of entry.position_logs) {
+          entryPostions.push({
+            y: position_log.position,
+            x: calledBetsData[i].date
+          })
+          i++
+        }
+        positions.push(entryPostions)
+      }
+    }
+
+    buttonElement = '#xaxis-toggle2'
+    $(".loading").hide()
+    setChart(ctx2, verboseLabels, dateLabels, positions, entryLabels, usernames, buttonElement)
+    $(buttonElement).show()
   })
 
-  function setChart(entryLabels, usernames) {
-    var ctx = document.getElementById('allHistoryChart').getContext('2d');
+  function setChart(ctx, verboseLabels, dateLabels, positions, entryLabels, usernames, buttonElement) {
 
-    areaColourSet = [] // ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)']
+    areaColourSet = []
     prizeColours = {
       T: 'rgba(218, 165, 32, 0.5)',
       M: 'rgba(192, 192, 192, 0.5)',
@@ -88,18 +123,17 @@ $(document).ready(function () {
     }
 
     positionChartData = {}
-    // positionChartData.labels = defaultLabels
-    positionChartData.dateLabels = defaultDateLabels
+    positionChartData.dateLabels = dateLabels
     positionChartData.datasets = []
 
     i = 0
-    for (let positions of defaultPositionData) {
-      lineColor = "hsla(" + (360 * i / defaultPositionData.length) + ",90%,70%,0.5)"
-      lineColorFull = "hsla(" + (360 * i / defaultPositionData.length) + ",90%,70%,1)"
+    for (let positionsSet of positions) {
+      lineColor = "hsla(" + (360 * i / positions.length) + ",90%,70%,0.5)"
+      lineColorFull = "hsla(" + (360 * i / positions.length) + ",90%,70%,1)"
       positionChartData.datasets.push({
         label: entryLabels[i],
-        verboseLabel: defaultVerboseLabels,
-        data: positions,
+        verboseLabel: verboseLabels,
+        data: positionsSet,
         backgroundColor: (usernames[i] === username) ? lineColorFull : lineColor,
         borderColor: (usernames[i] === username) ? lineColorFull : lineColor,
         hoverBorderColor: "rgb(50,50,50)",
@@ -111,17 +145,18 @@ $(document).ready(function () {
         pointHoverRadius: 3,
         hoverBorderWidth: 6,
         fill: false,
-        lineTension: 0
+        lineTension: 0.2
       })
       i++
     }
 
     // Position Chart
-    positionChart = new Chart(ctx, {
+    let positionChart = new Chart(ctx, {
       type: 'line',
       data: positionChartData,
       options: {
         responsive: true,
+        aspectRatio: 1.4,
         layout: {
           padding: {
             left: 0,
@@ -153,6 +188,7 @@ $(document).ready(function () {
         },
         scales: {
           y: {
+            min: 1,
             scaleID: "y-axis-0",
             beginAtZero: false,
             reverse: true,
@@ -194,13 +230,15 @@ $(document).ready(function () {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              // minUnit: 'minute',
+              minUnit: 'hour',
               displayFormats: {
-                hour: 'ddd HH'
+                hour: 'ddd ha',
+                day: 'MMMM Do'
               }
             },
             ticks: {
               source: 'auto',
+              minRotation: 50,
             },
             title: {
               display: true,
@@ -211,7 +249,13 @@ $(document).ready(function () {
       }
     })
 
-    return positionChart
+    $(buttonElement).click(function () {
+      toggleDistribution(positionChart)
+      toggleTickSource(positionChart)
+      toggleXLabel(positionChart)
+      positionChart.update()
+    })
+
   }
 
   function toggleDistribution(chart) {
@@ -247,12 +291,5 @@ $(document).ready(function () {
     }
     return i + "th"
   }
-
-  $("#xaxis-toggle").click(function () {
-    toggleDistribution(positionChart)
-    toggleTickSource(positionChart)
-    toggleXLabel(positionChart)
-    positionChart.update()
-  })
 
 })

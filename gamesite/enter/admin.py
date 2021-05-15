@@ -197,8 +197,15 @@ class BetAdmin(admin.ModelAdmin):
 
 @admin.register(models.ChoiceGroup)
 class ChoiceGroupAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'order', 'game_category', 'when_called')
+    list_display = ('__str__', 'order', 'game_category', 'num_choices', 'when_called')
     ordering = ['order']
+
+    def num_choices(self, obj):
+        if obj.order == 52:
+            print(obj.outcome_set.count())
+            for outcome in obj.outcome_set.all():
+                print(outcome.id)
+        return obj.outcome_set.count()
 
 
 @admin.register(models.GameCategory)

@@ -36,7 +36,7 @@
             <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'H:00' }}</td>
             <td class="match_time text-muted d-none d-sm-table-cell">{{ field.label.ko_time|date:'D d' }}</td>
             <td class="match_label-lg">{{ field.label.home_team.country.name }} v {{ field.label.away_team.country.name }}
-            <td class="match_label-sm">{{ field.label.home_team.country.country_code }} v {{ field.label.away_team.country.country_code }}
+            <td class="match_label-sm no-print">{{ field.label.home_team.country.country_code }} v {{ field.label.away_team.country.country_code }}
             </td>
             {% for radio in field %}
             <td class="text-muted" style="text-align: left;">
@@ -150,7 +150,7 @@
                 {% for choice in field.field.queryset %}
                 <tr>
                   <td class="player-label-lg">{{ choice.player.first_name }} {{ choice.player.last_name }}</td>
-                  <td class="player-label-sm">{{ choice.short_choice }}</td>
+                  <td class="player-label-sm no-print">{{ choice.short_choice }}</td>
                 </tr>
                 {% endfor %}
               </table>
@@ -192,7 +192,7 @@
           {% for field in fifty_fifty_bets_form %}
           <tr class="row-space">
             <td class="fifty-fifty-label-lg">{{ field.label.question }}</td>
-            <td class="fifty-fifty-label-sm">{{ field.label.brief_question|safe }}</td>
+            <td class="fifty-fifty-label-sm no-print">{{ field.label.brief_question|safe }}</td>
             {% for radio in field %}
             <td class="match_radio text-muted">
               {{ radio }}
@@ -275,7 +275,7 @@
         <div class="row">
           {% for field in tournament_bets_form %}
           <div class="col-md-6 col-lg-3 mb-2">
-            <div class="mb-1">{{ field.label }}</div>
+            <div class="option-text mb-1"><b>{{ field.label }}</b></div>
             <table>
               <tr>
                 <td style="width: 68%;">
@@ -321,7 +321,7 @@
           {% for field in final_bets_form %}
           <div class="col-md-6 col-lg-3">
             <div class="mb-2">
-              <div class="mb-1">{{ field.label }}</div>
+              <div class="option-text mb-1"><b>{{ field.label }}</b></div>
               <table>
                 <tr>
                   <td style="width: 68%;">
@@ -329,7 +329,7 @@
                       {% for choice in field.field.queryset %}
                       <tr>
                         <td class="final-label-lg">{{ choice.verbose_outcome }}</td>
-                        <td class="final-label-sm">{{ choice.short_choice }}</td>
+                        <td class="final-label-sm no-print">{{ choice.short_choice }}</td>
                       </tr>
                       {% endfor %}
                     </table>

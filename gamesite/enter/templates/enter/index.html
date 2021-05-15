@@ -10,7 +10,7 @@
   <h2>Entry Manager</h2>
   <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <div class="pb-4">You can submit up to 3 entries per person. Each entry costs £7.50 and must be paid by 11th June 2021.
+      <div class="pb-4">You can submit up to 3 entries per person. Each entry costs £8.50 and must be submitted by 11th June 2021.
       </div>
       <div class="row row-cols-1 row-cols-md-3">
         {% for entry_and_progress in entries_and_progress %}
@@ -55,7 +55,7 @@
                 Submit
               </button>
               {% else %}
-              <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="You can only submit complete entries">
+              <span class="d-inline-block" tabindex="0" data-toggle="tooltip" data-placement="bottom" title="You can only submit fully complete entries">
               <button type="button" class="btn btn-outline-primary btn-sm mr-1 mb-2" style="pointer-events: none;" disabled>
                 Submit
               </button>
@@ -151,16 +151,16 @@
     </div>
   </div>
 
-  <div class="card border-light shadow">
+  {% comment %} <div class="card border-light shadow">
     <div class="card-body">
       <h5>Game Rules Summary</h5>
       <ol>
-        <li>Each entry costs £7.50 and must be paid by 11th June 2021</li>
+        <li>Each entry costs £8.50 and must be paid by 11th June 2021</li>
         <li>Entries must be submitted in order to enter the game</li>
         <li></li>
       </ol>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 
 {% endblock content %}

@@ -34,6 +34,15 @@ svg {
   width: 32px;
 }
 
+.entry-label {
+  color: #444444;
+}
+
+.entry-label:hover {
+  color: #8c8b8b;
+  text-decoration: none;
+}
+
 #site-logo-header svg {
   height: 32px;
   width: 32px;
@@ -294,12 +303,8 @@ a.article-title:hover {
   text-decoration: none !important;
 }
 
-.correct {
-  color: green;
-}
-
-.incorrect {
-  color: red;
+.pic-link:hover {
+  opacity: 0.6;
 }
 
 .grayout {
@@ -348,8 +353,12 @@ a.article-title:hover {
   background-color: white;
 }
 
-.table a {
-  display: block;
+.table-link {
+  color: #444444;
+}
+
+.table-link:hover {
+  color: #8c8b8b;
   text-decoration: none;
 }
 

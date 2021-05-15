@@ -32,10 +32,10 @@ def create_default_profile_picture(user):
     profile_picture = Image.new('RGBA', (W, H), color=0)
     d = ImageDraw.Draw(profile_picture)
 
-    f_co = (random.randint(0, 255), random.randint(
-        0, 255), random.randint(0, 255))
-    t_co = (random.randint(0, 255), random.randint(
-        0, 255), random.randint(0, 255))
+    f_co = (random.randint(100, 255), random.randint(
+        100, 255), random.randint(100, 255))
+    t_co = (random.randint(100, 255), random.randint(
+        100, 255), random.randint(100, 255))
 
     opposite_direction = False
     if random.random() > 0.5:

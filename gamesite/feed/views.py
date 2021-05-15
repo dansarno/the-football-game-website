@@ -14,18 +14,21 @@ def landing(request):
     })
 
 
+@login_required
 def charity(request):
     return render(request, 'feed/charity.html', {
         'title': "Charity",
     })
 
 
+@login_required
 def how_it_works(request):
     return render(request, 'feed/how_it_works.html', {
         'title': "How It Works",
     })
 
 
+@login_required
 def about(request):
     return render(request, 'feed/about.html', {
         'title': "About",

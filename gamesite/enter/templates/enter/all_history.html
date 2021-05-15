@@ -8,25 +8,52 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-12 col-lg-9 mt-4">
-<h2>Position Chart</h2>
+<h2>Position Charts</h2>
 
-<div class="card border-light shadow mb-4">
-  <div id="chart-card" class="card-body">
-    <div class="d-flex justify-content-center">
-      <div class="spinner-border text-secondary mt-5" role="status" id="loading">
-        <span class="sr-only">Loading...</span>
+  <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}" data-username="{{ request.user.username }}" data-called-bets-url-endpoint="{% url 'enter:called_bets_api' %}">
+    <div class="card border-light shadow mb-4">
+      <div class="card-body">
+        <h3>Entries In Winning Positions</h3>
+        <p>The position history of entries that are currently in winning positions.</p>
+          <hr />
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-secondary loading mt-5" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div>
+          <canvas id="winnersChart" height="600"></canvas>
+        </div>
+        <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle Time Axis</button>
+        <small class="mt-3 text-muted">
+          {% svg 'info' %}
+          Switch between a time axis where called bets are spaced according to the amount of time between them (aka "linear") and a time axis where called bets are equally spaced (aka "series")
+        </small>
       </div>
     </div>
-    <div id="all-history-chart-container" data-all-history-url-endpoint="{% url 'all_history_api' %}" data-prize-url-endpoint="{% url 'prize_api' %}" data-username="{{ request.user.username }}">
-      <canvas id="allHistoryChart" width="400" height="400"></canvas>
-    </div>
-    <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle" style="display:none">Toggle Time Axis</button>
-    <small class="mt-3 text-muted">
-      {% svg 'info' %}
-      Switch between a time axis where called bets are spaced according to the amount of time between them (aka "linear") and a time axis where called bets are equally spaced (aka "series")
-    </small>
   </div>
-</div>
+
+  <div class="card border-light shadow mb-4">
+      <div class="card-body">
+        <h3>Top 20</h3>
+        <p>The position history of entries that are currently in the top 20 positions.</p>
+          <hr />
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border text-secondary loading mt-5" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+        <div>
+          <canvas id="top20Chart" height="600"></canvas>
+        </div>
+        <button type="button" class="btn btn-outline-dark btn-sm" id="xaxis-toggle2" style="display:none">Toggle Time Axis</button>
+        <small class="mt-3 text-muted">
+          {% svg 'info' %}
+          Switch between a time axis where called bets are spaced according to the amount of time between them (aka "linear") and a time axis where called bets are equally spaced (aka "series")
+        </small>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript" src="{% static 'users/all_history_chart.js' %}"></script>

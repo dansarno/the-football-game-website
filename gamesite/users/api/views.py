@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from enter import models
 from users.models import Profile, Prize
 from .serializers import ProfileHistorySerializer, ProfilePerformanceSerializer, \
-    PrizeSerializer, ProfilePositionHistorySerializer
+    PrizeSerializer, ProfilePositionHistorySerializer, EntryPositionHistorySerializer
 
 
 @api_view(['GET'])
@@ -26,8 +26,8 @@ def all_entries_history(request):
 
 
 class AllHistoryViewSet(ReadOnlyModelViewSet):
-    queryset = models.Profile.objects.all()
-    serializer_class = ProfilePositionHistorySerializer
+    queryset = models.Entry.objects.filter(has_submitted=True)
+    serializer_class = EntryPositionHistorySerializer
 
     def list(self, request):
         cache_key = f"all_history_list"

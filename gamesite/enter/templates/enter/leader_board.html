@@ -11,9 +11,10 @@
 
   <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <div id="overall_table_container" data-url-endpoint="{% url 'enter:all_entries_api' %}" data-teams-url-endpoint="{% url 'enter:teams_api' %}" data-prizes-url-endpoint="{% url 'prize_api' %}">
+      <div id="overall_table_container" data-any-called-bets="{{ any_called_bets }}" data-entries-info-url-endpoint="{% url 'enter:all_submitted_api' %}" data-url-endpoint="{% url 'enter:all_entries_api' %}" data-teams-url-endpoint="{% url 'enter:teams_api' %}" data-prizes-url-endpoint="{% url 'prize_api' %}">
         <h3>Overall Leaderboard</h3>
         <hr />
+        {% if any_called_bets %}
         <table id="overall_leaderboard" class="display" style="width:100%">
           <thead>
             <tr>
@@ -27,6 +28,17 @@
             </tr>
           </thead>
         </table>
+        {% else %}
+        <table id="all_submitted_entries_table" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+        </table>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -38,6 +50,7 @@
       <div id="team_{{ team.id }}_table_container">
         <h3>{{ team }} Leaderboard</h3>
         <hr />
+        {% if any_called_bets %}
         <table id="team_{{ team.id }}_leaderboard" class="display" style="width:100%">
           <thead>
             <tr>
@@ -51,6 +64,17 @@
             </tr>
           </thead>
         </table>
+        {% else %}
+        <table id="team_{{ team.id }}_leaderboard" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th class="all"></th>
+              <th>User</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+        </table>
+        {% endif %}
       </div>
     </div>
   </div>

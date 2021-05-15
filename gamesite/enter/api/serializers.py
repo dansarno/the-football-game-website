@@ -14,10 +14,30 @@ class TeamSerializer(serializers.ModelSerializer):
 
 class CalledBetSerializer(serializers.ModelSerializer):
     outcome = serializers.StringRelatedField(read_only=True)
+    post_url = serializers.SerializerMethodField()
+    winning_amount = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    question = serializers.SerializerMethodField()
+    choice = serializers.SerializerMethodField()
 
     class Meta:
         model = models.CalledBet
-        fields = ['outcome', 'date']
+        fields = ['date', 'outcome', 'post_url', 'winning_amount', 'category', 'question', 'choice']
+
+    def get_post_url(self, obj):
+        return obj.post.get_absolute_url()
+
+    def get_question(self, obj):
+        return obj.outcome.short_question
+
+    def get_choice(self, obj):
+        return obj.outcome.short_choice
+
+    def get_winning_amount(self, obj):
+        return obj.outcome.winning_amount
+
+    def get_category(self, obj):
+        return obj.outcome.choice_group.game_category.title
 
 
 class BetSerializer(serializers.ModelSerializer):
@@ -73,10 +93,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
+    profile_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Profile
-        fields = ['user', 'profile_picture', 'team']
+        fields = ['user', 'profile_picture', 'profile_url', 'team']
+
+    def get_profile_url(self, obj):
+        return obj.get_absolute_url()
+
+
+class SimpleEntrySerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(read_only=True)
+
+    class Meta:
+        model = models.Entry
+        fields = ['id', 'label', 'profile']
 
 
 class LeaderboardEntrySerializer(serializers.ModelSerializer):
@@ -85,11 +117,15 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
         'get_last_two_position_logs')
     form = serializers.SerializerMethodField('get_last_five_bets')
     upcoming = serializers.SerializerMethodField('get_upcoming_bets')
+    view_url = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'profile', 'current_score', 'correct_bets',
+        fields = ['id', 'label', 'view_url', 'profile', 'current_score', 'correct_bets',
                   'current_position', 'current_team_position', 'position_logs', 'form', 'upcoming']
+
+    def get_view_url(self, obj):
+        return obj.get_absolute_url()
 
     def get_last_five_score_logs(self, obj):
         score_logs = models.ScoreLog.objects.filter(
@@ -113,7 +149,7 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
 
     def get_upcoming_bets(self, obj):
         next_bets = models.Bet.objects.filter(entry=obj).exclude(
-            success__isnull=False).order_by('outcome__choice_group__when_called')[:3]
+            success__isnull=False).order_by('outcome__choice_group__when_called', 'outcome__choice_group__order')[:3]
         serializer = UpcomingBetSerializer(instance=next_bets, many=True)
         return serializer.data
 
@@ -122,11 +158,15 @@ class SidebarEntrySerializer(serializers.ModelSerializer):
     top_score = serializers.SerializerMethodField()
     last_place = serializers.SerializerMethodField()
     form = serializers.SerializerMethodField('get_last_five_bets')
+    view_url = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'top_score', 'last_place',
+        fields = ['id', 'label', 'view_url', 'top_score', 'last_place',
                   'current_score', 'current_position', 'form']
+
+    def get_view_url(self, obj):
+        return obj.get_absolute_url()
 
     def get_last_five_bets(self, obj):
         recent_bets = models.Bet.objects.filter(entry=obj).exclude(

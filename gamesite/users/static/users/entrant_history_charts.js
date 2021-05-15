@@ -118,6 +118,7 @@ $(document).ready(function () {
         borderWidth: 3,
         pointRadius: 2,
         pointHoverRadius: 8,
+        pointHitRadius: 6,
         fill: false, //'origin',
       })
       i++
@@ -148,8 +149,9 @@ $(document).ready(function () {
         borderWidth: 3,
         pointRadius: 2,
         pointHoverRadius: 8,
+        pointHitRadius: 6,
         fill: false,
-        lineTension: 0
+        lineTension: 0.1
       })
       i++
     }
@@ -212,13 +214,16 @@ $(document).ready(function () {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              minUnit: 'minute',
+              minUnit: 'hour',
               displayFormats: {
-                hour: 'ddd HH'
+                hour: 'ddd ha',
+                day: 'MMMM Do'
               }
             },
             ticks: {
               source: 'auto',
+              minRotation: 50,
+              autoSkip: true
             },
             title: {
               display: true,
@@ -308,13 +313,16 @@ $(document).ready(function () {
             distribution: 'linear', // 'series',
             bounds: 'ticks',
             time: {
-              minUnit: 'minute',
+              minUnit: 'hour',
               displayFormats: {
-                hour: 'ddd HH'
+                hour: 'ddd ha',
+                day: 'MMMM Do'
               }
             },
             ticks: {
               source: 'auto',
+              minRotation: 50,
+              autoSkip: true
             },
             title: {
               display: true,

@@ -28,6 +28,13 @@ class PositionLogSerializer(serializers.ModelSerializer):
         fields = ['position', 'called_bet']
 
 
+class PositionLogOnlySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.PositionLog
+        fields = ['position',]
+
+
 class EntryHistorySerializer(serializers.ModelSerializer):
     score_logs = ScoreLogSerializer(many=True, read_only=True)
     position_logs = PositionLogSerializer(many=True, read_only=True)
@@ -45,14 +52,20 @@ class EntryHistorySerializer(serializers.ModelSerializer):
 
 
 class EntryPositionHistorySerializer(serializers.ModelSerializer):
-    position_logs = PositionLogSerializer(many=True, read_only=True)
+    position_logs = PositionLogOnlySerializer(many=True, read_only=True)
+    username = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
         fields = [
             'label',
+            'current_position',
+            'username',
             'position_logs'
         ]
+
+    def get_username(self, obj):
+        return obj.profile.user.username
 
 
 class EntryPerformanceSerializer(serializers.ModelSerializer):
@@ -130,7 +143,7 @@ class ProfilePositionHistorySerializer(serializers.ModelSerializer):
 
     def get_entries(self, obj):
         valid_entries = models.Entry.objects.filter(
-            profile=obj, has_submitted=True)
+            profile=obj, current_position__lte=20, has_submitted=True)
         serializer = EntryPositionHistorySerializer(
             instance=valid_entries, many=True, read_only=True)
         return serializer.data

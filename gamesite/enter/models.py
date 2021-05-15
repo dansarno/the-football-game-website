@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from users.models import Profile
 from polymorphic.models import PolymorphicModel
@@ -37,6 +38,9 @@ class Entry(models.Model):
             return f"{self.profile.user.username}'s entry {self.label}"
         else:
             return f"{self.profile.user.username}'s entry"
+
+    def get_absolute_url(self):
+        return reverse('enter:view_entry', kwargs={'entry_id': self.id})
 
 
 class ScoreLog(models.Model):
@@ -164,7 +168,7 @@ class GroupWinnerOutcome(Outcome):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Group {self.group.name} Winner = {self.team.country.name} ({self.winning_amount})"
+        return f"Group {self.group.name} Winner → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -179,7 +183,7 @@ class TopGoalScoringGroupOutcome(Outcome):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Top Scoring Group = {self.group.name} ({self.winning_amount})"
+        return f"Top Scoring Group → {self.group.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -207,7 +211,7 @@ class TopGoalScoringPlayerOutcome(Outcome):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Top Goalscorer = {self.short_choice} ({self.winning_amount})"
+        return f"Top Goalscorer → {self.short_choice} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -226,7 +230,7 @@ class ToReachSemiFinalOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"To Reach Semis = {self.short_choice} ({self.winning_amount})"
+        return f"To Reach Semis → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -242,7 +246,7 @@ class ToReachFinalOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"To Reach Final = {self.short_choice} ({self.winning_amount})"
+        return f"To Reach Final → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -258,7 +262,7 @@ class ToWinOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"To Win = {self.short_choice} ({self.winning_amount})"
+        return f"To Win → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -274,7 +278,7 @@ class HighestScoringTeamOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"Highest Scoring Team = {self.short_choice} ({self.winning_amount})"
+        return f"Highest Scoring Team → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -290,7 +294,7 @@ class MostYellowCardsOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"Most Yellows = {self.short_choice} ({self.winning_amount})"
+        return f"Most Yellows → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -306,7 +310,7 @@ class FastestYellowCardsOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"Fastest Yellow = {self.short_choice} ({self.winning_amount})"
+        return f"Fastest Yellow → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -322,7 +326,7 @@ class FastestGoalOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"Fastest Goal = {self.short_choice} ({self.winning_amount})"
+        return f"Fastest Goal → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -338,7 +342,7 @@ class MostCleanSheetsOutcome(Outcome):
                              'is_top_team': True})
 
     def __str__(self):
-        return f"Most Clean Sheets = {self.short_choice} ({self.winning_amount})"
+        return f"Most Clean Sheets → {self.team.country.name} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -364,7 +368,7 @@ class FiftyFiftyOutcome(Outcome):
     choice = models.BooleanField()
 
     def __str__(self):
-        return f"{self.short_question} = {self.choice} ({self.winning_amount})"
+        return f"{self.fifty_fifty} → {self.choice} ({self.winning_amount})"
 
     @property
     def short_question(self):
@@ -384,15 +388,15 @@ class TournamentGoalsOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Total Goals = {self.min_value} ({self.winning_amount})"
+            return f"Total Goals → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Total Goals = {self.min_value} - {self.max_value}" \
+            return f"Total Goals → {self.min_value} - {self.max_value}" \
                 f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Total Goals = {self.max_value} or fewer" \
+            return f"Total Goals → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Total Goals = {self.min_value} or more" \
+            return f"Total Goals → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -427,15 +431,15 @@ class TournamentPenaltiesOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Total Pens = {self.min_value} ({self.winning_amount})"
+            return f"Total Pens → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Total Pens = {self.min_value} - {self.max_value}" \
+            return f"Total Pens → {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Total Pens = {self.max_value} or fewer" \
+            return f"Total Pens → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Total Pens = {self.min_value} or more" \
+            return f"Total Pens → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -470,15 +474,15 @@ class TournamentOwnGoalsOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Total Own Goals = {self.min_value} ({self.winning_amount})"
+            return f"Total Own Goals → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Total Own Goals = {self.min_value} - {self.max_value}" \
+            return f"Total Own Goals → {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Total Own Goals = {self.max_value} or fewer" \
+            return f"Total Own Goals → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Total Own Goals = {self.min_value} or more" \
+            return f"Total Own Goals → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -513,15 +517,15 @@ class TournamentGoalsInAGameOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Most Goals in a Single Game = {self.min_value} ({self.winning_amount})"
+            return f"Most Goals in a Single Game → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Most Goals in a Single Game = {self.min_value} - {self.max_value}" \
+            return f"Most Goals in a Single Game → {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Most Goals in a Single Game = {self.max_value} or fewer" \
+            return f"Most Goals in a Single Game → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Most Goals in a Single Game = {self.min_value} or more" \
+            return f"Most Goals in a Single Game → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -612,11 +616,14 @@ class GroupMatchOutcome(Outcome):
         max_length=1, choices=GroupMatch.MATCH_RESULT_CHOICES)
 
     def __str__(self):
-        return f"Match {self.match.match_number}, {self.short_question} = {self.choice} ({self.winning_amount})"
+        return f"Match {self.match.match_number}, {self.short_question} → {self.verbose_outcome()} ({self.winning_amount})"
 
     @property
     def short_question(self):
         return self.match.short_question
+
+    def verbose_outcome(self):
+        return dict(Match.MATCH_RESULT_CHOICES)[self.choice]
 
     @property
     def short_choice(self):
@@ -687,7 +694,7 @@ class FinalFirstGoalOutcome(Outcome):
         max_length=2, choices=FinalMatch.MATCH_PERIOD_CHOICES)
 
     def __str__(self):
-        return f"First Final Goal = {self.short_choice} ({self.winning_amount})"
+        return f"First Final Goal → {self.short_choice} ({self.winning_amount})"
 
     def verbose_outcome(self):
         return dict(FinalMatch.MATCH_PERIOD_CHOICES)[self.choice]
@@ -708,15 +715,15 @@ class FinalYellowCardsOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Final Yellows = {self.min_value} ({self.winning_amount})"
+            return f"Final Yellows → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Final Yellows = {self.min_value} - {self.max_value}" \
+            return f"Final Yellows → {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Final Yellows = {self.max_value} or fewer" \
+            return f"Final Yellows → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Final Yellows = {self.min_value} or more" \
+            return f"Final Yellows → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):
@@ -751,7 +758,7 @@ class FinalRefCountryOutcome(Outcome):
         max_length=3, choices=FinalMatch.REF_COUNTRY_CHOICES)
 
     def __str__(self):
-        return f"Final Ref = {self.short_choice} ({self.winning_amount})"
+        return f"Final Ref → {self.short_choice} ({self.winning_amount})"
 
     def verbose_outcome(self):
         return dict(FinalMatch.REF_COUNTRY_CHOICES)[self.choice]
@@ -772,15 +779,15 @@ class FinalGoalsOutcome(Outcome):
 
     def __str__(self):
         if self.min_value == self.max_value and self.min_value is not None:
-            return f"Final Goals = {self.min_value} ({self.winning_amount})"
+            return f"Final Goals → {self.min_value} ({self.winning_amount})"
         elif self.min_value and self.max_value:
-            return f"Final Goals = {self.min_value} - {self.max_value}" \
+            return f"Final Goals → {self.min_value} - {self.max_value}" \
                    f" ({self.winning_amount})"
         elif self.max_value:
-            return f"Final Goals = {self.max_value} or fewer" \
+            return f"Final Goals → {self.max_value} or fewer" \
                    f" ({self.winning_amount})"
         else:
-            return f"Final Goals = {self.min_value} or more" \
+            return f"Final Goals → {self.min_value} or more" \
                    f" ({self.winning_amount})"
 
     def verbose_outcome(self):

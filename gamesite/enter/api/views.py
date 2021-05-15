@@ -11,7 +11,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.permissions import IsAuthenticated
 from enter import models
 from users.models import Team
-from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer, TeamSerializer
+from .serializers import LeaderboardEntrySerializer, SidebarEntrySerializer, CalledBetStatsSerializer, CalledBetWinnersAndLosersSerializer, TeamSerializer, CalledBetSerializer, SimpleEntrySerializer
 from django.conf import settings
 from datetime import datetime
 
@@ -49,6 +49,11 @@ class EntriesViewSet(ReadOnlyModelViewSet):
         return response
 
 
+class SimpleEntriesViewSet(ReadOnlyModelViewSet):
+    queryset = models.Entry.objects.filter(has_submitted=True)
+    serializer_class = SimpleEntrySerializer
+
+
 @api_view(['GET'])
 def entries_detail(request):
     try:
@@ -71,6 +76,18 @@ def my_entries_detail(request):
 
     if request.method == 'GET':
         serializer = SidebarEntrySerializer(my_entries, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def called_bets(request):
+    try:
+        called_bets = models.CalledBet.objects.all().order_by('date')
+    except models.CalledBet.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CalledBetSerializer(called_bets, many=True)
         return Response(serializer.data)
 
 

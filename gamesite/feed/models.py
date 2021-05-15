@@ -17,11 +17,9 @@ class Sticker(models.Model):
 class Post(models.Model):
     USER_POST = "U"
     BET_POST = "B"
-    MATCH_POST = "M"
     TYPE_CHOICES = [
         (USER_POST, "User Post"),
-        (BET_POST, "Called Bet Post"),
-        (MATCH_POST, "Match Result Post")
+        (BET_POST, "Called Bet Post")
     ]
     title = models.CharField(max_length=100)
     content = models.TextField(blank=True, null=True)
@@ -40,12 +38,3 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('feed:detail', kwargs={'pk': self.pk})
-
-
-class MatchResultPost(models.Model):
-    match = models.ForeignKey(
-        'enter.GroupMatchOutcome', on_delete=models.CASCADE)
-    date_posted = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return f'Result: {self.match.match.home_team} vs {self.match.match.away_team} ({self.match.choice})'

@@ -39,8 +39,6 @@ urlpatterns = [
         template_name='users/password_reset_complete.html'), name='password_reset_complete'),
     path('', include("enter.urls")),
     path('', include("feed.urls")),
-    # path('all-history-api/', user_api_views.all_entries_history,
-    #      name='all_history_api'),
     path('all-history-api/',
          user_api_views.AllHistoryViewSet.as_view({'get': 'list'}), name='all_history_api')
 ]

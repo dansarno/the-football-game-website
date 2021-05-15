@@ -11,11 +11,31 @@
 
 <div class="card border-light shadow mb-4">
   <div class="card-body">
+    <div id="called_bets_table_container" data-url-called-bets-endpoint="{% url 'enter:called_bets_api' %}">
+      <h3>Decided Outcomes</h3>
+        <hr />
+      <table id="called_bets_table" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th></th>
+              <th style="text-align: center;">Outcome</th>
+              <th style="text-align: center;">Game Section</th>
+              <th style="text-align: center;">Points</th>
+              <th style="text-align: center;">Date</th>
+            </tr>
+          </thead>
+        </table>
+    </div>
+  </div>
+</div>
+
+<div class="card border-light shadow mb-4">
+  <div class="card-body">
       <h3>Game Progress</h3>
         <hr />
-       <h5 class="mb-2 mt-3">Overall</h5>
+       <h5 class="mb-2 mt-3">Overall   <small class="text-muted">({{ game_progress.number_completed }} of {{ game_progress.total_number }})</small></h5>
       <div class="progress mb-3 mt-3">
-        <div class="progress-bar" role="progressbar" style="width: {{ game_progress }}%" aria-valuenow="{{ game_progress }}" aria-valuemin="0" aria-valuemax="100">{{ game_progress }}%</div>
+        <div class="progress-bar" role="progressbar" style="width: {{ game_progress.percentage }}%" aria-valuenow="{{ game_progress.percentage }}" aria-valuemin="0" aria-valuemax="100">{{ game_progress.percentage }}%</div>
       </div>
 
       <h5 class="mb-2">Game Section Progress</h5>
@@ -30,5 +50,7 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript" src="{% static 'enter/called_bets_table.js' %}"></script>
 
 {% endblock content %}

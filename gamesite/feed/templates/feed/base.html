@@ -40,8 +40,11 @@
     integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
     crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
+
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/r-2.2.7/datatables.min.css" />
   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.23/r-2.2.7/datatables.min.js"></script>
+  <script type="text/javascript" charset="utf-8"  src="https://cdn.datatables.net/plug-ins/1.10.24/sorting/datetime-moment.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.0/progressbar.min.js"
     integrity="sha512-Hivnqo7w/SRPjJY3qvD8Y1CaKbmrmqDjZKYgIFyIag/2bOye6Qk1W99wZYObixwzYoZQeKWPqZ2ifus82GE07A=="
     crossorigin="anonymous"></script>
@@ -81,7 +84,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="{% url 'enter:leaderboard' %}">Leaderboards</a>
                 <a class="dropdown-item" href="{% url 'enter:results' %}">Results</a>
-                <a class="dropdown-item" href="{% url 'enter:explore' %}">Chart</a>
+                <a class="dropdown-item" href="{% url 'enter:explore' %}">Charts</a>
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -141,13 +144,13 @@
             <h3>Contact Us</h3>
             <ul>
               <li><a href="mailto:dansarno91@gmail.com">Daniel Sarno</a> - website questions, feedback or help</li>
-              <li><a href="mailto:euro20@ros.co.uk">Rosario Sarno</a> - game questions, rules, charity contribution</li>
+              <li><a href="mailto:euro2020@ros.co.uk">Rosario Sarno</a> - game questions, rules, charity contribution</li>
               <li><a href="mailto:eapruzzese@gmail.com">Erminio Apruzzese</a> - italian translation, game questions and rules</li>
             </ul>
           </div>
           <div class="col-md-6 item text">
             <h3>Football Game</h3>
-            <p>Private pools game for friends and family. The game has evolved a lot since it's origins in the 90's, with this year's installment following Euro 2020 and raising money for charity along the way.</p>
+            <p>Private pools game for friends and family. The game has evolved since it's origins in the 90's, with this year's installment being online for the first time, following Euro 2020 and raising money for charity along the way.</p>
           </div>
         </div>
         <p class="copyright">Football Game © 2021</p>
