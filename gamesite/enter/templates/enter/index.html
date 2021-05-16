@@ -37,14 +37,13 @@
             </div>
             {% endif %}
             <div class="card-body">
-              <div class="card-text">Complete: {{ entry_and_progress.progress }}%</div>
-              <div class="progress mb-1" style="height: 5px;">
+              <div class="card-text mb-1">Complete: {{ entry_and_progress.progress }}%</div>
+              <div class="progress mb-2" style="height: 5px;">
                 <div class="progress-bar bg-primary" role="progressbar"
                   style="width: {{ entry_and_progress.progress }}%" aria-valuenow="{{ entry_and_progress.progress }}"
                   aria-valuemin="0" aria-valuemax="100"></div>
               </div>
-              <div class="card-text">Submitted: {{ entry_and_progress.entry.has_submitted|yesno:"Yes,No" }}</div>
-              <div class="card-text mb-3">Paid: {{ entry_and_progress.entry.has_paid|yesno:"Yes,No" }}</div>
+              <div class="card-text mb-4">Submitted: {{ entry_and_progress.entry.has_submitted|yesno:"Yes,No" }}</div>
               {% if entry_and_progress.entry.has_submitted %}
               <a href="{% url 'enter:view_entry' entry_and_progress.entry.id %}"
                 class="btn btn-outline-secondary btn-sm mr-1">View</a>
@@ -160,7 +159,7 @@
         <li></li>
       </ol>
     </div>
-  </div>
-</div> {% endcomment %}
+  </div> {% endcomment %}
+</div>
 
 {% endblock content %}

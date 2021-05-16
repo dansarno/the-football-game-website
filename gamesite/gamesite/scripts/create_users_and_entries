@@ -1,0 +1,28 @@
+import sys, os, django
+sys.path.append("/Users/danielsarno/Documents/the-football-game-website/gamesite")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gamesite.settings")
+django.setup()
+
+import csv
+from enter import models
+from django.contrib.auth.models import User
+import random
+
+
+with open('gamesite/names.csv') as f:
+    csv_reader = csv.reader(f, delimiter=',')
+    for row in csv_reader:
+        first_name = row[0]
+        last_name = row[1].title()
+        email = f"{first_name}.{last_name}@gmail.com"
+        username = f"{first_name.lower()}{random.randint(1, 2000)}"
+        
+        new_user = User.objects.create(first_name=first_name, last_name=last_name, email=email, username=username)
+        new_entry = models.Entry.objects.create(profile=new_user.profile)
+        for choice_group in models.ChoiceGroup.objects.all():
+            random_choice = random.choice(choice_group.outcome_set.non_polymorphic().all())
+            models.Bet.objects.create(entry=new_entry, outcome=random_choice)
+        new_entry.has_submitted = True
+        new_entry.save()
+        print(f"{first_name}'s entry created")
+    

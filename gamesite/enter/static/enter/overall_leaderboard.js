@@ -52,7 +52,7 @@ $(document).ready(function () {
             if (type === 'display' || type === 'filter') {
               return `<a href="${data.profile_url}" class="text-dark">${data.user.username}</a>`;
             }
-            return data;
+            return data.user.username;
           }
         },
         {

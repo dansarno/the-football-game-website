@@ -67,6 +67,7 @@ class Bet(models.Model):
     success = models.BooleanField(blank=True, null=True)
     called_bet = models.ForeignKey(
         'CalledBet', on_delete=models.SET_NULL, blank=True, null=True)
+    updated_on = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.outcome} by {self.entry}"

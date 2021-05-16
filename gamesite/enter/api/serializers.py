@@ -143,7 +143,7 @@ class LeaderboardEntrySerializer(serializers.ModelSerializer):
 
     def get_last_five_bets(self, obj):
         recent_bets = models.Bet.objects.filter(entry=obj).exclude(
-            success__isnull=True).order_by('-called_bet__date')[:5]
+            success__isnull=True).order_by('-updated_on')[:5]
         serializer = BetSerializer(instance=reversed(recent_bets), many=True)
         return serializer.data
 
@@ -170,7 +170,7 @@ class SidebarEntrySerializer(serializers.ModelSerializer):
 
     def get_last_five_bets(self, obj):
         recent_bets = models.Bet.objects.filter(entry=obj).exclude(
-            success__isnull=True).order_by('-called_bet__date')[:5]
+            success__isnull=True).order_by('-updated_on')[:5]
         serializer = BetSerializer(instance=reversed(recent_bets), many=True)
         return serializer.data
 

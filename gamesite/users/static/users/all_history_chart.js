@@ -145,7 +145,7 @@ $(document).ready(function () {
         pointHoverRadius: 3,
         hoverBorderWidth: 6,
         fill: false,
-        lineTension: 0.2
+        lineTension: 0.1
       })
       i++
     }
