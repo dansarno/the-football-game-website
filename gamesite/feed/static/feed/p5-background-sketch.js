@@ -15,8 +15,8 @@ function setup() {
     let clientHeight = document.getElementById('sign-up').clientHeight;
     let clientWidth = document.getElementById('sign-up').clientWidth;
 
-    let canvas = createCanvas(clientWidth, clientHeight - 56);
-    canvas.position(0, 56);
+    let canvas = createCanvas(clientWidth, clientHeight);  // clientHeight - 56
+    canvas.position(0, 0);  // (0, 56)
     // canvas.style('z-index', '3');
     canvas.parent("sign-up");
 

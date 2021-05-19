@@ -2,7 +2,7 @@
 *.log
 *.pot
 *.djcache
-db.sqlite3
+*.sqlite3
 media
 
 # Python files
@@ -14,7 +14,6 @@ __pycache__
 scratch/*
 venv/*
 research/*
-scripts/
 
 # Other
 .DS_Store
@@ -22,3 +21,4 @@ scripts/
 .python-version
 *.docx
 *.tmp
+.env

@@ -9,7 +9,7 @@ from enter import models
 def landing(request):
     if request.user.is_authenticated:
         return redirect('feed:home')
-    return render(request, 'feed/simple-landing.html', {
+    return render(request, 'feed/very-simple-landing.html', {
         'title': "Welcome",
     })
 

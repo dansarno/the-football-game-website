@@ -48,7 +48,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -77,18 +76,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gamesite.wsgi.application'
-
-
-# Cache
-# https://docs.djangoproject.com/en/3.1/topics/cache/
-
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': r'/Users/danielsarno/Documents/the-football-game-website/gamesite',
-        'TIMEOUT': None,
-    }
-}
 
 
 # Password validation
@@ -139,16 +126,6 @@ LOGIN_REDIRECT_URL = 'feed:home'
 LOGIN_URL = 'login'
 
 
-# SMTP Configuration
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_HOST = ''
-# EMAIL_PORT = ''
-# EMAIL_USE_TLS = ''
-# EMAIL_HOST_USER = ''
-# EMAIL_HOST_PASSWORD = ''
-
-
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
@@ -162,9 +139,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
-    # 'DEFAULT_RENDERER_CLASSES': (
-    #     'rest_framework.renderers.JSONRenderer',
-    # )
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',)
 }
 
 INTERNAL_IPS = [
@@ -175,8 +153,3 @@ INTERNAL_IPS = [
 # Other Settings
 
 GAME_DEADLINE = datetime(2021, 6, 11)
-
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TOOLBAR_CALLBACK': lambda r: False,  # disables it
-#     # '...
-# }

@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from users.models import Team
 from . import forms
 from . import models
@@ -89,6 +89,11 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
 
+    if request.user.profile.entries.all().count() >= 3:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as you currently have the maximum number of entries allowed per user.')
+        return HttpResponseRedirect(reverse(success_url))
+
     if request.method == "POST":
         group_matches_form = forms.GroupMatchOutcomeForm(request.POST)
         tournament_bets_form = forms.TournamentTotalsForm(request.POST)
@@ -111,8 +116,12 @@ def create_entry(request, template_name="enter/entry.html", success_url="enter:i
                 tournament_bets_form.is_valid() and
                 final_bets_form.is_valid()):
 
-            new_entry = models.Entry.objects.create(
-                profile=request.user.profile)
+            try:
+                new_entry = models.Entry.objects.create(profile=request.user.profile)
+            except ValidationError:
+                messages.add_message(request, messages.WARNING,
+                                    'Unable to process your request as you currently have the maximum number of entries allowed per user.')
+                return HttpResponseRedirect(reverse(success_url))
 
             group_choice = top_goal_group_bets_form.cleaned_data['group_choice']
             if group_choice:
@@ -161,7 +170,18 @@ def create_random_entry(request, success_url="enter:index"):
                              'Unable to process your request as the deadline has now passed.')
         return HttpResponseRedirect(reverse(success_url))
 
-    new_entry = models.Entry.objects.create(profile=request.user.profile)
+    if request.user.profile.entries.all().count() >= 3:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as you currently have the maximum number of entries allowed per user.')
+        return HttpResponseRedirect(reverse(success_url))
+
+    try:
+        new_entry = models.Entry.objects.create(profile=request.user.profile)
+    except ValidationError:
+        messages.add_message(request, messages.WARNING,
+                             'Unable to process your request as you currently have the maximum number of entries allowed per user.')
+        return HttpResponseRedirect(reverse(success_url))
+
     for choice_group in models.ChoiceGroup.objects.all():
         random_choice = choice(
             choice_group.outcome_set.non_polymorphic().all())
@@ -366,7 +386,7 @@ def edit_entry(request, entry_id, template_name="enter/entry.html", success_url=
 @login_required
 def delete_entry(request, entry_id, success_url="enter:index"):
     requested_entry = get_object_or_404(models.Entry, id=entry_id)
-    num_of_user_entries = len(request.user.profile.entries.order_by('id'))
+    num_of_user_entries = request.user.profile.entries.count()
 
     if request.user != requested_entry.profile.user:
         raise PermissionDenied

@@ -1,0 +1,39 @@
+body {    
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+canvas {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: -3 !important;
+}
+
+section {
+  padding-top: 200px;
+  padding-bottom: 200px
+}
+
+#sign-up svg {
+  height: 100px;
+  width: 100px;
+}
+
+.short-name {
+  display: none;
+}
+
+.long-name {
+  display: inline-block;
+}
+
+@media screen and (max-width: 1200px) {
+  .long-name {
+    display: none;
+  }
+
+  .short-name {
+    display: inline-block;
+  }
+}

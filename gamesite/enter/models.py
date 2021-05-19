@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -5,13 +6,16 @@ from users.models import Profile
 from polymorphic.models import PolymorphicModel
 
 
+def restrict_number_of_entries(value):
+    if Entry.objects.filter(profile__id=value).count() >= 3:
+        raise ValidationError("Profile already has maximum number of entries (3)")
+
+
+
 class Outcome(PolymorphicModel):
     choice_group = models.ForeignKey(
         'ChoiceGroup', on_delete=models.CASCADE, null=True)
     winning_amount = models.IntegerField()
-
-    # def __str__(self):
-    #     return f"{self}"
 
 
 class Entry(models.Model):
@@ -27,7 +31,7 @@ class Entry(models.Model):
     current_position = models.IntegerField(blank=True, null=True)
     current_team_position = models.IntegerField(blank=True, null=True)
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='entries')
+        Profile, on_delete=models.CASCADE, related_name='entries', validators=(restrict_number_of_entries,))
     current_score = models.IntegerField(default=0)
     correct_bets = models.IntegerField(default=0)
     bets = models.ManyToManyField(Outcome, through='Bet')
@@ -41,6 +45,11 @@ class Entry(models.Model):
 
     def get_absolute_url(self):
         return reverse('enter:view_entry', kwargs={'entry_id': self.id})
+
+    def save(self, *args, **kwargs):
+        if not self.pk and self.profile.entries.all().count() >= 3:
+            raise ValidationError('Profile already has maximum number of entries (3)')
+        return super(Entry, self).save(*args, **kwargs)
 
 
 class ScoreLog(models.Model):
