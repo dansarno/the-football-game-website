@@ -1,0 +1,46 @@
+{% extends "feed/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-12 col-lg-9 mt-4">
+  <h2>Entry Guide</h2>
+  <div class="card border-light shadow mb-4">
+    <div class="card-body">
+        <h3>Creating and Submitting an Entry</h3>
+        <p>For those who are new to the game and for everyone new to the site, the following is a step-by-step guide to creating a new game entry and submitting it.</p>
+        
+        <p>
+        If you're reading this for any tips on filling out your entry, you've come to the wrong place (please seek advice from friends, family and the gods).
+        If you read this and are still confused, just get in touch and we can walk you through it.
+        </p>
+
+        <h5>The Steps</h5>
+        <ol>
+            <li><i>Go to the Entry Manager:</i> Click the "Enter" button in the top navigation bar</li>
+
+            <li><i>Navigate through the Entry Manager:</i> You have two choices to filling out an entry... click "+ New Entry Button" to create a blank entry and choose each outcome yourself or click "+ Random Entry" to create and fill an entry with randomly chosen outcomes.</li>
+
+            <li><i>Editing your Entry:</i> At any time you can click the "Save" button to save your progress while filling out your form. To continue your progress, simply click on the "Edit" button for your entry in the Entry Manager. In the Entry Manager, the "Completed" progress bar displays the amount of outcomes you have selected out of the total number of outcomes required to finish your entry. Note: if you selected the random entry option, you will see that the progress is instantly 100% as all your outcomes have automatically been randomly selected.</li>
+
+            <li><i>Confirm your Entry:</i> To confirm your entry and enter it into the game, click the "Submit" button for your entry in the Entry Manager. The popup window will ask to confirm that you are happy before submitting (a submitted entry cannot be changed). You must have filled out 100% of outcomes in the entry form before submitting.</li>
+
+            <li><i>Submitted Entry:</i> A submitted entry can be viewed by clicking the "View" button in the Entry Manager. Alternatively, you can find links to view
+            the entries you have submitted in the Summary section of your profile.</li>
+
+            <li><i>Final Step:</i> To pay for your entry/entries, please find the most appropriate method to pass your fee on to Ros before the 11th June deadline. Failing to pay for your submitted entries may result in your entry being removed from the game. Please contact Ros by email for more details</li>
+        </ol>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#infoDropdown').addClass('active');
+  });
+</script>
+
+{% endblock content %}

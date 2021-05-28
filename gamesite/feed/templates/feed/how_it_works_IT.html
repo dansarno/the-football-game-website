@@ -1,0 +1,60 @@
+{% extends "feed/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-12 col-lg-9 mt-4">
+  <h2>Come Funziona</h2>
+  <div class="card border-light shadow mb-4">
+    <div class="card-body">
+      <div class="mb-4">
+      <h3>Regole del gioco</h3>
+      <ol>
+        <li>Ogni iscrizione/scheda costa € 10,00. Il contributo di beneficenza sarà di € 3,50 e il restante € 6,50 andrà nel montepremi</li>
+        <li>Ogni utente può inviare fino a 3 schede ciascuno</li>
+        <li>Le iscrizioni devono essere pagate entro l'11 giugno</li>
+        <li>Le iscrizioni devono essere presentate entro l'11 giugno</li>
+        <li>Una scheda deve avere tutte le 58 selezioni effettuate per essere presentata</li>
+        <li>I numeri accanto a ciascun risultato nel foglio di ingresso sono i punti che la scheda può guadagnare se tale risultato è corretto</li>
+        <li>Le iscrizioni sono ordinate in base al numero di punti. Le schede che hanno parità di punti si distinguono ulteriormente in base al numero di risultati corretti, con scommesse più corrette che si posizionano più in alto</li>
+        <li>Il montepremi sarà diviso tra le persone le cui iscrizioni finiscono nelle posizioni di premio. Le posizioni dei premi sono suddivise in tre fasce:
+          <ul>
+            <li>Premi più alti, AKA "The Winners" – “I vincitori”: 1 °, 2 °, 3 ° ...</li>
+            <li>Premi medi, AKA "The Lucky Ones" – “I fortunati”: ad es. posizione centrale, posizione centrale + 1, posizione centrale - 1</li>
+            <li>Premi più bassi, AKA "The Losers" – “I perdenti”: ad es. ultimo posto, penultimo, ecc</li>
+          </ul> 
+        Le posizioni vincenti e il premio in denaro saranno decisi poco dopo l'inizio della competizione e tutte le iscrizioni saranno disponibili
+        </li>
+        <li>Gli utenti possono unirsi a squadre (Teams) per confrontare le loro giocate con un gruppo più piccolo di amici. Gli utenti devono selezionare la proprio squadra prima dell'11 giugno (See Profile> Edit > Team)</li>
+        <li>La posizione dell'utente nella classifica della sua squadra non si traduce in un premio in denaro, ma solo complimenti</li>
+      </ol>
+      </div>
+
+      <h5>Circostanze insolite</h5>
+      <p>Abbiamo organizzato questo gioco per più competizioni e con una buona pianificazione è sempre andato molto bene. Tuttavia, dobbiamo sempre pianificare nel miglior modo possibile. Di seguito è riportato un elenco di scenari diversi e come verrebbero trattati nel gioco</p>
+      <ul>
+        <li>Nel caso in cui due schede finiscano nella stessa posizione vincente, il premio in denaro per quella posizione viene diviso equamente tra di loro. Ad esempio, se due voci finiscono al primo posto (cioè uguale in punti e numero di esiti corretti), i giocatori con quelle voci dividono il premio in denaro assegnato per il primo posto</li>
+
+        <li>Nella maggior parte delle sezioni c'è un solo risultato che può essere corretto, cioè in una partita della fase a gironi, può esserci solo una vittoria in casa, un pareggio o una vittoria in trasferta. Tuttavia, ci sono alcune situazioni in cui 
+        più risultati possono essere corretti. Ad esempio, potremmo finire con due o più marcatori che segnano lo stesso numero di reti. E sappiamo che quattro squadre accederanno alle semifinali e due alla finale. Per le situazioni in cui più risultati sono 
+        corretti, ogni giocatore riceverà il punteggio pieno per la sua selezione. Ad esempio, Kane e Werner potrebbero essere entrambi il miglior marcatore. In tal caso, per chi avesse scelto Kane riceverebbe 390 punti e per chi avesse scelto Werner riceverebbe 825 punti</li>
+
+        <li>Se all'interno del torneo si verifica un evento originale che non si è mai verificato prima, seguiremo la decisione dei funzionari UEFA. Ad esempio, se una squadra deve ritirarsi dalla competizione a causa di COVID</li>
+
+      </ul>
+      <p class="mt-4">Nonostante una buona pianificazione, possono sorgere eventi imprevisti. Se hai domande o pensi ad una situazione di cui non è chiaro come verrebbe gestita, faccelo sapere e possiamo aggiungerlo alla presente lista. Nel caso molto 
+      improbabile che qualcosa di non pianificato accade, gli organizzatori del gioco si consulteranno e emetteranno una decisione giusta ed equa.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#infoDropdown').addClass('active');
+  });
+</script>
+
+{% endblock content %}

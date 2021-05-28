@@ -1,0 +1,317 @@
+{% extends "feed/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-12 col-lg-9 mt-4">
+  <h2>Glossario</h2>
+  <div class="card border-light shadow mb-4">
+    <div class="card-body">
+        <table class="glossary-table">
+        <thead>
+          <tr>
+            <th colspan="2">Glossario Italiano</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid black">
+            <td colspan="100%"></td>
+          </tr>
+          <tr>
+            <td>Entry</td>
+            <td>Scheda</td>
+          </tr>
+          <tr>
+            <td>Entry Form</td>
+            <td>Scheda Gioco</td>
+          </tr>
+          <tr>
+            <td>Entry Manager</td>
+            <td>Gestione Scheda</td>
+          </tr>
+          <tr>
+            <td>Random Entry</td>
+            <td>Giocata Casuale (Riempimento automatico)</td>
+          </tr>
+          <tr>
+            <td>Save</td>
+            <td>Salva</td>
+          </tr>
+          <tr>
+            <td>Edit</td>
+            <td>Modifica</td>
+          </tr>
+          <tr>
+            <td>Submit</td>
+            <td>Invia</td>
+          </tr>
+          <tr>
+            <td>Delete</td>
+            <td>Elimina</td>
+          </tr>
+          <tr>
+            <td>Summary</td>
+            <td>Riepilogo</td>
+          </tr>
+          <tr>
+            <td>Position</td>
+            <td>Posizione</td>
+          </tr>
+          <tr>
+            <td>Score</td>
+            <td>Punteggio</td>
+          </tr>
+          <tr>
+            <td>Leaderboards</td>
+            <td>Classifica</td>
+          </tr>
+          <tr>
+            <td>Teams Leaderboards</td>
+            <td>Classifica Squadre</td>
+          </tr>
+          <tr>
+            <td>Results</td>
+            <td>Risultati</td>
+          </tr>
+          <tr>
+            <td>Decided Outcomes</td>
+            <td>Risultati Decisivi</td>
+          </tr>
+          <tr>
+            <td>Charts</td>
+            <td>Diagrammi</td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <th colspan="2">Glossario Scheda Gioco</th>
+          </tr>
+          <tr style="border-bottom:1px solid black">
+            <td colspan="100%"></td>
+          </tr>
+          <tr>
+            <td>Group Matches</td>
+            <td>Partite (fase a girone)</td>
+          </tr>
+          <tr>
+            <td><i>Select either home, draw or away outcomes for each match below</i></td>
+            <td><i>Seleziona 1/X/2 per ogni partita di seguito</i></td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>Group Winners</td>
+            <td>Vincente gruppo</td>
+          </tr>
+          <tr>
+            <td><i>Select one in each group.</i></td>
+            <td><i>Selezionane uno in ogni gruppo.</i></td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>Top Goalscoring Group</td>
+            <td>Gruppo con più reti</td>
+          </tr>
+          <tr>
+            <td><i>Select one group.</i></td>
+            <td><i>Selezionare un solo gruppo.</i></td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>Top Goalscorer</td>
+            <td>Capocannoniere</td>
+          </tr>
+          <tr>
+            <td><i>Select one player.</i></td>
+            <td><i>Selezionare un solo giocatore.</i></td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>50/50's</td>
+            <td>50/50</td>
+          </tr>
+          <tr>
+            <td><i>Select either yes or no for each of the 8 questions below.</i></td>
+            <td><i>Seleziona sì o no per ciascuna delle 8 domande seguenti.</i></td>
+          </tr>
+          <tr>
+            <td class="pl-2">England will win a penalty shootout</td>
+            <td class="pl-2">L'Inghilterra vincerà ai calci di rigore</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Italy and England will play each other</td>
+            <td class="pl-2">Italia e Inghilterra si sfideranno</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Italy will draw a match during the group</td>
+            <td class="pl-2">L'Italia pareggierà una partita durante la fase a girone</td>
+          </tr>
+          <tr>
+            <td class="pl-2">England will draw a match during the group</td>
+            <td class="pl-2">L'Inghilterra pareggerà una partita durante la fase a girone</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Italy will have a goal disallowed by VAR</td>
+            <td class="pl-2">L'Italia avrà un gol annullato dal VAR</td>
+          </tr>
+          <tr>
+            <td class="pl-2">England will have a goal disallowed by VAR</td>
+            <td class="pl-2">L'Inghilterra avrà un gol annullato dal VAR</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Italy will receive more yellows than England</td>
+            <td class="pl-2">L'Italia riceverà più cartellini gialli dell'Inghilterra</td>
+          </tr>
+          <tr>
+            <td class="pl-2">England will score more goals than Italy</td>
+            <td class="pl-2">L'Inghilterra segnerà più gol dell'Italia</td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>Top Teams</td>
+            <td>Squadre Migliori</td>
+          </tr>
+          <tr>
+            <td><i>Select one from each of the 8 columns.</i></td>
+            <td><i>Selezionane una da ciascuna delle 8 colonne.</i></td>
+          </tr>
+          <tr>
+            <td class="pl-2">To reach semi final</td>
+            <td class="pl-2">Raggiunge la semifinale</td>
+          </tr>
+          <tr>
+            <td class="pl-2">To reach final</td>
+            <td class="pl-2">Raggiunge la finale</td>
+          </tr>
+          <tr>
+            <td class="pl-2">To win Euros</td>
+            <td class="pl-2">Vince la competizione</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Highest scoring team</td>
+            <td class="pl-2">Squadra con più reti</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Most yellows</td>
+            <td class="pl-2">Squadra con più cartellini gialli</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Fastest yellow</td>
+            <td class="pl-2">Cartellino giallo più veolce</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Fastest Euro goal</td>
+            <td class="pl-2">Rete più veloce di questa competizione</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Most clean sheets</td>
+            <td class="pl-2">Maggior numero di partite senza subire reti</td>
+          </tr>
+          <tr>
+            <td><br/></td>
+            <td><br/></td>
+          </tr>
+          <tr>
+            <td>Tournament Totals</td>
+            <td>Numerti Totali dela competizione</td>
+          </tr>
+          <tr>
+            <td><i>Select one outcome from each of the 4 questions below.</i></td>
+            <td><i>Seleziona un risultato da ciascuna delle 4 domande seguenti.</i></td>
+          </tr>
+          <tr>
+            <td class="pl-2">Total goals (ex. pen shootouts)</td>
+            <td class="pl-2">Reti totali (esclusi i rigori)</td>
+          </tr>
+          <tr>
+            <td class="pl-4">106 or fewer</td>
+            <td class="pl-4">106 o meno</td>
+          </tr>
+          <tr>
+            <td class="pl-4">107 to 118</td>
+            <td class="pl-4">117 a 118</td>
+          </tr>
+          <tr>
+            <td class="pl-4">119 or more</td>
+            <td class="pl-4">119 o di più</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Most goals in a single game</td>
+            <td class="pl-2">Numero maggiore di reti in una singola partita</td>
+          </tr>
+          <tr>
+            <td class="pl-4">6 or fewer</td>
+            <td class="pl-4">6 o meno</td>
+          </tr>
+          <tr>
+            <td class="pl-4">7 to 8</td>
+            <td class="pl-4">7 a 8</td>
+          </tr>
+          <tr>
+            <td class="pl-4">9 or more</td>
+            <td class="pl-4">9 o di più</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Total own goals</td>
+            <td class="pl-2">Numero totale di autoreti</td>
+          </tr>
+          <tr>
+            <td class="pl-4">2 or fewer</td>
+            <td class="pl-4">2 o meno</td>
+          </tr>
+          <tr>
+            <td class="pl-4">3 to 4</td>
+            <td class="pl-4">3 a 4</td>
+          </tr>
+          <tr>
+            <td class="pl-4">5 or more</td>
+            <td class="pl-4">5 o di più</td>
+          </tr>
+          <tr>
+            <td class="pl-2">Total penalties</td>
+            <td class="pl-2">Numero totale di rigori</td>
+          </tr>
+          <tr>
+            <td class="pl-4">12 or fewer</td>
+            <td class="pl-4">12 o meno</td>
+          </tr>
+          <tr>
+            <td class="pl-4">13 to 15</td>
+            <td class="pl-4">13 a 15</td>
+          </tr>
+          <tr>
+            <td class="pl-4">16 or more</td>
+            <td class="pl-4">16 o di più</td>
+          </tr>
+        </tbody>
+        </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#infoDropdown').addClass('active');
+  });
+</script>
+
+{% endblock content %}

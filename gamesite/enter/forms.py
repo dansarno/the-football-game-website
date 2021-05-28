@@ -145,22 +145,22 @@ class GroupWinnerOutcomeForm(forms.Form):
 
 
 class TournamentTotalsForm(forms.Form):
-    total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('min_value'),
+    total_goals_bet = NameModelChoiceField(queryset=models.TournamentGoalsOutcome.objects.all().order_by('max_value'),
                                            required=False,
                                            widget=forms.RadioSelect,
                                            label="Total goals (ex. pen shootouts)")
     total_goals_in_a_game_bet = NameModelChoiceField(
-        queryset=models.TournamentGoalsInAGameOutcome.objects.all().order_by('min_value'),
+        queryset=models.TournamentGoalsInAGameOutcome.objects.all().order_by('max_value'),
         required=False,
         widget=forms.RadioSelect,
         label="Most goals in a single game")
     total_own_goals_bet = NameModelChoiceField(
-        queryset=models.TournamentOwnGoalsOutcome.objects.all().order_by('min_value'),
+        queryset=models.TournamentOwnGoalsOutcome.objects.all().order_by('max_value'),
         required=False,
         widget=forms.RadioSelect,
         label="Total own goals")
     total_penalties_bet = NameModelChoiceField(
-        queryset=models.TournamentPenaltiesOutcome.objects.all().order_by('min_value'),
+        queryset=models.TournamentPenaltiesOutcome.objects.all().order_by('max_value'),
         required=False,
         widget=forms.RadioSelect,
         label="Total penalties")

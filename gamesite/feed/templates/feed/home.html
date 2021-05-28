@@ -9,6 +9,14 @@
 <div class="col-12 col-lg-9 mt-4">
   
   <h2>Feed</h2>
+
+  <div class="card text-center mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Ready to Create Your Game Entry?</h5>
+      <p class="card-text">Click this link below to be taken to the Entry Manager where you can create, edit and submit entries.</p>
+      <a href="{% url 'enter:index' %}" class="btn btn-primary">Let's begin</a>
+    </div>
+  </div>
   
   {% if pinned_post %}
   <div class="card border-secondary shadow mb-4">
@@ -24,7 +32,7 @@
             {% svg 'bookmark_icon' %}
           </div>
           <h3><a class="article-title" href="{% url 'feed:detail' pinned_post.id %}">{{ pinned_post.title }}</a></h3>
-          <p class="article-content">{{ pinned_post.content|truncatewords_html:50 }}</p>
+          <p class="article-content">{{ pinned_post.content|truncatewords_html:50|safe }}</p>
         </div>
       </div>
     </div>
@@ -49,7 +57,7 @@
             <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
           </div>
           <h3><a class="article-title" href="{% url 'feed:detail' post.id %}">{{ post.title }}</a></h3>
-          <p class="article-content">{{ post.content|truncatewords_html:50 }}</p>
+          <p class="article-content">{{ post.content|truncatewords_html:50|safe }}</p>
         </div>
       </div>
     </div>
@@ -94,5 +102,11 @@
   <!--end of Pagination-->
 
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#home-navbar-link').addClass('active');
+  });
+</script>
 
 {% endblock content %}

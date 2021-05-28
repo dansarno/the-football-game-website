@@ -15,6 +15,8 @@ def register(request):
             new_profile = new_user.profile
             access_code = user_form.cleaned_data.get('access_code')
             access_code_obj = AccessCode.objects.filter(code=access_code).first()
+            access_code_obj.remaining -= 1
+            access_code_obj.save()
             new_profile.access_code = access_code_obj
             new_profile.save()
             messages.success(request, f"Your account has now been created! You are now able to log in")

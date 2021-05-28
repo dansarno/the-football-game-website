@@ -10,7 +10,10 @@
   <h2>Entry Manager</h2>
   <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <div class="pb-4">You can submit up to 3 entries per person. Each entry costs £8.50 and must be submitted by 11th June 2021.
+      <div class="pb-4">You can submit up to 3 entries per person. Each entry costs £8.50 and must be submitted by 23:59 10th June.
+      </div>
+      <div class="mb-4 text-muted">
+      E' possibile compilare fino a 3 schede a persona. Ogni scheda ha un costo di 10 Euro e deve essere inviato entro le 23:59 del 10 Giugno.
       </div>
       <div class="row row-cols-1 row-cols-md-3">
         {% for entry_and_progress in entries_and_progress %}
@@ -161,5 +164,11 @@
     </div>
   </div> {% endcomment %}
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#enter-navbar-link').addClass('active');
+  });
+</script>
 
 {% endblock content %}

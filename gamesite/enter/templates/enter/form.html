@@ -21,7 +21,7 @@
             <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
           </svg>
         </button>
-        <p class="help_text">Select either home, draw or away outcomes for <b>each match</b> below.</p>
+        <p class="help_text">Select either home, draw or away outcomes for each match below.</p>
         <table>
           <tr>
             <th class="d-none d-sm-table-cell"></th>
@@ -60,7 +60,7 @@
             <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
           </svg>
         </button>
-        <p class="help_text">Select one in <b>each</b> group.</p>
+        <p class="help_text">Select one in each group.</p>
         {% for field in group_winner_bets_form %}
         <div>
         <b class="option-text">{{ field.label }}</b>
@@ -141,7 +141,7 @@
             <path d="M5.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm4-4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
           </svg>
         </button>
-        <p class="help_text">Select <b>one</b> player.</p>
+        <p class="help_text">Select one player.</p>
         {% for field in top_goal_player_bets_form %}
         <table>
           <tr>
@@ -194,7 +194,7 @@
             <td class="fifty-fifty-label-lg">{{ field.label.question }}</td>
             <td class="fifty-fifty-label-sm no-print">{{ field.label.brief_question|safe }}</td>
             {% for radio in field %}
-            <td class="match_radio text-muted">
+            <td class="match_radio text-muted" style="text-align: center;">
               {{ radio }}
             </td>
             {% endfor %}
@@ -275,7 +275,7 @@
         <div class="row">
           {% for field in tournament_bets_form %}
           <div class="col-md-6 col-lg-3 mb-2">
-            <div class="option-text mb-1"><b>{{ field.label }}</b></div>
+            <div class="option-text mb-1" style="text-align: center;"><b>{{ field.label }}</b></div>
             <table>
               <tr>
                 <td style="width: 68%;">
@@ -321,7 +321,7 @@
           {% for field in final_bets_form %}
           <div class="col-md-6 col-lg-3">
             <div class="mb-2">
-              <div class="option-text mb-1"><b>{{ field.label }}</b></div>
+              <div class="option-text mb-1" style="text-align: center;"><b>{{ field.label }}</b></div>
               <table>
                 <tr>
                   <td style="width: 68%;">

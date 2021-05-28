@@ -4,8 +4,6 @@
 
 {% block content %}
 
-{% comment %} {% include 'feed/profile_sidebar.html' %} {% endcomment %}
-
 <div class="col-lg-12 mt-4">
   <h2>Leaderboards</h2>
 
@@ -23,7 +21,7 @@
               <th>User</th>
               <th>Name</th>
               <th data-toggle="tooltip" data-placement="bottom" title="Last 5 results">Form</th>
-              <th class="correct-bets-header">Correct Bets</th>
+              <th class="correct-bets-header">Correct Outcomes</th>
               <th>Score</th>
             </tr>
           </thead>
@@ -59,7 +57,7 @@
               <th>User</th>
               <th>Name</th>
               <th data-toggle="tooltip" data-placement="bottom" title="Last 5 results">Form</th>
-              <th class="correct-bets-header">Correct Bets</th>
+              <th class="correct-bets-header">Correct Outcomes</th>
               <th>Score</th>
             </tr>
           </thead>
@@ -99,6 +97,12 @@
         hide: 0
     }
     });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $('#exploreDropdown').addClass('active');
   });
 </script>
 

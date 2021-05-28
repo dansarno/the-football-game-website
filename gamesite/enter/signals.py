@@ -62,8 +62,9 @@ def recalculate_scores_and_positions_delete(instance):
         ordered_entries = models.Entry.objects.filter(has_submitted=True).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 position = i + 1
             entry.current_position = position
             entry.save()
@@ -74,6 +75,8 @@ def recalculate_scores_and_positions_delete(instance):
             position_log.save()
 
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
+
 
     # 3. Update positions in teams
     teams = Team.objects.all()
@@ -84,12 +87,14 @@ def recalculate_scores_and_positions_delete(instance):
         if not ordered_entries:
             continue
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 team_position = i + 1
             entry.current_team_position = team_position
             entry.save()
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
 
 
 def recalculate_from_instance(instance, created):
@@ -157,8 +162,9 @@ def recalculate_from_instance(instance, created):
         ordered_entries = models.Entry.objects.filter(has_submitted=True).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 position = i + 1
             entry.current_position = position
             entry.save()
@@ -171,6 +177,7 @@ def recalculate_from_instance(instance, created):
                 position_log.position = position
                 position_log.save()
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
 
         # 3. Update or create correct and incorrect count stats for the called bet instance
         if created:
@@ -191,12 +198,14 @@ def recalculate_from_instance(instance, created):
         if not ordered_entries:
             continue
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 team_position = i + 1
             entry.current_team_position = team_position
             entry.save()
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
 
 
 def recalculate_from_beginning(instance):
@@ -246,8 +255,9 @@ def recalculate_from_beginning(instance):
         ordered_entries = models.Entry.objects.filter(has_submitted=True).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 position = i + 1
             entry.current_position = position
             entry.save()
@@ -256,6 +266,8 @@ def recalculate_from_beginning(instance):
                 position=position, entry=entry, called_bet=called_bet)
             
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
+
 
         # 3. Update correct and incorrect count stats for the called bet
         stats = called_bet.calledbetstats
@@ -272,12 +284,14 @@ def recalculate_from_beginning(instance):
         if not ordered_entries:
             continue
         highest_score = ordered_entries[0].current_score
+        current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
-            if entry.current_score < highest_score:
+            if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
                 team_position = i + 1
             entry.current_team_position = team_position
             entry.save()
             highest_score = entry.current_score
+            current_correct_bets = entry.correct_bets
 
 
 @receiver(post_save, sender=models.CalledBet)
@@ -306,7 +320,7 @@ def removed_from_called_bets(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=models.Entry)
 def recalculate_after_entry_removal(sender, instance, **kwargs):
-    if models.CalledBet.objects.all().exists():
+    if models.CalledBet.objects.all().exists() and instance.has_submitted:
         recalculate_from_beginning(instance)
         _invalidate_cached_data("entries_list")
         _invalidate_cached_data("all_history_list")

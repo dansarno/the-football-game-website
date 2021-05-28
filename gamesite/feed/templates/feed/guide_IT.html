@@ -1,0 +1,40 @@
+{% extends "feed/base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+{% include 'feed/profile_sidebar.html'%}
+
+<div class="col-12 col-lg-9 mt-4">
+  <h2>Come Giocare</h2>
+  <div class="card border-light shadow mb-4">
+    <div class="card-body">
+        <h3>Guida alla creazione e all'invio di una scheda gioco</h3>
+
+        <p>Per coloro che sono nuovi al gioco e per tutti coloro che non conoscono il sito, di seguito è riportata una guida passo passo per creare una nuova scheda di gioco e inviarla.</p>
+        
+        <ol>
+            <li><i>Vai alla Gestione “Entry Manager” (Gestione schede):</i> fai clic sul pulsante "Enter" nella barra di navigazione in alto</li>
+
+            <li><i>Naviga all’interno della “Entry Manager” (Gestione Scheda):</i> hai due scelte per compilare una scheda... fai clic su "+ New Entry Button" per creare una scheda vuota e scegli tu stesso ogni risultato o fai clic su "+ Random Entry” (compilazione casuale automatica) per creare e riempire una scheda con risultati scelti a caso.</li>
+
+            <li><i>Modifica la tua scheda:</i> in qualsiasi momento puoi fare clic sul pulsante "Save" (Salva) per salvare i tuoi progressi durante la compilazione della scheda. Per continuare il tuo progresso, fai semplicemente clic sul pulsante "Edit" (Modifica) per la tua scheda nella sezione ”Entry Manager”. Nella sezione “Entry Manager”, la barra di avanzamento mostra la quantità di risultati che hai selezionato rispetto al numero totale di risultati richiesti per completare la tua scheda. Nota: se hai selezionato l'opzione di riempimento casuale, vedrai salire il progresso istantaneamente al 100% poiché tutti i tuoi risultati sono stati selezionati automaticamente in modo casuale.</li>
+
+            <li><i>Conferma la tua scheda:</i> per confermare la tua scheda ed inserirla nel gioco, fai clic sul pulsante “Submit” (Invia) per la tua scheda nella sezione “Entry Manager”. La finestra popup chiederà di confermare la tua scelta prima dell'invio (una scheda inviata non può essere modificata). Devi aver compilato il 100% dei risultati nella scheda prima di inviare.</li>
+
+            <li><i>Scheda inviata:</i> una scheda inviata può essere visualizzata facendo clic sul pulsante "View” (Visualizza) nella sezione “Entry Manager”. In alternativa, puoi trovare collegamenti per visualizzare le schede che hai inviato nella sezione “Summary” (Riepilogo) del tuo profilo.</li>
+
+            <li><i>Fase finale:</i> per pagare la tua scheda/schede, cerca il metodo più appropriato per trasferire la tua quota agli organizzatori prima della scadenza dell'11 giugno. Il mancato pagamento per le schede inviate potrebbe comportare la rimozione della tua scheda dal gioco. Si prega di contattare gli organizzatori tramite e-mail per maggiori dettagli</li>
+        </ol>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#infoDropdown').addClass('active');
+  });
+</script>
+
+{% endblock content %}

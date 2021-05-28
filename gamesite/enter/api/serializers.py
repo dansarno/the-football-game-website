@@ -105,10 +105,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class SimpleEntrySerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(read_only=True)
+    view_url = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Entry
-        fields = ['id', 'label', 'profile']
+        fields = ['id', 'label', 'view_url', 'profile']
+
+    def get_view_url(self, obj):
+        return obj.get_absolute_url()
 
 
 class LeaderboardEntrySerializer(serializers.ModelSerializer):

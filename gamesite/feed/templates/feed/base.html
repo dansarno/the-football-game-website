@@ -71,10 +71,10 @@
         <div class="collapse navbar-collapse" id="navbarToggle">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-item nav-link" href="{% url 'feed:home' %}">Home</a>
+              <a class="nav-item nav-link" href="{% url 'feed:home' %}" id="home-navbar-link">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-item nav-link" href="{% url 'enter:index' %}">Enter</a>
+              <a class="nav-item nav-link" href="{% url 'enter:index' %}" id="enter-navbar-link">Enter</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="exploreDropdown" role="button" data-toggle="dropdown"
@@ -88,20 +88,28 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="exploreDropdown" role="button" data-toggle="dropdown"
+              <a class="nav-link dropdown-toggle" href="#" id="infoDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 Info
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'feed:charity' %}">Charity</a>
                 <a class="dropdown-item" href="{% url 'feed:how-it-works' %}">How It Works</a>
-                <a class="dropdown-item" href="{% url 'feed:about' %}">About</a>
+                <a class="dropdown-item" href="{% url 'feed:entry-guide' %}">Entry Guide</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'feed:how-it-works-IT' %}">Come Funziona</a>
+                <a class="dropdown-item" href="{% url 'feed:entry-guide-IT' %}">Come Giocare</a>
+                <a class="dropdown-item" href="{% url 'feed:glossary' %}">Glossario</a>
               </div>
             </li>
           </ul>
           <!-- Navbar Right Side -->
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+            <li class="nav-item">
+              <a class="nav-item nav-link" href="{% url 'admin:index' %}" id="home-navbar-link">Admin</a>
+            </li>
+            {% endif %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -143,9 +151,9 @@
           <div class="col-md-6 item">
             <h3>Contact Us</h3>
             <ul>
-              <li><a href="mailto:dansarno91@gmail.com">Daniel Sarno</a> - website questions, feedback or help</li>
-              <li><a href="mailto:euro2020@ros.co.uk">Rosario Sarno</a> - game questions, rules, charity contribution</li>
-              <li><a href="mailto:eapruzzese@gmail.com">Erminio Apruzzese</a> - italian translation, game questions and rules</li>
+              <li><a href="mailto:dansarno91@gmail.com">Daniel</a> - website questions, feedback or help</li>
+              <li><a href="mailto:euro2020@ros.co.uk">Ros</a> - game questions, rules, charity contribution</li>
+              <li><a href="mailto:euro2020@blu.it">Erminio</a> - italian translation, game questions and rules</li>
             </ul>
           </div>
           <div class="col-md-6 item text">

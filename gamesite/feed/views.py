@@ -3,7 +3,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import Post
 from django.contrib.auth.decorators import login_required
-from enter import models
+from users.models import Profile
+from django.http import HttpResponse
+import csv
 
 
 def landing(request):
@@ -22,9 +24,37 @@ def charity(request):
 
 
 @login_required
+def entry_guide(request):
+    return render(request, 'feed/guide.html', {
+        'title': "Entry Guide",
+    })
+
+
+@login_required
+def entry_guide_italian(request):
+    return render(request, 'feed/guide_IT.html', {
+        'title': "Come Giocare",
+    })
+
+
+@login_required
+def glossary(request):
+    return render(request, 'feed/glossary.html', {
+        'title': "Glossario",
+    })
+
+
+@login_required
 def how_it_works(request):
     return render(request, 'feed/how_it_works.html', {
         'title': "How It Works",
+    })
+
+
+@login_required
+def how_it_works_italian(request):
+    return render(request, 'feed/how_it_works_IT.html', {
+        'title': "Come Funziona",
     })
 
 
@@ -33,6 +63,36 @@ def about(request):
     return render(request, 'feed/about.html', {
         'title': "About",
     })
+
+
+def export_csv(request):
+    if not request.user.is_superuser:
+        return redirect('feed:home')
+
+    response = HttpResponse(content_type='text/csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['', '', '', '', '', 'Entry A', '', 'Entry B', '', 'Entry C', ''])
+    writer.writerow(['First name', 'Last name', 'Username', 'Access Code Used', 'Email Address', 'Created?', 'Submitted?', 'Created?', 'Submitted?', 'Created?', 'Submitted?'])
+
+    for profile in Profile.objects.all():
+        first_name = profile.user.first_name
+        last_name = profile.user.last_name
+        username = profile.user.username
+        if profile.access_code:
+            access_code = profile.access_code.code
+        else: 
+            access_code = None
+        email_address = profile.user.email
+        entry_info = [False] * 6
+        for i, entry in enumerate(profile.entries.all()):
+            entry_info[i * 2] = True
+            entry_info[(i * 2) + 1] = entry.has_submitted
+        writer.writerow([first_name, last_name, username, access_code, email_address] + entry_info)
+
+    response['Content-Disposition'] = 'attachment; filename="export.csv"'
+
+    return response
 
 
 class PostListView(LoginRequiredMixin, ListView):

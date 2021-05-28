@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('register/', user_views.register, name='register'),
     path('profile/', include("users.urls")),
     path('settings/edit', user_views.profile_edit, name='profile_edit'),

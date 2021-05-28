@@ -36,8 +36,6 @@ class UserRegisterForm(UserCreationForm):
             raise forms.ValidationError("This is not a valid access code")
         elif valid_code.remaining <= 0:
             raise forms.ValidationError("This access code has expired")
-        valid_code.remaining -= 1
-        valid_code.save()
         return access_code
 
 

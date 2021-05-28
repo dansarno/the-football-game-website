@@ -165,7 +165,7 @@ $(document).ready(function () {
 
       i = 0
       for (let upcoming of data[0].upcoming) {
-        $(`<th data-toggle="tooltip" data-placement="bottom" title="Upcoming bet"><small>${upcoming.question}</small></th>`).insertBefore('.correct-bets-header')
+        $(`<th data-toggle="tooltip" data-placement="bottom" title="Upcoming call"><small>${upcoming.question}</small></th>`).insertBefore('.correct-bets-header')
         // $(`<th>${upcoming.question}</th>`).insertBefore('.correct-bets-footer')
 
         upcomingColumns.push({
@@ -319,7 +319,7 @@ $(document).ready(function () {
           orderable: false
         }, {
           targets: [0],
-          orderData: [0, 6, 3]
+          orderData: [0, 6 + upcomingColumns.length, 3]
         }, {
           targets: 0,
           className: 'column-bolded'
@@ -375,7 +375,7 @@ $(document).ready(function () {
             orderable: false
           }, {
             targets: [0],
-            orderData: [0, 6, 3]
+            orderData: [0, 6 + upcomingColumns.length, 3]
           }, {
             targets: 0,
             className: 'column-bolded'

@@ -41,3 +41,5 @@ CACHES = {
         'TIMEOUT': None,
     }
 }
+
+SECURE_SSL_REDIRECT=True

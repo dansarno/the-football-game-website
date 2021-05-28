@@ -9,10 +9,56 @@
   <h2>How It Works</h2>
   <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <p>{% lorem 100 w random %}</p>
+      <div class="mb-4">
+      <h3>Game Rules</h3>
+      <ol>
+        <li>Each entry costs £8.50. The charity contribution will be £3.00 and the remaining £5.50 will go into the prize pot</li>
+        <li>Each user is allowed to submit up to 3 entries each</li>
+        <li>Entries must be paid by 11th June</li>
+        <li>Entries must be submitted by 11th June</li>
+        <li>An entry must have all 58 selections made in order to be submitted</li>
+        <li>The numbers next to each outcome in the entry sheet are the points the entry stands to gain if that outcome is correct</li>
+        <li>Entries are ordered by the number of points. Entries that are tied on points are further distinguished by number of correct outcomes, with more correct bets positioning higher</li>
+        <li>The prize pot will be shared amongst the people whose entries finish in prize positions. The prize positions are split into 
+        three bands:
+          <ul>
+            <li>Top prizes, AKA "The Winners": 1st, 2nd, 3rd...</li>
+            <li>Middle prizes, AKA "The Lucky Ones": e.g. middle place, middle place + 1, middle place - 1</li>
+            <li>Bottom prizes, AKA "The Losers": e.g. last place, 2nd to last etc</li>
+          </ul> 
+        The winning positions and the prize money will be finalised shortly after the Football Game has started and all entries are in
+        </li>
+        <li>Users can join teams to compare their entries amongst a smaller group of friends. Users must select their team before 11th June (See Profile > Edit > Team)</li>
+        <li>The user's position in their team's leaderboard does not result in prize money, kudos only</li>
+      </ol>
+      </div>
+
+      <h5>Unusual Circumstances</h5>
+      <p>We've organised this game for multiple competitions and by good planning it has always run very smoothly.  
+      However, we must always plan as best we can. The following are a list of odd senarios and how they would be treated in the game</p>
+      <ul>
+        <li>In the event of two entries finishing in the same winning position then the prize money for that position is shared equally between them. 
+        For example, if two entries finish joint 1st (i.e. equal on points and number of correct outcomes) the players with those entries split the prize money allocated for 1st place</li>
+
+        <li>In most sections there is only one single outcome that can be correct i.e in a group match, there can only be a home win, a draw or an away win outcome. 
+        However, there are certain situations where multiple outcomes can be correct. For example, we may end up two or more goalscorers scoring the same highest goals.
+        And we know that four teams will get through to the semi finals and two in the final. For situations where multiple outcomes are correct,
+        each player will get the full points for their selection. For example, Kane and Werner may both be the top goalscorer. In that event, if you had picked Kane you would receive 390 points and if you had picked Werner you would receive 825 points</li>
+
+        <li>If an original event occurs within the tournament that has never happened before then we will follow the decision of the UEFA officials.  For example, if a team has to withdraw from the event due to COVID</li>
+
+      </ul>
+      <p class="mt-4">Despite good planning, unforeseen senarios and events may arise. If you have any questions or think of a senario that isn't clear how it would be handled, please let us know and we can add it to the list.
+      In the very unlikely event that something unplanned does crop, the Football Game organisers will consult and issue a fair and equitable decision</p>
     </div>
   </div>
 
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#infoDropdown').addClass('active');
+  });
+</script>
 
 {% endblock content %}

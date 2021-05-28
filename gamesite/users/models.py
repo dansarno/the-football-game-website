@@ -63,7 +63,7 @@ class Prize(models.Model):
 
 class AccessCode(models.Model):
     code = models.CharField(max_length=10, default=generate_random_code)
-    remaining = models.PositiveSmallIntegerField(default=5)
+    remaining = models.PositiveSmallIntegerField(default=1)
 
     def __str__(self):
         return f"Code: {self.code} ({self.remaining})"
