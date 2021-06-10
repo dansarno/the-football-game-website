@@ -7,11 +7,7 @@
 {% include 'feed/profile_sidebar.html'%}
 
 <div class="col-12 col-lg-9 mt-4">
-  {% if post.post_type == 'B' %}
-  <h2>Called Bet Post</h2>
-  {% else %}
   <h2>Post Detail</h2>
-  {% endif %}
   <div class="card border-light shadow mb-3">
     <div class="card-body">
       <div class="media d-block d-md-flex">
@@ -33,7 +29,7 @@
   {% if post.post_type == 'B' %}
   <div class="card border-light shadow mb-5">
     <div class="card-body">
-      <h2>More Bet Info</h2>
+      <h2>More Call Info</h2>
       <hr>
 
       <div class="row">

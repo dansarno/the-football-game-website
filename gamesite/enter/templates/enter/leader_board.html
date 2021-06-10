@@ -7,7 +7,7 @@
 <div class="col-lg-12 mt-4">
   <h2>Leaderboards</h2>
 
-  <div class="card border-light shadow mb-4">
+  <div class="card border-light shadow mb-5">
     <div class="card-body">
       <div id="overall_table_container" data-any-called-bets="{{ any_called_bets }}" data-entries-info-url-endpoint="{% url 'enter:all_submitted_api' %}" data-url-endpoint="{% url 'enter:all_entries_api' %}" data-teams-url-endpoint="{% url 'enter:teams_api' %}" data-prizes-url-endpoint="{% url 'prize_api' %}">
         <h3>Overall Leaderboard</h3>
@@ -42,10 +42,31 @@
   </div>
 
   <h2 class="mb-3">Team Leaderboards</h2>
+
+  {% if any_called_bets %}
+  <div class="card border-light shadow mb-4">
+    <div class="card-body">
+      <div id="team_comparison_table_container" class="mb-4">
+        <h3>Team Leaderboard</h3>
+        <hr />
+        <table id="teams_leaderboard" class="display" style="width:100%">
+          <thead>
+            <tr>
+              <th>Pos</th>
+              <th>Team</th>
+              <th>Average Score</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   {% for team in teams %}
   <div class="card border-light shadow mb-4">
     <div class="card-body">
-      <div id="team_{{ team.id }}_table_container">
+      <div id="team_{{ team.id }}_table_container" class="mb-4">
         <h3>{{ team }} Leaderboard</h3>
         <hr />
         {% if any_called_bets %}

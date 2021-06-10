@@ -81,7 +81,7 @@ svg {
 .entry-card {
     background: white;
     border-radius: 30px;
-    padding: 20px;
+    padding:15px;
   }
 
 .section-card {
@@ -192,6 +192,10 @@ svg {
 p.help_text {
     color: grey;
     margin-top: 5px;
+}
+
+p.small-display-label, p.very-small-display-label {
+    color: #ff9f1c;
 }
 
 table.top-teams-table {

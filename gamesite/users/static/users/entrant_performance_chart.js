@@ -16,8 +16,8 @@ $(document).ready(function () {
       chartOptions = {
         scales: {
           r: {
-            beginAtZero: true,
-            min: 0,
+            beginAtZero: false,
+            min: -5,
             // max: 100,
             ticks: {
               precision: 0,

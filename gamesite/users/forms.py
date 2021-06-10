@@ -28,6 +28,14 @@ class UserRegisterForm(UserCreationForm):
         self.fields['access_code'].help_text = "An access code is required to create an account."
         self.fields['username'].help_text = "A short unique username, 8 characters max."
 
+    def clean_first_name(self, *args, **kwargs):
+        first_name = self.cleaned_data.get("first_name")
+        return first_name.title()
+
+    def clean_last_name(self, *args, **kwargs):
+        last_name = self.cleaned_data.get("last_name")
+        return last_name.title()
+
     def clean_access_code(self, *args, **kwargs):
         access_code = self.cleaned_data.get("access_code")
         # could use a get and try/except block here

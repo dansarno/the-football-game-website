@@ -6,10 +6,16 @@ from django.utils.html import format_html
 
 @admin.register(models.Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'has_submitted', 'has_paid',
+    list_display = ('__str__', 'get_name', 'has_submitted',
                     'current_position', 'current_score', 'correct_bets')
     exclude = ('label',)
-    list_filter = ('has_paid', 'has_submitted')
+    list_filter = ('has_submitted',)
+    search_fields = ('profile__user__first_name', 'profile__user__last_name')
+
+    def get_name(self, obj):
+        return f"{obj.profile.user.first_name} {obj.profile.user.last_name}"
+
+    get_name.short_description = 'Name'
 
 
 @admin.register(models.Team)

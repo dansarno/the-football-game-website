@@ -10,13 +10,13 @@
   
   <h2>Feed</h2>
 
-  <div class="card text-center mb-4">
+  {% comment %} <div class="card text-center mb-4">
     <div class="card-body">
       <h5 class="card-title">Ready to Create Your Game Entry?</h5>
       <p class="card-text">Click this link below to be taken to the Entry Manager where you can create, edit and submit entries.</p>
       <a href="{% url 'enter:index' %}" class="btn btn-primary">Let's begin</a>
     </div>
-  </div>
+  </div> {% endcomment %}
   
   {% if pinned_post %}
   <div class="card border-secondary shadow mb-4">

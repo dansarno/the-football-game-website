@@ -152,7 +152,7 @@ INTERNAL_IPS = [
 
 # Other Settings
 
-GAME_DEADLINE = datetime(2021, 6, 11)
+GAME_DEADLINE = datetime(2021, 6, 10)
 
 CSRF_COOKIE_SECURE=True
 SESSION_COOKIE_SECURE=True

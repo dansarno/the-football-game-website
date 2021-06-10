@@ -28,9 +28,8 @@ $(document).ready(function () {
     $.when(ajaxEntriesData, ajaxTeamData).done(function (a1, a2) {
       let data = a1[0]
       let teamData = a2[0]
-    
-      let tableColumns = [
-        {
+
+      let tableColumns = [{
           render: function (data, type, row) {
             labelSvg = ''
             svgSize = 15
@@ -97,10 +96,13 @@ $(document).ready(function () {
       for (let team of teamData) {
 
         teamTableColumns = tableColumns;
-  
+
         let teamTable = $(`#team_${team.id}_leaderboard`).DataTable({
           data: data.filter(entry => entry.profile.team === team.id),
           orderClasses: false,
+          paging: false,
+          searching: false,
+          bInfo: false,
           responsive: {
             details: {
               type: 'column',
@@ -128,7 +130,7 @@ $(document).ready(function () {
             responsivePriority: 2
           }, ]
         })
-  
+
       }
 
     })
@@ -255,7 +257,7 @@ $(document).ready(function () {
             let form_arr = '';
             if (!data.length) {
               return "---"
-            } 
+            }
             for (let bet of data) {
               if (bet.success) {
                 form_arr += `<span data-toggle="tooltip" data-placement="top" title="${bet.outcome}">
@@ -335,6 +337,78 @@ $(document).ready(function () {
         }, ],
       })
 
+      let teamCompTableColumns = [{
+          data: "position",
+          render: function (data, type, row, meta) {
+            if (type === 'display' || type === 'filter') {
+              if (data != null) {
+                let positionPrefix = ""
+
+                if (data === 1) {
+                  positionPrefix = '🥇 ';
+                } else if (data === 2) {
+                  positionPrefix = '🥈 ';
+                } else if (data === 3) {
+                  positionPrefix = '🥉 ';
+                }
+
+                return data + positionPrefix;
+
+              } else {
+                return "---"
+              }
+            }
+            return data;
+          }
+        },
+        {
+          data: "name",
+          render: function (data, type, row) {
+            return data;
+          }
+        },
+        {
+          data: "score",
+          className: 'dt-body-right dt-head-center',
+          render: $.fn.dataTable.render.number(',')
+        },
+      ]
+
+      $('#teams_leaderboard').DataTable({
+        data: teamData,
+        // processing: true,
+        orderClasses: false,
+        responsive: {
+          details: {
+            type: 'column',
+            target: 'tr'
+          }
+        },
+        searching: false,
+        paging: false,
+        bInfo: false,
+        order: [
+          [0, "asc"]
+        ],
+        columns: teamCompTableColumns,
+        columnDefs: [{
+          targets: '_all',
+          defaultContent: "-"
+        }, {
+          targets: 0,
+          className: 'column-bolded'
+        }, {
+          targets: 0,
+          responsivePriority: 1
+        }, {
+          targets: 1,
+          responsivePriority: 2
+        }, {
+          targets: 2,
+          responsivePriority: 3
+        }, ],
+      })
+
       for (let team of teamData) {
 
         teamTableColumns = tableColumns;
@@ -344,7 +418,18 @@ $(document).ready(function () {
           render: function (data, type, row, meta) {
             if (type === 'display' || type === 'filter') {
               if (data != null) {
-                return data;
+                let positionPrefix = ""
+
+                if (data === 1) {
+                  positionPrefix = '🥇 ';
+                } else if (data === 2) {
+                  positionPrefix = '🥈 ';
+                } else if (data === 3) {
+                  positionPrefix = '🥉 ';
+                }
+
+                return data + positionPrefix;
+
               } else {
                 return "---"
               }
@@ -357,6 +442,9 @@ $(document).ready(function () {
           data: data.filter(entry => entry.profile.team === team.id),
           // processing: true,
           orderClasses: false,
+          searching: false,
+          paging: false,
+          bInfo: false,
           responsive: {
             details: {
               type: 'column',
@@ -388,8 +476,7 @@ $(document).ready(function () {
           }, {
             targets: -1,
             responsivePriority: 2
-          },
-        ],
+          }, ],
         })
 
       }

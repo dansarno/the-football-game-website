@@ -26,6 +26,11 @@ def recalculate_scores_and_positions_delete(instance):
     else:
         # Restore scores back to zero
         entries.update(current_score=0, current_position=None, current_team_position=None, correct_bets=0)
+        
+        if not called_bets_after_this_one:
+            Team.objects.all().update(score=0, position=None)
+            return
+    
     for called_bet in called_bets_after_this_one:
         
         called_bets_in_same_group = models.CalledBet.objects.filter(outcome__choice_group=called_bet.outcome.choice_group).distinct()
@@ -77,24 +82,39 @@ def recalculate_scores_and_positions_delete(instance):
             highest_score = entry.current_score
             current_correct_bets = entry.correct_bets
 
-
-    # 3. Update positions in teams
+    # 3. Update positions in teams and scores of teams
     teams = Team.objects.all()
     for team in teams:
-        team_position = 1
+        position_in_team = 1
         ordered_entries = models.Entry.objects.filter(has_submitted=True, profile__team=team).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         if not ordered_entries:
             continue
+        total_score = 0
         highest_score = ordered_entries[0].current_score
         current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
             if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
-                team_position = i + 1
-            entry.current_team_position = team_position
+                position_in_team = i + 1
+            entry.current_team_position = position_in_team
             entry.save()
+            total_score += entry.current_score
             highest_score = entry.current_score
             current_correct_bets = entry.correct_bets
+        team.score = round(total_score / ordered_entries.count())
+        team.save()
+    
+    # 4. Update positions of teams
+    position_of_team = 1
+    ordered_teams = Team.objects.order_by('-score')
+    highest_score = ordered_teams[0].score
+    for i, team in enumerate(ordered_teams):
+            if team.score < highest_score:
+                position_of_team = i + 1
+            team.position = position_of_team
+            team.save()
+
+            highest_score = team.score
 
 
 def recalculate_from_instance(instance, created):
@@ -189,23 +209,39 @@ def recalculate_from_instance(instance, created):
             stats.num_incorrect = incorrect_count
             stats.save()
     
-    # 4. Update positions in teams
+    # 4. Update positions in teams and scores of teams
     teams = Team.objects.all()
     for team in teams:
-        team_position = 1
+        position_in_team = 1
         ordered_entries = models.Entry.objects.filter(has_submitted=True, profile__team=team).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         if not ordered_entries:
             continue
+        total_score = 0
         highest_score = ordered_entries[0].current_score
         current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
             if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
-                team_position = i + 1
-            entry.current_team_position = team_position
+                position_in_team = i + 1
+            entry.current_team_position = position_in_team
             entry.save()
+            total_score += entry.current_score
             highest_score = entry.current_score
             current_correct_bets = entry.correct_bets
+        team.score = round(total_score / ordered_entries.count())
+        team.save()
+
+    # 5. Update positions of teams
+    position_of_team = 1
+    ordered_teams = Team.objects.order_by('-score')
+    highest_score = ordered_teams[0].score
+    for i, team in enumerate(ordered_teams):
+            if team.score < highest_score:
+                position_of_team = i + 1
+            team.position = position_of_team
+            team.save()
+
+            highest_score = team.score
 
 
 def recalculate_from_beginning(instance):
@@ -275,10 +311,11 @@ def recalculate_from_beginning(instance):
         stats.num_incorrect = incorrect_count
         stats.save()
     
-    # 4. Update positions in teams
+    # 4. Update positions in teams and scores of teams
     teams = Team.objects.all()
     for team in teams:
-        team_position = 1
+        total_score = 0
+        position_in_team = 1
         ordered_entries = models.Entry.objects.filter(has_submitted=True, profile__team=team).order_by(
             '-current_score', '-correct_bets', 'profile__user__first_name')
         if not ordered_entries:
@@ -287,12 +324,26 @@ def recalculate_from_beginning(instance):
         current_correct_bets = 0
         for i, entry in enumerate(ordered_entries):
             if entry.current_score < highest_score or entry.correct_bets < current_correct_bets:
-                team_position = i + 1
-            entry.current_team_position = team_position
+                position_in_team = i + 1
+            entry.current_team_position = position_in_team
             entry.save()
+            total_score += entry.current_score
             highest_score = entry.current_score
             current_correct_bets = entry.correct_bets
+        team.score = round(total_score / ordered_entries.count())
+        team.save()
 
+    # 5. Update positions of teams
+    position_of_team = 1
+    ordered_teams = Team.objects.order_by('-score')
+    highest_score = ordered_teams[0].score
+    for i, team in enumerate(ordered_teams):
+            if team.score < highest_score:
+                position_of_team = i + 1
+            team.position = position_of_team
+            team.save()
+
+            highest_score = team.score
 
 @receiver(post_save, sender=models.CalledBet)
 def updated_called_bets(sender, instance, created, **kwargs):

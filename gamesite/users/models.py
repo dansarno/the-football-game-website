@@ -9,6 +9,33 @@ def generate_random_code():
     return ''.join([f"{randint(0, 9)}" for _ in range(0, 10)])
 
 
+class _Image(Image.Image):
+
+    def crop_to_aspect(self, aspect, divisor=1, alignx=0.5, aligny=0.5):
+        """Crops an image to a given aspect ratio.
+        Args:
+            aspect (float): The desired aspect ratio.
+            divisor (float): Optional divisor. Allows passing in (w, h) pair as the first two arguments.
+            alignx (float): Horizontal crop alignment from 0 (left) to 1 (right)
+            aligny (float): Vertical crop alignment from 0 (left) to 1 (right)
+        Returns:
+            Image: The cropped Image object.
+        """
+        if self.width / self.height > aspect / divisor:
+            newwidth = int(self.height * (aspect / divisor))
+            newheight = self.height
+        else:
+            newwidth = self.width
+            newheight = int(self.width / (aspect / divisor))
+        img = self.crop((alignx * (self.width - newwidth),
+                         aligny * (self.height - newheight),
+                         alignx * (self.width - newwidth) + newwidth,
+                         aligny * (self.height - newheight) + newheight))
+        return img
+
+Image.Image.crop_to_aspect = _Image.crop_to_aspect
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(
@@ -28,8 +55,9 @@ class Profile(models.Model):
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.profile_picture.path)
+            cropped = img.crop_to_aspect(1)
+            cropped.thumbnail(output_size, Image.ANTIALIAS)
+            cropped.save(self.profile_picture.path)
 
     def get_absolute_url(self):
         return reverse('profile', kwargs={'username': self.user.username})

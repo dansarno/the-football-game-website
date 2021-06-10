@@ -105,11 +105,11 @@
           <!-- Navbar Right Side -->
           <ul class="navbar-nav">
             {% if user.is_authenticated %}
-            {% if user.is_superuser %}
+            {% comment %} {% if user.is_superuser %}
             <li class="nav-item">
               <a class="nav-item nav-link" href="{% url 'admin:index' %}" id="home-navbar-link">Admin</a>
             </li>
-            {% endif %}
+            {% endif %} {% endcomment %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -9,7 +9,7 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'score', 'position']
 
 
 class CalledBetSerializer(serializers.ModelSerializer):
@@ -241,13 +241,13 @@ class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
         fields = ['biggest_winners', 'biggest_losers']
 
     def get_biggest_winners(self, obj):
-        biggest_winners = self.calc_winners_or_losers(obj, 5, False)
+        biggest_winners = self.calc_winners_or_losers(obj, 20, False)
         serializer = PositionLogChangeSerializer(
             instance=biggest_winners, many=True)
         return serializer.data
 
     def get_biggest_losers(self, obj):
-        biggest_losers = self.calc_winners_or_losers(obj, 5, True)
+        biggest_losers = self.calc_winners_or_losers(obj, 20, True)
         serializer = PositionLogChangeSerializer(
             instance=biggest_losers, many=True)
         return serializer.data
@@ -272,6 +272,7 @@ class CalledBetWinnersAndLosersSerializer(serializers.ModelSerializer):
             filtered_deltas_arr = [d for d in deltas_arr if d['change'] <= 0]
         sorted_deltas_arr = sorted(filtered_deltas_arr, key=lambda k:
                                    k['change'], reverse=reverse)[:num_entries]
+        print(sorted_deltas_arr)
         return [deltas['position_log'] for deltas in sorted_deltas_arr]
 
 
